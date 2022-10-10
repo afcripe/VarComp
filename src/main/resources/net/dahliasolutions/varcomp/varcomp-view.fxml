@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="viewMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VarCompController">
+
+         <top>
+            <MenuBar fx:id="menuTopBar" minHeight="26.0" prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="menuLogout" mnemonicParsing="false" text="Logout" />
+                    </items>
+                    <items>
+                        <MenuItem fx:id="menuExit" mnemonicParsing="false" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+   <left>
+      <VBox fx:id="vboxNavigation" minWidth="100" prefHeight="200.0" prefWidth="100.0" spacing="2.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
+          <Button fx:id="btnNavHome" style="-fx-cursor: hand;" text="Home" />
+          <Button fx:id="btnNavMetrics" style="-fx-cursor: hand;" text="Metrics" />
+          <Button fx:id="btnNavKPIs" style="-fx-cursor: hand;" text="KPIs" />
+          <Button fx:id="btnNavEmployees" style="-fx-cursor: hand;" text="Employees" />
+          <Button fx:id="btnNavSettings" style="-fx-cursor: hand;" text="Settings" />
+         <BorderPane.margin>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+    
+</BorderPane>
