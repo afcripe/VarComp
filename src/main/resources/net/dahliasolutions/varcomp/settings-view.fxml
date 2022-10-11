@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -16,17 +16,17 @@
 <AnchorPane prefHeight="510.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.SettingsController">
 
     <children>
-        <Label fx:id="lblTitle" text="Settings" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0">
+        <Label fx:id="lblTitle" text="Settings" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
             <font>
                 <Font name="Arial Bold" size="18.0" />
             </font>
         </Label>
-        <Button fx:id="btnSetCompany" layoutX="138.0" layoutY="6.0" mnemonicParsing="false" prefWidth="75.0" text="Company" AnchorPane.leftAnchor="135.0" AnchorPane.topAnchor="2.0" />
-        <Button fx:id="btnSetKPI" layoutX="233.0" layoutY="2.0" mnemonicParsing="false" prefWidth="75.0" text="KPIs" AnchorPane.leftAnchor="235.0" AnchorPane.topAnchor="2.0" />
-        <Button fx:id="btnSetEmployee" layoutX="328.0" layoutY="2.0" mnemonicParsing="false" prefWidth="75.0" text="Positions" AnchorPane.leftAnchor="335.0" AnchorPane.topAnchor="2.0" />
-        <Button fx:id="btnSetUser" layoutX="413.0" layoutY="2.0" mnemonicParsing="false" prefWidth="75.0" text="Users" AnchorPane.leftAnchor="435.0" AnchorPane.topAnchor="2.0" />
+        <Button fx:id="btnSetCompany" mnemonicParsing="false" prefWidth="75.0" text="Company" AnchorPane.leftAnchor="135.0" AnchorPane.topAnchor="14.0" />
+        <Button fx:id="btnSetKPI" mnemonicParsing="false" prefWidth="75.0" text="KPIs" AnchorPane.leftAnchor="235.0" AnchorPane.topAnchor="14.0" />
+        <Button fx:id="btnSetEmployee" mnemonicParsing="false" prefWidth="75.0" text="Positions" AnchorPane.leftAnchor="335.0" AnchorPane.topAnchor="14.0" />
+        <Button fx:id="btnSetUser" mnemonicParsing="false" prefWidth="75.0" text="Users" AnchorPane.leftAnchor="435.0" AnchorPane.topAnchor="14.0" />
 
-        <Pane fx:id="paneCompany" layoutY="36.0" prefHeight="314.0" prefWidth="610.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <Pane fx:id="paneCompany" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
             <Line endX="85.0" layoutX="130.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
             <Label fx:id="lblCompanyName" layoutX="25.0" layoutY="25.0" prefHeight="17.0" prefWidth="100.0" text="Company Name:" />
             <TextField fx:id="txtCompanyName" layoutX="130.0" layoutY="21.0" prefHeight="25.0" prefWidth="381.0" promptText="txtCompanyName" />
@@ -47,7 +47,7 @@
 
         </Pane>
 
-        <Pane fx:id="paneKPI" layoutY="36.0" prefHeight="500.0" prefWidth="610.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <Pane fx:id="paneKPI" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
             <Line endX="85.0" layoutX="230.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
             <Label fx:id="lblKPITitle" layoutX="14.0" layoutY="181.0" prefHeight="17.0" prefWidth="100.0" text="Master KPIs">
                 <font>
@@ -132,9 +132,9 @@
             </Pane>
         </Pane>
 
-        <Pane fx:id="paneEmployee" layoutY="36.0" prefHeight="314.0" prefWidth="610.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <Pane fx:id="paneEmployee" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
             <Line endX="85.0" layoutX="330.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
-            <Label fx:id="lblEmployeeTitle" layoutX="14.0" layoutY="14.0" prefHeight="17.0" text="Employee Positions">
+            <Label fx:id="lblEmployeeTitle" layoutX="14.0" layoutY="19.0" prefHeight="17.0" text="Employee Positions">
                 <font>
                     <Font name="System Bold" size="12.0" />
                 </font>
@@ -170,19 +170,44 @@
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Label>
-            <Button fx:id="bntAddPositionKPI" layoutX="415.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="New" />
-            <Button fx:id="bntRemovePositionKPI" layoutX="504.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="Delete" />
-            <TableView fx:id="tblPositionKPI" editable="false" visible="false" layoutX="45.0" layoutY="215.0" prefHeight="120.0" prefWidth="550.0">
+            <Button fx:id="bntAddPositionKPI" layoutX="415.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="Add" />
+            <Button fx:id="bntRemovePositionKPI" layoutX="504.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="Remove" />
+            <TableView fx:id="tblPositionKPI" editable="false" layoutX="45.0" layoutY="215.0" prefHeight="120.0" prefWidth="550.0" visible="false">
                 <columns>
-                    <TableColumn fx:id="tbcPKItemID" prefWidth="40.5" text="ID" />
-                    <TableColumn fx:id="tbcPKPosition" prefWidth="123.0" text="Position" />
-                    <TableColumn fx:id="tbcPKMasterKPI" prefWidth="191.0" text="Description" />
-                    <TableColumn fx:id="tbcPKWeight" minWidth="0.0" prefWidth="100.5" text="Shares" />
+                    <TableColumn fx:id="tbcPKMasterKPI" prefWidth="191.0" text="KPI" />
+                    <TableColumn fx:id="tbcPKWeight" minWidth="0.0" prefWidth="100.5" text="Weight" />
                 </columns>
             </TableView>
+            <Pane fx:id="paneFormPositionKPI" layoutX="45.0" layoutY="215.0" opacity="0.95" prefHeight="120.0" prefWidth="550.0"
+                  style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+                <children>
+                    <Label layoutX="14.0" layoutY="86.0" text="ID:" textFill="#00000080" />
+                    <TextField fx:id="txtFormPKItem_id" disable="true" editable="false" layoutX="34.0" layoutY="81.0" prefHeight="25.0" prefWidth="40.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="19.0" layoutY="15.0" prefHeight="17.0" prefWidth="62.0" text="Position:">
+                      <padding>
+                         <Insets right="5.0" />
+                      </padding>
+                    </Label>
+                    <TextField fx:id="txtFormPK_position" editable="false" layoutX="81.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="19.0" layoutY="49.0" prefHeight="17.0" prefWidth="62.0" text="KPI:">
+                      <padding>
+                         <Insets right="5.0" />
+                      </padding>
+                    </Label>
+                    <ComboBox fx:id="cmbFormPK_kpi" layoutX="81.0" layoutY="45.0" prefHeight="25.0" prefWidth="150.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="275.0" layoutY="49.0" prefHeight="17.0" prefWidth="62.0" text="Weight:">
+                        <padding>
+                            <Insets right="5.0" />
+                        </padding>
+                    </Label>
+                    <TextField fx:id="txtFormPK_weight" layoutX="337.0" layoutY="45.0" prefHeight="25.0" prefWidth="150.0" />
+                    <Button fx:id="btnFormPK_cancel" layoutX="317.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                    <Button fx:id="btnFormPK_save" layoutX="432.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Save" />
+                </children>
+            </Pane>
         </Pane>
 
-        <Pane fx:id="paneUsers" layoutY="36.0" prefHeight="314.0" prefWidth="610.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <Pane fx:id="paneUsers" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
             <Line endX="85.0" layoutX="430.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
             <Label fx:id="lblUsersTitle" layoutX="14.0" layoutY="19.0" prefHeight="17.0" prefWidth="100.0" text="Users">
                 <font>
@@ -215,6 +240,5 @@
         </Pane>
 
 
-        <ProgressBar fx:id="pbSettingsLoader" layoutX="14.0" layoutY="40.0" prefHeight="18.0" prefWidth="496.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
     </children>
 </AnchorPane>

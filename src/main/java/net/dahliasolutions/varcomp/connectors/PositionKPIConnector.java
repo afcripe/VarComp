@@ -26,7 +26,7 @@ public class PositionKPIConnector {
                 while (resultSet.next()) {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
-                    Integer recKPIMasterID = resultSet.getInt("kpi_mast_id");
+                    Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
                     positionKPI = new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight);
@@ -64,7 +64,7 @@ public class PositionKPIConnector {
                 while (resultSet.next()) {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
-                    Integer recKPIMasterID = resultSet.getInt("kpi_mast_id");
+                    Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
                     newPositionKPI = new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight);
@@ -96,7 +96,7 @@ public class PositionKPIConnector {
                 while (resultSet.next()) {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
-                    Integer recKPIMasterID = resultSet.getInt("kpi_mast_id");
+                    Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
                     positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight));
@@ -171,7 +171,7 @@ public class PositionKPIConnector {
                 while (resultSet.next()) {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
-                    Integer recKPIMasterID = resultSet.getInt("kpi_mast_id");
+                    Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
                     positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight));
@@ -204,7 +204,7 @@ public class PositionKPIConnector {
                 while (resultSet.next()) {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
-                    Integer recKPIMasterID = resultSet.getInt("kpi_mast_id");
+                    Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
                     positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight));

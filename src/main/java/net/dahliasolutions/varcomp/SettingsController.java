@@ -198,17 +198,17 @@ public class SettingsController implements Initializable {
     private Button bntAddPositionKPI;
     @FXML
     private Button bntRemovePositionKPI;
+    @FXML
+    private Button btnFormPK_cancel;
+    @FXML
+    private Button btnFormPK_save;
 
     @FXML
     private TableView<PositionKPI> tblPositionKPI;
     @FXML
-    private TableColumn<User, Integer> tbcPKItemID;
+    private TableColumn<PositionKPI, String> tbcPKMasterKPI;
     @FXML
-    private TableColumn<User, Integer> tbcPKPosition;
-    @FXML
-    private TableColumn<User, Integer> tbcPKMasterKPI;
-    @FXML
-    private TableColumn<User, BigDecimal> tbcPKWeight;
+    private TableColumn<PositionKPI, BigDecimal> tbcPKWeight;
 
     @FXML
     private Pane paneFormPosition;
@@ -226,22 +226,32 @@ public class SettingsController implements Initializable {
     private Button btnFormPosition_save;
 
     @FXML
-    private ProgressBar pbSettingsLoader;
+    private Pane paneFormPositionKPI;
+
+    @FXML
+    private TextField txtFormPKItem_id;
+    @FXML
+    private TextField txtFormPK_position;
+    @FXML
+    private ComboBox cmbFormPK_kpi;
+    @FXML
+    private TextField txtFormPK_weight;
 
     ObservableList<KPIClass> kpiClassList;
     ObservableList<KPIMaster> kpiMasterList;
     ObservableList<Position> positionList;
+    ObservableList<PositionKPI> positionKPIList;
     ObservableList<User> userList;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        pbSettingsLoader.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
 
         kpiClassList = FXCollections.observableArrayList(KPIClassConnector.getKPIClasses());
         kpiMasterList = FXCollections.observableArrayList(KPIMasterConnector.getKPIMasters());
         positionList = FXCollections.observableArrayList(PositionsConnector.getPositions());
+        positionKPIList = FXCollections.observableArrayList(PositionKPIConnector.getPositionKPI());
         userList = FXCollections.observableArrayList(UserConnector.getUsers());
 
         btnSetCompany.setOnAction(actionEvent -> settingsNave("company"));
@@ -348,7 +358,7 @@ public class SettingsController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown()){
-                    showPositionKPIs();
+                    showPositionKPIs(tblPositions.getSelectionModel().getSelectedItem().getPosition_id());
                     if(event.getClickCount() == 2){
                         Position position = (Position) tblPositions.getSelectionModel().getSelectedItem();
                         setFormPosition(position);
@@ -362,6 +372,40 @@ public class SettingsController implements Initializable {
             hidePositionForm();
         });
         btnFormPosition_save.setOnAction(event -> savePositionForm());
+
+        bntAddPositionKPI.setOnAction(event -> setFormPositionKPI(new PositionKPI()));
+        bntRemovePositionKPI.setOnAction(event -> removePositionKPI());
+
+        tbcPKMasterKPI.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PositionKPI, String>, ObservableValue<String>>() {
+               @Override
+               public ObservableValue<String> call(TableColumn.CellDataFeatures<PositionKPI, String> param) {
+                   String cellValue = "";
+                   for (KPIMaster kpi: kpiMasterList){
+                       if (kpi.getKpi_master_id() == param.getValue().getKpi_master_id()){
+                           cellValue = kpi.getKpi_master_id() + ": " + kpi.getKpi_code();
+                       }
+                   }
+                   return new SimpleObjectProperty<String>(cellValue);
+               }
+           });
+        tbcPKWeight.setCellValueFactory(new PropertyValueFactory<PositionKPI, BigDecimal>("weight"));
+        tblPositionKPI.setItems(positionKPIList);
+
+        tblPositionKPI.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                    PositionKPI positionKPI = (PositionKPI) tblPositionKPI.getSelectionModel().getSelectedItem();
+                    setFormPositionKPI(positionKPI);
+                }
+            }
+        });
+
+        btnFormPK_cancel.setOnAction(event -> {
+            clearFormPositionKPI();
+            hideFormPositionKPI();
+        });
+        btnFormPK_save.setOnAction(event -> savePositionKPI());
 
 
 /* User Tab */
@@ -409,16 +453,12 @@ public class SettingsController implements Initializable {
     }
 
     private void settingsNave(String location) {
-        pbSettingsLoader.setVisible(false);
         paneCompany.setVisible(false);
         paneKPI.setVisible(false);
         paneEmployee.setVisible(false);
         paneUsers.setVisible(false);
 
         switch (location){
-            case "loader":
-                pbSettingsLoader.setVisible(true);
-                break;
             case "company":
                 paneCompany.setVisible(true);
                 break;
@@ -768,11 +808,110 @@ public class SettingsController implements Initializable {
         }
     }
 
-    private void showPositionKPIs() {
+    private void showPositionKPIs(Integer positionID) {
+        positionKPIList = FXCollections.observableArrayList(PositionKPIConnector.getPositionKPIsPosition(positionID));
+        tblPositionKPI.getItems().removeAll();
+        tblPositionKPI.setItems(positionKPIList);
         tblPositionKPI.setVisible(true);
+        bntAddPositionKPI.setVisible(true);
+        bntRemovePositionKPI.setVisible(true);
     }
     private void hidePositionKPIs() {
         tblPositionKPI.setVisible(false);
+        bntAddPositionKPI.setVisible(false);
+        bntRemovePositionKPI.setVisible(false);
+    }
+
+    private void setFormPositionKPI(PositionKPI positionKPI) {
+        fillFormPositionKPI(positionKPI);
+        showFormPositionKPI();
+    }
+    private void fillFormPositionKPI(PositionKPI positionKPI) {
+        Position p = tblPositions.getSelectionModel().getSelectedItem();
+        String pName = p.getPosition_id() + ": " + p.getPosition_name();
+
+        txtFormPKItem_id.setText(positionKPI.getItem_id().toString());
+        txtFormPK_position.setText(pName);
+        txtFormPK_weight.setText(positionKPI.getWeight().toString());
+        // create combobox items for KPIs
+        cmbFormPK_kpi.getItems().clear();
+        String select = "";
+        for (KPIMaster kpiMaster: kpiMasterList) {
+            cmbFormPK_kpi.getItems().add(kpiMaster.getKpi_master_id() + ": " + kpiMaster.getKpi_code());
+
+            if(kpiMaster.getKpi_master_id() == positionKPI.getKpi_master_id()) {
+                select = kpiMaster.getKpi_master_id() + ": " + kpiMaster.getKpi_code();
+                cmbFormPK_kpi.setValue(select);
+            }
+        }
+    }
+
+    private void savePositionKPI() {
+        String split[] = cmbFormPK_kpi.getSelectionModel().getSelectedItem().toString().split(":");
+        String splitName[] = txtFormPK_position.getText().split(":");
+        BigDecimal decWeight;
+
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        String pattern = "#0.0#";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+        try {
+            decWeight = (BigDecimal) decimalFormat.parse(txtFormPK_weight.getText());
+            decWeight = decWeight.setScale(2, RoundingMode.HALF_UP);
+        } catch (ParseException e) {
+            System.out.println("Weight is not a number!");
+            decWeight = new BigDecimal(100.00);
+        }
+
+        PositionKPI positionKPI = new PositionKPI(Integer.parseInt(txtFormPKItem_id.getText()),
+                Integer.parseInt(splitName[0]), Integer.parseInt(split[0]), decWeight);
+
+        if ( positionKPI.getItem_id().equals(0)) {
+            Integer i = positionKPI.insertPositionKPI();
+        } else {
+            positionKPI.updatePositionKPI();
+        }
+
+        try {
+            positionKPIList = FXCollections.observableArrayList(
+                    PositionKPIConnector.getPositionKPIsPosition(
+                            tblPositions.getSelectionModel().getSelectedItem().getPosition_id()));
+
+        } catch (Exception e) {
+            positionKPIList = FXCollections.observableArrayList();
+        }
+
+        tblPositionKPI.getItems().removeAll();
+        tblPositionKPI.setItems(positionKPIList);
+        clearFormPositionKPI();
+        hideFormPositionKPI();
+    }
+
+    private void removePositionKPI() {
+        int selectedID = tblPositionKPI.getSelectionModel().getSelectedIndex();
+        PositionKPI selectedItem = tblPositionKPI.getSelectionModel().getSelectedItem();
+        Boolean itemDeleted = PositionKPIConnector.deletePositionKPI(selectedItem.getItem_id());
+        if (itemDeleted) {
+            tblPositionKPI.getItems().remove(selectedID);
+        } else {
+            System.out.println("Item not deleted from database.");
+        }
+    }
+
+    private void clearFormPositionKPI() {
+        txtFormPKItem_id.setText("");
+        txtFormPK_position.setText("");
+        txtFormPK_weight.setText("");
+        cmbFormPK_kpi.getItems().clear();
+    }
+
+    private void showFormPositionKPI() {
+        paneFormPositionKPI.setVisible(true);
+    }
+
+    private void hideFormPositionKPI() {
+        paneFormPositionKPI.setVisible(false);
     }
 
 }

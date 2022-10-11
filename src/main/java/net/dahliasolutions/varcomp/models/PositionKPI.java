@@ -1,6 +1,8 @@
 package net.dahliasolutions.varcomp.models;
 
 
+import net.dahliasolutions.varcomp.connectors.PositionKPIConnector;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -51,4 +53,8 @@ public class PositionKPI {
         this.weight = weight;
         this.weight = this.weight.setScale(2, RoundingMode.HALF_UP);
     }
+
+    public Integer insertPositionKPI() {return PositionKPIConnector.insertPositionKPI(this).getItem_id();}
+
+    public void updatePositionKPI() { PositionKPIConnector.updatePositionKPI(this);}
 }
