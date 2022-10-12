@@ -9,21 +9,41 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 
 public class SettingsController implements Initializable {
@@ -66,6 +86,14 @@ public class SettingsController implements Initializable {
     private TextField txtYearsIssued;
     @FXML
     private Button btnSaveCompany;
+    @FXML
+    private Button btnLoadCompanyLogo;
+    @FXML
+    private Button btnLoadCompanyIcon;
+    @FXML
+    private ImageView imgCompanyLogo;
+    @FXML
+    private ImageView imgCompanyIcon;
     @FXML
     private Button bntNewKPIClass;
     @FXML
@@ -237,6 +265,9 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtFormPK_weight;
 
+    FileChooser fileChooserLogo = new FileChooser();
+    FileChooser fileChooserIcon = new FileChooser();
+
     ObservableList<KPIClass> kpiClassList;
     ObservableList<KPIMaster> kpiMasterList;
     ObservableList<Position> positionList;
@@ -268,6 +299,35 @@ public class SettingsController implements Initializable {
         txtSharesOutstanding.setText(VarComp.getCurrentCompany().getShares_outstanding().toString());
         txtFundingPercentage.setText(VarComp.getCurrentCompany().getFunding_percentage().toString());
         btnSaveCompany.setOnAction(actionEvent -> updateCompany(actionEvent));
+        btnLoadCompanyLogo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                File file = fileChooserLogo.showOpenDialog(new Stage());
+                try {
+                    imgCompanyLogo.setImage(new Image(file.getAbsolutePath()));
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                URI destination = URI.create(String.valueOf(VarComp.class.getResource("companyLogo.png")));
+                File destFile = new File(destination);
+                try {
+                    Files.copy(file.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        btnLoadCompanyIcon.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                File file = fileChooserIcon.showOpenDialog(new Stage());
+                try {
+                    imgCompanyIcon.setImage(new Image(file.getAbsolutePath()));
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
 /* KPI Tab */
     /* KPI Class Table and Buttons */

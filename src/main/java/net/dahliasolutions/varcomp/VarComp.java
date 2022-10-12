@@ -3,6 +3,7 @@ package net.dahliasolutions.varcomp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;
@@ -20,6 +21,9 @@ public class VarComp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
+
+        Image appIcon = new Image(VarComp.class.getResource("VcompIcon.png").openStream());
+        stage.getIcons().add(appIcon);
 
         double recWidth = DBUtils.getStageSize("app_width");
         double recHeight = DBUtils.getStageSize("app_height");
