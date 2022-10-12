@@ -62,7 +62,7 @@ public class VarCompController extends ViewController implements Initializable {
 
     @Override
     public void init() {
-        System.out.println(VarComp.getCurrentCompany().getCompany_name());
+//        System.out.println(VarComp.getCurrentCompany().getCompany_name());
     }
 
     public void setCenterView(String fxmlFile) {

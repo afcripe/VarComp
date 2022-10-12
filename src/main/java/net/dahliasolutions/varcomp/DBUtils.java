@@ -45,7 +45,6 @@ public class DBUtils {
             if (resultSet.isBeforeFirst()) {
                 while (resultSet.next()) {
                     returnSize = resultSet.getDouble(col);
-                    System.out.println(returnSize);
                 }
             }
 

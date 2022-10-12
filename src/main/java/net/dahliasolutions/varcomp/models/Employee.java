@@ -2,6 +2,7 @@ package net.dahliasolutions.varcomp.models;
 
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Employee {
@@ -9,7 +10,7 @@ public class Employee {
     private Integer position;
     private String first_name;
     private String last_name;
-    private Date start_date;
+    private LocalDate start_date;
     private Boolean is_active;
     private Integer shares_assigned;
 
@@ -18,20 +19,20 @@ public class Employee {
         setPosition(0);
         setFirst_name("");
         setLast_name("");
-        setStart_date(new Date());
+        setStart_date(LocalDate.now());
         setIs_active(true);
         setShares_assigned(0);
     }
 
-    public Employee(Integer employeeID, Integer positionID, String firstName, String lastName, Date startDate,
+    public Employee(Integer employeeID, Integer positionID, String firstName, String lastName, LocalDate startDate,
                     Boolean isActive, Integer sharesAssigned) {
-        setEmployee_id(0);
-        setPosition(0);
-        setFirst_name("");
-        setLast_name("");
-        setStart_date(new Date());
-        setIs_active(true);
-        setShares_assigned(0);
+        setEmployee_id(employeeID);
+        setPosition(positionID);
+        setFirst_name(firstName);
+        setLast_name(lastName);
+        setStart_date(startDate);
+        setIs_active(isActive);
+        setShares_assigned(sharesAssigned);
     }
 
     public void setEmployee(Employee employee) {
@@ -82,11 +83,11 @@ public class Employee {
         this.last_name = last_name;
     }
 
-    public Date getStart_date() {
+    public LocalDate getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
 

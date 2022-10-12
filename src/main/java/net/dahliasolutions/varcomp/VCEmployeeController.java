@@ -33,6 +33,8 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private Label lblTitle;
     @FXML
+    private Button btnEmployeeHome;
+    @FXML
     private Pane paneEmployeeTable;
     @FXML
     private Button bntNewEmployee;
@@ -47,7 +49,7 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private TableColumn<Employee, Integer> tbcEmployeeShares;
     @FXML
-    private TableColumn<Employee, CheckBox> tbcEmployeeActive;
+    private TableColumn<Employee, String> tbcEmployeeActive;
     @FXML
     private Pane paneFormEmployee;
     @FXML
@@ -66,6 +68,44 @@ public class VCEmployeeController implements Initializable {
     private Button btnFormEmployee_cancel;
     @FXML
     private Button btnFormEmployee_save;
+
+    @FXML
+    private Pane paneEmployeeDetail;
+    @FXML
+    private Button btnEditEmployee;
+    @FXML
+    private Label lblEmployeeName;
+    @FXML
+    private Label lblEmployeeStartDate;
+    @FXML
+    private Label lblEmployeePosition;
+    @FXML
+    private Label lblEmployeeIsActive;
+    @FXML
+    private Label lblShares;
+    @FXML
+    private ScrollPane spnEmployeeDetail;
+
+    @FXML
+    private Pane paneEmployeeInfo;
+    @FXML
+    private TextField txtEmployeeFirstName;
+    @FXML
+    private TextField txtEmployeeLastName;
+    @FXML
+    private ComboBox cmbEmployeePosition;
+    @FXML
+    private TextField txtEmployeeShares;
+    @FXML
+    private CheckBox chkEmployeeActive;
+    @FXML
+    private DatePicker pkrEmployeeStartDate;
+    @FXML
+    private Button btnEditEmployee_cancel;
+    @FXML
+    private Button btnEditEmployee_save;
+
+    private Employee selectedEmployee = new Employee();
     ObservableList<Employee> employeeList;
     ObservableList<Position> positionList;
 
@@ -74,6 +114,9 @@ public class VCEmployeeController implements Initializable {
         employeeList = FXCollections.observableArrayList(EmployeeConnector.getEmployees());
         positionList = FXCollections.observableArrayList(PositionsConnector.getPositions());
 
+        btnEmployeeHome.setOnAction(event -> navEmployeeHome());
+
+    /* Employee List */
         bntNewEmployee.setOnAction(event -> setFormEmployee(new Employee()));
 
         tbcEmployeeID.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("employee_id"));
@@ -97,12 +140,12 @@ public class VCEmployeeController implements Initializable {
             }
         });
         tbcEmployeeShares.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("shares_assigned"));
-        tbcEmployeeActive.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, CheckBox>, ObservableValue<CheckBox>>() {
+        tbcEmployeeActive.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<CheckBox> call(TableColumn.CellDataFeatures<Employee, CheckBox> param) {
-                CheckBox checkBox = new CheckBox();
-                checkBox.setSelected(param.getValue().getIs_active());
-                return new SimpleObjectProperty<CheckBox>(checkBox);
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Employee, String> param) {
+                String cellVal = "Inactive";
+                if (param.getValue().getIs_active()) {cellVal = "Active";}
+                return new SimpleObjectProperty<String>(cellVal);
             }
         });
         tblEmployees.setItems(employeeList);
@@ -110,25 +153,44 @@ public class VCEmployeeController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    Employee employee = (Employee) tblEmployees.getSelectionModel().getSelectedItem();
-                    //setFormClassKPI(employee);
+                    fillPaneEmployeeDetail((Employee) tblEmployees.getSelectionModel().getSelectedItem());
                 }
             }
         });
 
         btnFormEmployee_cancel.setOnAction(event -> {
             clearFormEmployee();
-            hidePaneFormEmployee();
+            showPaneFormEmployee(false);
         });
         btnFormEmployee_save.setOnAction(event -> saveEmployee());
+
+    /* Employee Detail */
+        btnEditEmployee.setOnAction(event -> showEditFormEmployee(true));
+        btnEditEmployee_cancel.setOnAction(event -> showEditFormEmployee(false));
+        btnEditEmployee_save.setOnAction(event -> updateEmployee());
+
+        showPaneEmployeeList(true);
     }
+
+    private void navEmployeeHome() {
+        showPaneEmployeeDetail(false);
+        showPaneEmployeeList(true);
+    }
+
+    private void showPaneEmployeeList(Boolean show) {
+        paneEmployeeDetail.setVisible(!show);
+        paneEmployeeTable.setVisible(show);
+        btnEmployeeHome.setVisible(!show);
+        showPaneFormEmployee(false);
+    }
+
 
     private void setFormEmployee(Employee employee) {
         fillFormEmployee(employee);
-        showPaneFormEmployee();
+        showPaneFormEmployee(true);
     }
     private void fillFormEmployee(Employee employee) {
-        txtFormEmployeeLastName.setText(employee.getFirst_name());
+        txtFormEmployeeFirstName.setText(employee.getFirst_name());
         txtFormEmployeeLastName.setText(employee.getLast_name());
         txtFormEmployeeShares.setText(employee.getShares_assigned().toString());
         chkFormEmployeeActive.setSelected(employee.getIs_active());
@@ -140,12 +202,8 @@ public class VCEmployeeController implements Initializable {
         }
     }
 
-    private void showPaneFormEmployee() {
-        paneFormEmployee.setVisible(true);
-    }
-
-    private void hidePaneFormEmployee() {
-        paneFormEmployee.setVisible(false);
+    private void showPaneFormEmployee(Boolean show) {
+        paneFormEmployee.setVisible(show);
     }
 
     private void clearFormEmployee() {
@@ -158,11 +216,9 @@ public class VCEmployeeController implements Initializable {
 
     private void saveEmployee() {
         String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
-        ZoneId tz = ZoneId.systemDefault();
-        Date startDate = Date.from(pkrStartDate.getValue().atStartOfDay(tz).toInstant());
 
-        Employee employee = new Employee(0, Integer.parseInt(split[0]), txtFormEmployeeLastName.getText(), txtFormEmployeeLastName.getText(),
-                startDate, chkFormEmployeeActive.isSelected(), Integer.parseInt(txtFormEmployeeShares.getText()));
+        Employee employee = new Employee(0, Integer.parseInt(split[0]), txtFormEmployeeFirstName.getText(), txtFormEmployeeLastName.getText(),
+                pkrStartDate.getValue(), chkFormEmployeeActive.isSelected(), Integer.parseInt(txtFormEmployeeShares.getText()));
 
         Integer i = employee.insertEmployee();
 
@@ -170,6 +226,68 @@ public class VCEmployeeController implements Initializable {
         tblEmployees.getItems().removeAll();
         tblEmployees.setItems(employeeList);
         clearFormEmployee();
-        hidePaneFormEmployee();
+        showPaneFormEmployee(false);
+    }
+
+    private void showPaneEmployeeDetail(Boolean show) {
+        paneEmployeeInfo.setVisible(false);
+        paneEmployeeTable.setVisible(!show);
+        paneEmployeeDetail.setVisible(show);
+        btnEmployeeHome.setVisible(show);
+    }
+    private void fillPaneEmployeeDetail(Employee employee) {
+        selectedEmployee.setEmployee(employee);
+        lblEmployeeName.setText(selectedEmployee.getLast_name()+ ", "+selectedEmployee.getFirst_name());
+        lblEmployeeStartDate.setText(selectedEmployee.getStart_date().toString());
+        lblShares.setText(selectedEmployee.getShares_assigned().toString());
+        for (Position p: positionList) {
+            if (p.getPosition_id() == selectedEmployee.getPosition()) {
+                lblEmployeePosition.setText(p.getPosition_id()+": "+p.getPosition_name());
+            }
+        }
+        if(selectedEmployee.getIs_active()) {
+            lblEmployeeIsActive.setText("Active");
+        } else {
+            lblEmployeeIsActive.setText("Inactive");
+        }
+
+        showPaneEmployeeDetail(true);
+    }
+
+    private void showEditFormEmployee(Boolean show) {
+        if (show) fillFormEditEmployee();
+        paneEmployeeInfo.setVisible(show);
+    }
+    private void fillFormEditEmployee() {
+        txtEmployeeFirstName.setText(selectedEmployee.getFirst_name());
+        txtEmployeeLastName.setText(selectedEmployee.getLast_name());
+        txtEmployeeShares.setText(selectedEmployee.getShares_assigned().toString());
+        chkEmployeeActive.setSelected(selectedEmployee.getIs_active());
+        pkrEmployeeStartDate.setValue(selectedEmployee.getStart_date());
+
+        // create combobox items
+        cmbEmployeePosition.getItems().clear();
+        String cb = "";
+        for (Position p: positionList) {
+            cmbEmployeePosition.getItems().add(p.getPosition_id()+": "+p.getPosition_name());
+            if (selectedEmployee.getPosition().equals(p.getPosition_id())) {
+                cb = p.getPosition_id()+": "+p.getPosition_name();
+            }
+        }
+        cmbEmployeePosition.setValue(cb);
+    }
+
+    private void updateEmployee() {
+        String split[] = cmbEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
+
+        Employee employee = new Employee(selectedEmployee.getEmployee_id(), Integer.parseInt(split[0]), txtEmployeeFirstName.getText(), txtEmployeeLastName.getText(),
+                pkrEmployeeStartDate.getValue(), chkEmployeeActive.isSelected(), Integer.parseInt(txtEmployeeShares.getText()));
+
+        employee.updateEmployee();
+        fillPaneEmployeeDetail(employee);
+        employeeList = FXCollections.observableArrayList(EmployeeConnector.getEmployees());
+        tblEmployees.getItems().removeAll();
+        tblEmployees.setItems(employeeList);
+        showEditFormEmployee(false);
     }
 }

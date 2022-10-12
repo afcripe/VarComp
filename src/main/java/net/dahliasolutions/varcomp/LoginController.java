@@ -28,8 +28,6 @@ public class LoginController extends ViewController implements Initializable {
     @FXML
     private ChoiceBox<String> choiceCompanies;
 
-    private ArrayList<Company> companies;
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

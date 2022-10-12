@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -20,21 +22,21 @@
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
+      <Button fx:id="btnEmployeeHome" layoutX="494.0" layoutY="12.0" prefWidth="75" text="Back" visible="false" />
 
       <Pane fx:id="paneEmployeeTable" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
-         <Button fx:id="bntNewEmployee" layoutX="415.0" layoutY="15.0" mnemonicParsing="true" prefWidth="75" text="New Employee" />
+         <Button fx:id="bntNewEmployee" layoutX="415.0" layoutY="15.0" mnemonicParsing="true" prefWidth="125" text="New Employee" />
          <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
          <TableView fx:id="tblEmployees" editable="false" layoutX="45.0" layoutY="50.0" prefHeight="220.0" prefWidth="550.0">
             <columns>
-               <TableColumn fx:id="tbcEmployeeID" prefWidth="40.5" text="ID" />
-               <TableColumn fx:id="tbcEmployeeName" prefWidth="123.0" text="Name" />
-               <TableColumn fx:id="tbcEmployeePosition" prefWidth="191.0" text="Position" />
-               <TableColumn fx:id="tbcEmployeeShares" minWidth="0.0" prefWidth="100.5" text="Shares" />
-               <TableColumn fx:id="tbcEmployeeActive" minWidth="0.0" prefWidth="100.5" text="Active" />
+               <TableColumn fx:id="tbcEmployeeID" editable="false" prefWidth="32.0" text="ID" />
+               <TableColumn fx:id="tbcEmployeeName" editable="false" prefWidth="261.0" text="Name" />
+               <TableColumn fx:id="tbcEmployeePosition" editable="false" prefWidth="90.5" text="Position" />
+               <TableColumn fx:id="tbcEmployeeShares" editable="false" minWidth="0.0" prefWidth="81.5" text="Shares" />
+               <TableColumn fx:id="tbcEmployeeActive" editable="false" minWidth="0.0" prefWidth="90.5" text="Active" />
             </columns>
          </TableView>
-         <Pane fx:id="paneFormEmployee" layoutX="45.0" layoutY="50.0" opacity="0.95" prefHeight="220.0" prefWidth="550.0"
-               style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+         <Pane fx:id="paneFormEmployee" layoutX="45.0" layoutY="50.0" opacity="0.95" prefHeight="220.0" prefWidth="550.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
             <children>
                <Label layoutX="14.0" layoutY="25.0" prefHeight="17.0" prefWidth="72.0" text="First Name:" />
                <TextField fx:id="txtFormEmployeeFirstName" layoutX="101.0" layoutY="21.0" prefHeight="25.0" prefWidth="279.0" />
@@ -42,7 +44,7 @@
                <TextField fx:id="txtFormEmployeeLastName" layoutX="101.0" layoutY="56.0" prefHeight="25.0" prefWidth="279.0" />
                <Label layoutX="14.0" layoutY="96.0" prefHeight="17.0" prefWidth="72.0" text="Position:" />
                <ComboBox fx:id="cmbFormEmployeePosition" layoutX="101.0" layoutY="92.0" prefHeight="25.0" prefWidth="279.0" />
-               <Label layoutX="14.0" layoutY="132.0" prefHeight="17.0" prefWidth="72.0" text="Shares:" />
+               <Label layoutX="14.0" layoutY="132.0" prefHeight="17.0" prefWidth="72.0" text="Start Date:" />
                <DatePicker fx:id="pkrStartDate" layoutX="101.0" layoutY="128.0" />
                <Label layoutX="14.0" layoutY="168.0" prefHeight="17.0" prefWidth="72.0" text="Shares:" />
                <TextField fx:id="txtFormEmployeeShares" layoutX="101.0" layoutY="164.0" prefHeight="25.0" prefWidth="174.0" />
@@ -52,9 +54,80 @@
                <Button fx:id="btnFormEmployee_save" layoutX="432.0" layoutY="183.0" mnemonicParsing="false" prefWidth="95" text="Save" />
             </children>
          </Pane>
+      </Pane>
 
+      <Pane fx:id="paneEmployeeDetail" opacity="0.95" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+
+         <Button fx:id="btnEditEmployee" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="29.0" text="E" />
+         <Label fx:id="lblEmployeeName" layoutX="56.0" layoutY="14.0" prefHeight="27.0" prefWidth="305.0" text="Label">
+            <font>
+               <Font name="System Bold" size="18.0" />
+            </font>
+         </Label>
+         <Label fx:id="lblEmployeeStartDate" layoutX="467.0" layoutY="18.0" prefHeight="20.0" prefWidth="118.0" text="Label">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label alignment="CENTER_RIGHT" layoutX="392.0" layoutY="18.0" prefHeight="20.0" prefWidth="75.0" text="Start Date:">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Label>
+         <Label fx:id="lblEmployeePosition" layoutX="80.0" layoutY="42.0" prefHeight="25.0" prefWidth="298.0" text="Label">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label fx:id="lblEmployeeIsActive" layoutX="467.0" layoutY="44.0" prefHeight="20.0" prefWidth="118.0" text="Label">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label alignment="CENTER_RIGHT" layoutX="392.0" layoutY="75.0" prefHeight="20.0" prefWidth="75.0" text="Shares:">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Label>
+         <Label fx:id="lblShares" layoutX="467.0" layoutY="74.0" prefHeight="20.0" prefWidth="118.0" text="Label">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+         </Label>
+         <ScrollPane fx:id="spnEmployeeDetail" layoutX="21.0" layoutY="120.0" prefHeight="220.0" prefWidth="556.0">
+            <content>
+            </content>
+         </ScrollPane>
+         <Label layoutX="21.0" layoutY="103.0" prefHeight="17.0" prefWidth="118.0" text="Metrics" />
+
+         <Pane fx:id="paneEmployeeInfo" layoutX="21.0" layoutY="14.0" prefHeight="166.0" prefWidth="550.0" style="-fx-background-color: lightgrey; -fx-border-color: grey;" visible="false">
+            <children>
+               <Label layoutX="14.0" layoutY="25.0" prefHeight="17.0" prefWidth="72.0" text="First Name:" />
+               <TextField fx:id="txtEmployeeFirstName" layoutX="101.0" layoutY="21.0" prefHeight="25.0" prefWidth="279.0" />
+               <Label layoutX="14.0" layoutY="60.0" prefHeight="17.0" prefWidth="72.0" text="Last Name:" />
+               <TextField fx:id="txtEmployeeLastName" layoutX="101.0" layoutY="56.0" prefHeight="25.0" prefWidth="279.0" />
+               <Label layoutX="14.0" layoutY="96.0" prefHeight="17.0" prefWidth="72.0" text="Position:" />
+               <ComboBox fx:id="cmbEmployeePosition" layoutX="101.0" layoutY="92.0" prefHeight="25.0" prefWidth="174.0" />
+               <Label layoutX="306.0" layoutY="96.0" prefHeight="17.0" prefWidth="72.0" text="Start Date:" />
+               <DatePicker fx:id="pkrEmployeeStartDate" layoutX="393.0" layoutY="92.0" prefHeight="25.0" prefWidth="125.0" />
+               <Label layoutX="14.0" layoutY="131.0" prefHeight="17.0" prefWidth="72.0" text="Shares:" />
+               <TextField fx:id="txtEmployeeShares" layoutX="101.0" layoutY="127.0" prefHeight="25.0" prefWidth="174.0" />
+               <Label layoutX="412.0" layoutY="25.0" prefHeight="17.0" prefWidth="62.0" text="Active:" />
+               <CheckBox fx:id="chkEmployeeActive" layoutX="478.0" layoutY="25.0" />
+               <Button fx:id="btnEditEmployee_cancel" layoutX="317.0" layoutY="127.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+               <Button fx:id="btnEditEmployee_save" layoutX="431.0" layoutY="127.0" mnemonicParsing="false" prefWidth="95" text="Save" />
+            </children>
+         </Pane>
 
       </Pane>
+
+
 
    </children>
 

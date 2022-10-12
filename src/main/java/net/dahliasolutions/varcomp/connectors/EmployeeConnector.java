@@ -1,10 +1,9 @@
 package net.dahliasolutions.varcomp.connectors;
 
 import net.dahliasolutions.varcomp.models.Employee;
-import net.dahliasolutions.varcomp.models.PositionKPI;
 
-import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class EmployeeConnector {
@@ -33,7 +32,7 @@ public class EmployeeConnector {
                     Boolean recIsActive = resultSet.getBoolean("is_active");
                     Integer recSharesAssigned = resultSet.getInt("shares_assigned");
 
-                    employee = new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate,
+                    employee = new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate.toLocalDate(),
                             recIsActive, recSharesAssigned);
                 }
             }
@@ -54,14 +53,13 @@ public class EmployeeConnector {
         try {
             connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO TBLEMPLOYEES " +
-                    "SET EMPLOYEE_ID=?, POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, SHARES_ASSIGNED=?");
-            preparedStatement.setInt(1, employee.getEmployee_id());
-            preparedStatement.setInt(2, employee.getPosition());
-            preparedStatement.setString(3, employee.getFirst_name());
-            preparedStatement.setString(4, employee.getLast_name());
-            preparedStatement.setDate(5, (Date) employee.getStart_date());
-            preparedStatement.setBoolean(6, employee.getIs_active());
-            preparedStatement.setInt(7, employee.getShares_assigned());
+                    "SET POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, SHARES_ASSIGNED=?");
+            preparedStatement.setInt(1, employee.getPosition());
+            preparedStatement.setString(2, employee.getFirst_name());
+            preparedStatement.setString(3, employee.getLast_name());
+            preparedStatement.setDate(4, Date.valueOf(employee.getStart_date()));
+            preparedStatement.setBoolean(5, employee.getIs_active());
+            preparedStatement.setInt(6, employee.getShares_assigned());
             preparedStatement.executeUpdate();
 
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEES ORDER BY employee_id DESC LIMIT 1");
@@ -79,7 +77,7 @@ public class EmployeeConnector {
                     Boolean recIsActive = resultSet.getBoolean("is_active");
                     Integer recSharesAssigned = resultSet.getInt("shares_assigned");
 
-                    newEmployee = new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate,
+                    newEmployee = new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate.toLocalDate(),
                             recIsActive, recSharesAssigned);
                 }
             }
@@ -115,7 +113,7 @@ public class EmployeeConnector {
                     Boolean recIsActive = resultSet.getBoolean("is_active");
                     Integer recSharesAssigned = resultSet.getInt("shares_assigned");
 
-                    EmployeeList.add(new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate,
+                    EmployeeList.add(new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate.toLocalDate(),
                             recIsActive, recSharesAssigned));
                 }
             }
@@ -151,7 +149,7 @@ public class EmployeeConnector {
                     Boolean recIsActive = resultSet.getBoolean("is_active");
                     Integer recSharesAssigned = resultSet.getInt("shares_assigned");
 
-                    EmployeeList.add(new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate,
+                    EmployeeList.add(new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate.toLocalDate(),
                             recIsActive, recSharesAssigned));
                 }
             }
@@ -171,14 +169,14 @@ public class EmployeeConnector {
         try {
             connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLEMPLOYEES " +
-                    "SET EMPLOYEE_ID=?, POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, SHARES_ASSIGNED=?");
-            preparedStatement.setInt(1, employee.getEmployee_id());
-            preparedStatement.setInt(2, employee.getPosition());
-            preparedStatement.setString(3, employee.getFirst_name());
-            preparedStatement.setString(4, employee.getLast_name());
-            preparedStatement.setDate(5, (Date) employee.getStart_date());
-            preparedStatement.setBoolean(6, employee.getIs_active());
-            preparedStatement.setInt(7, employee.getShares_assigned());
+                    "SET POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, SHARES_ASSIGNED=? WHERE EMPLOYEE_ID=?");
+            preparedStatement.setInt(1, employee.getPosition());
+            preparedStatement.setString(2, employee.getFirst_name());
+            preparedStatement.setString(3, employee.getLast_name());
+            preparedStatement.setDate(4, Date.valueOf(employee.getStart_date()));
+            preparedStatement.setBoolean(5, employee.getIs_active());
+            preparedStatement.setInt(6, employee.getShares_assigned());
+            preparedStatement.setInt(7, employee.getEmployee_id());
             preparedStatement.executeUpdate();
 
             updateSuccess = true;
