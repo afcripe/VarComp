@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class Employee {
-    private Integer employee_id;
+    private String employee_id;
     private Integer position;
     private String first_name;
     private String last_name;
@@ -15,7 +15,7 @@ public class Employee {
     private Integer shares_assigned;
 
     public Employee() {
-        setEmployee_id(0);
+        setEmployee_id("");
         setPosition(0);
         setFirst_name("");
         setLast_name("");
@@ -24,7 +24,7 @@ public class Employee {
         setShares_assigned(0);
     }
 
-    public Employee(Integer employeeID, Integer positionID, String firstName, String lastName, LocalDate startDate,
+    public Employee(String employeeID, Integer positionID, String firstName, String lastName, LocalDate startDate,
                     Boolean isActive, Integer sharesAssigned) {
         setEmployee_id(employeeID);
         setPosition(positionID);
@@ -47,15 +47,15 @@ public class Employee {
 
     public Employee getEmployee() { return this; }
 
-    public Integer insertEmployee() { return EmployeeConnector.insertEmployee(this).getEmployee_id(); }
+    public Boolean insertEmployee() { return EmployeeConnector.insertEmployee(this); }
 
     public void updateEmployee() { EmployeeConnector.updateEmployee(this); }
 
-    public Integer getEmployee_id() {
+    public String getEmployee_id() {
         return employee_id;
     }
 
-    public void setEmployee_id(Integer employee_id) {
+    public void setEmployee_id(String employee_id) {
         this.employee_id = employee_id;
     }
 

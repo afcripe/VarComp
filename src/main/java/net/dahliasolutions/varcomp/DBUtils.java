@@ -35,7 +35,7 @@ public class DBUtils {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        double returnSize = 600;
+        double returnSize = 750;
 
         try {
             connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");

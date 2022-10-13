@@ -151,7 +151,7 @@ public class DBSetup {
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployees " +
-                    "(employee_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                    "(employee_id VARCHAR(5) PRIMARY KEY, " +
                     "position VARCHAR(25), first_name VARCHAR(45), last_name VARCHAR(45), " +
                     "start_date DATE, is_active VARCHAR(45), shares_assigned INT)");
             preparedStatement.execute();
@@ -315,6 +315,22 @@ public class DBSetup {
                     "metric_label VARCHAR(45), metric_earnings NUMERIC(18,2), metric_funding NUMERIC(18,2), " +
                     "metric_eps NUMERIC(18,2), metric_shares INT, metric_payout NUMERIC(18,2), " +
                     "metric_year INT, metric_period INT, locked BOOLEAN, lock_date DATE )");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            initializeMetricsDetail();
+        }
+    }
+
+    public static void initializeMetricsDetail() {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblmetricdetails " +
+                    "(metric_detail_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, metric_id BIGINT, " +
+                    "detail_period INT, detail_budget NUMERIC(18,2), detail_actual NUMERIC(18,2), " +
+                    "detail_earnings NUMERIC(18,2))");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -103,18 +103,19 @@
                 </columns>
             </TableView>
 
-            <Pane fx:id="paneMasterKPI" layoutX="45.0" layoutY="215.0" opacity="0.95" prefHeight="280.0" prefWidth="550.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <Pane fx:id="paneMasterKPI" layoutX="45.0" layoutY="215.0" opacity="0.95" prefHeight="280.0" prefWidth="550.0"
+                  style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
                 <children>
-                    <Label layoutX="5" layoutY="8.0" text="ID:" />
-                    <TextField fx:id="txtFormMastKPI_id" editable="false" layoutX="25.0" layoutY="3" prefHeight="25.0" prefWidth="40.0" />
-                    <Label layoutX="5.0" layoutY="40.0" prefHeight="17.0" prefWidth="62.0" text="KPI Code:" />
-                    <TextField fx:id="txtFormMastKPI_code" layoutX="63.0" layoutY="36.0" prefHeight="25.0" prefWidth="90.0" />
-                    <Label layoutX="192.0" layoutY="40.0" prefHeight="17.0" prefWidth="72.0" text="Description:" />
-                    <TextField fx:id="txtFormMastKPI_description" layoutX="264.0" layoutY="36.0" prefHeight="25.0" prefWidth="279.0" />
-                    <Label layoutX="5" layoutY="75.0" prefHeight="17.0" prefWidth="62.0" text="KPI Class:" />
-                    <ComboBox fx:id="cmbFormMastKPI_class" layoutX="63.0" layoutY="71.0" prefHeight="25.0" prefWidth="90.0" />
-                    <Label layoutX="192.0" layoutY="75.0" prefHeight="17.0" prefWidth="72.0" text="Calculation:" />
-                    <TextField fx:id="txtFormMastKPI_calc" layoutX="264.0" layoutY="71.0" prefHeight="25.0" prefWidth="279.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="15.0" layoutY="8.0" prefHeight="17.0" prefWidth="53.0" text="ID:" />
+                    <TextField fx:id="txtFormMastKPI_id" editable="false" layoutX="73.0" layoutY="4.0" prefHeight="25.0" prefWidth="40.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="40.0" prefHeight="17.0" prefWidth="62.0" text="KPI Code:" />
+                    <TextField fx:id="txtFormMastKPI_code" layoutX="72.0" layoutY="36.0" prefHeight="25.0" prefWidth="142.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="227.0" layoutY="40.0" prefHeight="17.0" prefWidth="72.0" text="Description:" />
+                    <TextField fx:id="txtFormMastKPI_description" layoutX="306.0" layoutY="36.0" prefHeight="25.0" prefWidth="237.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="5" layoutY="75.0" prefHeight="17.0" prefWidth="62.0" text="KPI Class:" />
+                    <ComboBox fx:id="cmbFormMastKPI_class" layoutX="71.0" layoutY="71.0" prefHeight="25.0" prefWidth="142.0" />
+                    <Label alignment="CENTER_RIGHT" layoutX="227.0" layoutY="75.0" prefHeight="17.0" prefWidth="72.0" text="Calculation:" />
+                    <TextField fx:id="txtFormMastKPI_calc" layoutX="306.0" layoutY="71.0" prefHeight="25.0" prefWidth="237.0" />
                     <Label layoutX="5.0" layoutY="105.0" prefHeight="17.0" prefWidth="150.0" text="Score Ratings:" />
                     <Label layoutX="15" layoutY="125.0" text="Extraordinary:" />
                     <Label layoutX="115.0" layoutY="125.0" text="Great:" />

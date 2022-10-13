@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
@@ -41,7 +42,7 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private TableView tblEmployees;
     @FXML
-    private TableColumn<Employee, Integer> tbcEmployeeID;
+    private TableColumn<Employee, String> tbcEmployeeID;
     @FXML
     private TableColumn<Employee, String> tbcEmployeeName;
     @FXML
@@ -52,6 +53,8 @@ public class VCEmployeeController implements Initializable {
     private TableColumn<Employee, String> tbcEmployeeActive;
     @FXML
     private Pane paneFormEmployee;
+    @FXML
+    private TextField txtFormEmployeeID;
     @FXML
     private TextField txtFormEmployeeFirstName;
     @FXML
@@ -76,6 +79,8 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private Label lblEmployeeName;
     @FXML
+    private Label lblEmployeeID;
+    @FXML
     private Label lblEmployeeStartDate;
     @FXML
     private Label lblEmployeePosition;
@@ -88,6 +93,8 @@ public class VCEmployeeController implements Initializable {
 
     @FXML
     private Pane paneEmployeeInfo;
+    @FXML
+    private TextField txtEmployeeID;
     @FXML
     private TextField txtEmployeeFirstName;
     @FXML
@@ -119,7 +126,7 @@ public class VCEmployeeController implements Initializable {
     /* Employee List */
         bntNewEmployee.setOnAction(event -> setFormEmployee(new Employee()));
 
-        tbcEmployeeID.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("employee_id"));
+        tbcEmployeeID.setCellValueFactory(new PropertyValueFactory<Employee, String>("employee_id"));
         tbcEmployeeName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Employee, String> param) {
@@ -169,6 +176,13 @@ public class VCEmployeeController implements Initializable {
         btnEditEmployee_cancel.setOnAction(event -> showEditFormEmployee(false));
         btnEditEmployee_save.setOnAction(event -> updateEmployee());
 
+        txtEmployeeID.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(txtEmployeeID.getText().length() > 5) txtEmployeeID.setText(txtEmployeeID.getText().substring(0,5));
+            }
+        });
+
         showPaneEmployeeList(true);
     }
 
@@ -190,6 +204,7 @@ public class VCEmployeeController implements Initializable {
         showPaneFormEmployee(true);
     }
     private void fillFormEmployee(Employee employee) {
+        txtFormEmployeeID.setText(employee.getEmployee_id());
         txtFormEmployeeFirstName.setText(employee.getFirst_name());
         txtFormEmployeeLastName.setText(employee.getLast_name());
         txtFormEmployeeShares.setText(employee.getShares_assigned().toString());
@@ -207,6 +222,7 @@ public class VCEmployeeController implements Initializable {
     }
 
     private void clearFormEmployee() {
+        txtFormEmployeeID.setText("");
         txtFormEmployeeLastName.setText("");
         txtFormEmployeeLastName.setText("");
         txtFormEmployeeShares.setText("");
@@ -217,10 +233,10 @@ public class VCEmployeeController implements Initializable {
     private void saveEmployee() {
         String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
 
-        Employee employee = new Employee(0, Integer.parseInt(split[0]), txtFormEmployeeFirstName.getText(), txtFormEmployeeLastName.getText(),
+        Employee employee = new Employee(txtFormEmployeeID.getText(), Integer.parseInt(split[0]), txtFormEmployeeFirstName.getText(), txtFormEmployeeLastName.getText(),
                 pkrStartDate.getValue(), chkFormEmployeeActive.isSelected(), Integer.parseInt(txtFormEmployeeShares.getText()));
 
-        Integer i = employee.insertEmployee();
+        Boolean employeeInsert = employee.insertEmployee();
 
         employeeList = FXCollections.observableArrayList(EmployeeConnector.getEmployees());
         tblEmployees.getItems().removeAll();
@@ -237,6 +253,7 @@ public class VCEmployeeController implements Initializable {
     }
     private void fillPaneEmployeeDetail(Employee employee) {
         selectedEmployee.setEmployee(employee);
+        lblEmployeeID.setText(selectedEmployee.getEmployee_id());
         lblEmployeeName.setText(selectedEmployee.getLast_name()+ ", "+selectedEmployee.getFirst_name());
         lblEmployeeStartDate.setText(selectedEmployee.getStart_date().toString());
         lblShares.setText(selectedEmployee.getShares_assigned().toString());
@@ -259,6 +276,7 @@ public class VCEmployeeController implements Initializable {
         paneEmployeeInfo.setVisible(show);
     }
     private void fillFormEditEmployee() {
+        txtEmployeeID.setText(selectedEmployee.getEmployee_id());
         txtEmployeeFirstName.setText(selectedEmployee.getFirst_name());
         txtEmployeeLastName.setText(selectedEmployee.getLast_name());
         txtEmployeeShares.setText(selectedEmployee.getShares_assigned().toString());
