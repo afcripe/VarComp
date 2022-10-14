@@ -1,7 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
 import net.dahliasolutions.varcomp.models.CompanyKPI;
-import net.dahliasolutions.varcomp.models.Metric;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -255,7 +254,7 @@ public class companyKPIConnector {
         return updateSuccess;
     }
 
-    public static Boolean deleteMetric(Integer companyKPIid) {
+    public static Boolean deleteCompanyKPI(Integer companyKPIid) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         Boolean deleteSuccess = false;

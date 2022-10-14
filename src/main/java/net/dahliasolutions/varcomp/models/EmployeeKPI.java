@@ -69,7 +69,7 @@ public class EmployeeKPI {
         setKpi_score(kpiScore);
     }
 
-    public void setCompanyKPI(EmployeeKPI employeeKPI) {
+    public void setEmployeeKPI(EmployeeKPI employeeKPI) {
         this.employee_kpi_id = employeeKPI.getEmployee_kpi_id();
         this.kpi_code = employeeKPI.getKpi_code();
         this.kpi_master_id = employeeKPI.getKpi_master_id();
@@ -90,11 +90,11 @@ public class EmployeeKPI {
         this.kpi_score = employeeKPI.getKpi_score();
     }
 
-    public EmployeeKPI getCompanyKPI() { return this; }
+    public EmployeeKPI getEmployeeKPI() { return this; }
 
-    public Integer insetCompanyKPI() { return 0; }
+    public Integer insetEmployeeKPI() { return 0; }
 
-    public void updateCompanyKPI() {  }
+    public void updateEmployeeKPI() {  }
 
     public Integer getEmployee_kpi_id() { return employee_kpi_id; }
 
