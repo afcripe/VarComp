@@ -85,7 +85,9 @@ public class Metric {
 
     public String getMetric_label() { return metric_label; }
 
-    public void setMetric_label(String metric_label) { this.metric_label = metric_label; }
+    public void setMetric_label( String metric_label) { this.metric_label = metric_label; }
+
+    public void updateMetric_label() { this.metric_label = this.getMetric_year().toString()+" - "+this.getMetric_period().toString(); }
 
     public BigDecimal getMetric_earnings() { return metric_earnings; }
 
