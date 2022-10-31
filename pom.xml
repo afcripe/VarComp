@@ -77,8 +77,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <source>18</source>
-                    <target>18</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -90,7 +90,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>net.dahliasolutions.varcomp/net.dahliasolutions.varcomp.HelloApplication
+                            <mainClass>net.dahliasolutions.varcomp/net.dahliasolutions.varcomp.Application
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
@@ -114,7 +114,7 @@
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.dahliasolutions.varcomp.Application</mainClass>
+                                    <mainClass>net.dahliasolutions.varcomp.Application</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
