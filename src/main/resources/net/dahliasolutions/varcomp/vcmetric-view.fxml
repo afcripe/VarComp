@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -9,7 +10,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.shape.Line?>
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
 
    <children>
       <Label fx:id="lblTitle" layoutX="14.0" layoutY="14.0" text="Metrics">
@@ -19,41 +22,90 @@
       </Label>
       <Button fx:id="btnMetricHome" layoutX="494.0" layoutY="12.0" prefWidth="75" text="Back" visible="false" />
 
-      <Pane fx:id="paneMetricTable" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
-         <Button fx:id="bntNewMetric" layoutX="415.0" layoutY="15.0" mnemonicParsing="true" prefWidth="125" text="New Metric" />
-         <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
-         <TableView fx:id="tblMetrics" editable="false" layoutX="45.0" layoutY="50.0" prefHeight="220.0" prefWidth="550.0">
-            <columns>
-               <TableColumn fx:id="tbcMetricLabel" editable="false" prefWidth="42.5" text="Metric" />
-               <TableColumn fx:id="tbcMetricEarnings" editable="false" prefWidth="250.5" text="Earnings" />
-               <TableColumn fx:id="tbcMetricPayout" editable="false" prefWidth="90.5" text="Payout" />
-               <TableColumn fx:id="tbcMetricStatus" editable="false" minWidth="0.0" prefWidth="81.5" text="Status" />
-            </columns>
-         </TableView>
-         <Pane fx:id="paneFormNewMetric" layoutX="45.0" layoutY="50.0" opacity="0.95" prefHeight="220.0" prefWidth="550.0"
-               style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-            <children>
-               <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="72.0" text="Metric Label:" />
-               <TextField fx:id="txtFormNewLabel" disable="true" layoutX="101.0" layoutY="14.0" prefHeight="25.0" prefWidth="369.0" />
-               <Label alignment="CENTER_RIGHT" layoutX="17.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Year:" />
-               <TextField fx:id="txtFormNewYear" layoutX="104.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
-               <Label fx:id="lblFormNewYearError" layoutX="105.0" layoutY="75.0" prefHeight="25.0" prefWidth="125.0"
-                      text="Must be a Number!" textFill="#ba0202" visible="false">
-                  <font>
-                     <Font name="System Bold" size="10.0" />
-                  </font></Label>
-               <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Period:" />
-               <TextField fx:id="txtFormNewPeriod" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
-               <Label fx:id="lblFormNewPeriodError" layoutX="347.0" layoutY="75.0" prefHeight="25.0" prefWidth="125.0"
-                      text="Must be a Number!" textFill="#ba0202" visible="false">
-                  <font>
-                     <Font name="System Bold" size="10.0" />
-                  </font></Label>
-               <Button fx:id="btnFormNewMetric_cancel" layoutX="317.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-               <Button fx:id="btnFormNewMetric_save" layoutX="432.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Save" />
-            </children>
-         </Pane>
-      </Pane>
+      <ScrollPane fx:id="spnMetricDetail" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0" fitToWidth="true">
+         <content>
+
+            <Pane fx:id="paneMetricTable" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+               <Button fx:id="bntNewMetric" layoutX="415.0" layoutY="15.0" mnemonicParsing="true" prefWidth="125" text="New Metric" />
+               <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
+               <TableView fx:id="tblMetrics" editable="false" layoutX="45.0" layoutY="50.0" prefHeight="220.0" prefWidth="550.0">
+                  <columns>
+                     <TableColumn fx:id="tbcMetricLabel" editable="false" prefWidth="150" text="Metric" />
+                     <TableColumn fx:id="tbcMetricEarnings" editable="false" prefWidth="100" text="Earnings" />
+                     <TableColumn fx:id="tbcMetricPayout" editable="false" prefWidth="100" text="Payout" />
+                     <TableColumn fx:id="tbcMetricStatus" editable="false" minWidth="75" prefWidth="81.5" text="Status" />
+                  </columns>
+               </TableView>
+               <Pane fx:id="paneFormNewMetric" layoutX="45.0" layoutY="50.0" opacity="0.95" prefHeight="220.0" prefWidth="550.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+                  <children>
+                     <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="72.0" text="Metric Label:" />
+                     <TextField fx:id="txtFormNewLabel" disable="true" layoutX="101.0" layoutY="14.0" prefHeight="25.0" prefWidth="369.0" />
+                     <Label alignment="CENTER_RIGHT" layoutX="17.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Year:" />
+                     <TextField fx:id="txtFormNewYear" layoutX="104.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
+                     <Label fx:id="lblFormNewYearError" layoutX="105.0" layoutY="75.0" prefHeight="25.0" prefWidth="125.0" text="Must be a Number!" textFill="#ba0202" visible="false">
+                        <font>
+                           <Font name="System Bold" size="10.0" />
+                        </font></Label>
+                     <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Period:" />
+                     <TextField fx:id="txtFormNewPeriod" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
+                     <Label fx:id="lblFormNewPeriodError" layoutX="347.0" layoutY="75.0" prefHeight="25.0" prefWidth="125.0" text="Must be a Number!" textFill="#ba0202" visible="false">
+                        <font>
+                           <Font name="System Bold" size="10.0" />
+                        </font></Label>
+                     <Button fx:id="btnFormNewMetric_cancel" layoutX="317.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                     <Button fx:id="btnFormNewMetric_save" layoutX="432.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Save" />
+                  </children>
+               </Pane>
+            </Pane>
+
+            <Pane fx:id="paneMetricDetail" >
+               <children>
+                  <Label layoutX="23.0" layoutY="14.0" prefHeight="17.0" prefWidth="49.0" text="Metric:" />
+                  <TextField fx:id="txtDetailMetricLabel" layoutX="82.0" layoutY="10.0" prefHeight="25.0" prefWidth="253.0" />
+                  <Label layoutX="23.0" layoutY="49.0" prefHeight="17.0" prefWidth="49.0" text="Year:" />
+                  <TextField fx:id="txtDetailMetricYear" layoutX="82.0" layoutY="45.0" prefHeight="25.0" prefWidth="95.0" />
+                  <Label layoutX="191.0" layoutY="49.0" prefHeight="17.0" prefWidth="49.0" text="Period" />
+                  <TextField fx:id="txtDetailMetricPeriod" layoutX="240.0" layoutY="45.0" prefHeight="25.0" prefWidth="95.0" />
+                  <Label layoutX="361.0" layoutY="14.0" prefHeight="17.0" prefWidth="81.0" text="Close Metric:" />
+                  <CheckBox fx:id="chkDetailMetricLocked" layoutX="442.0" layoutY="14.0" mnemonicParsing="false" />
+                  <TableView fx:id="tblDetailMetricPeriods" editable="true" layoutX="23.0" layoutY="89.0" prefHeight="94.0" prefWidth="433.0">
+                     <columns>
+                        <TableColumn fx:id="tbcDetailBudget" prefWidth="142.0" text="Budget" />
+                        <TableColumn fx:id="tbcDetailActual" prefWidth="150.0" text="Actual" />
+                        <TableColumn fx:id="tbcDetailEarnings" editable="false" prefWidth="138.0" text="Earnings" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="btnDetailAddMetricDetail" layoutX="471.0" layoutY="124.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Insert" />
+                  <Button fx:id="btnDetailRemoveMetricDetail" layoutX="471.0" layoutY="89.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Remove" />
+                  <Label alignment="CENTER_RIGHT" layoutX="24.0" layoutY="197.0" prefHeight="17.0" prefWidth="95.0" text="Earnings Total:" />
+                  <TextField fx:id="txtDetailMetricEarning" layoutX="129.0" layoutY="193.0" />
+                  <Label alignment="CENTER_RIGHT" layoutX="24.0" layoutY="232.0" prefHeight="17.0" prefWidth="95.0" text="Funding:" />
+                  <TextField fx:id="txtDetailMetricFunding" layoutX="129.0" layoutY="228.0" />
+                  <Label alignment="CENTER_RIGHT" layoutX="24.0" layoutY="265.0" prefHeight="17.0" prefWidth="95.0" text="Payout:" />
+                  <TextField fx:id="txtDetailMetricPayout" layoutX="129.0" layoutY="262.0" />
+                  <Label alignment="CENTER_RIGHT" layoutX="301.0" layoutY="197.0" prefHeight="17.0" prefWidth="95.0" text="Shares:" />
+                  <TextField fx:id="txtDetailMetricShares" layoutX="406.0" layoutY="193.0" prefHeight="25.0" prefWidth="95.0" />
+                  <Label alignment="CENTER_RIGHT" layoutX="301.0" layoutY="232.0" prefHeight="17.0" prefWidth="95.0" text="EPS:" />
+                  <TextField fx:id="txtDetailMetricEPS" layoutX="406.0" layoutY="228.0" prefHeight="25.0" prefWidth="95.0" />
+                  <Label layoutX="23.0" layoutY="297.0" text="Scores and Bonuses">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Line endX="307.0" layoutX="260.0" layoutY="306.0" startX="-100.0" />
+                  <TableView fx:id="tblDetailEmployeeScores" editable="false" layoutX="23.0" layoutY="350.0" prefHeight="200.0" prefWidth="433.0">
+                     <columns>
+                        <TableColumn prefWidth="142.0" text="Budget" />
+                        <TableColumn prefWidth="150.0" text="Actual" />
+                        <TableColumn prefWidth="138.0" text="Earnings" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+         </content>
+      </ScrollPane>
+
 
    </children>
 </AnchorPane>
