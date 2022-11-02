@@ -292,42 +292,42 @@ public class SettingsController implements Initializable {
 
 /* Company Tab */
         txtCompanyName.setText(VarComp.getCurrentCompany().getCompany_name());
-        chkShowCompanyLogo.setSelected(VarComp.getCurrentCompany().getCompany_logo_show());
+//        chkShowCompanyLogo.setSelected(VarComp.getCurrentCompany().getCompany_logo_show());
         txtSharesIssued.setText(VarComp.getCurrentCompany().getShares_total().toString());
         txtSharesPerIssue.setText(VarComp.getCurrentCompany().getShares_issued_amount().toString());
         txtYearsIssued.setText(VarComp.getCurrentCompany().getShares_issued_years().toString());
         txtSharesOutstanding.setText(VarComp.getCurrentCompany().getShares_outstanding().toString());
         txtFundingPercentage.setText(VarComp.getCurrentCompany().getFunding_percentage().toString());
         btnSaveCompany.setOnAction(actionEvent -> updateCompany(actionEvent));
-        btnLoadCompanyLogo.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                File file = fileChooserLogo.showOpenDialog(new Stage());
-                try {
-                    imgCompanyLogo.setImage(new Image(file.getAbsolutePath()));
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-                URI destination = URI.create(String.valueOf(VarComp.class.getResource("companyLogo.png")));
-                File destFile = new File(destination);
-                try {
-                    Files.copy(file.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        btnLoadCompanyIcon.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                File file = fileChooserIcon.showOpenDialog(new Stage());
-                try {
-                    imgCompanyIcon.setImage(new Image(file.getAbsolutePath()));
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
+//        btnLoadCompanyLogo.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                File file = fileChooserLogo.showOpenDialog(new Stage());
+//                try {
+//                    imgCompanyLogo.setImage(new Image(file.getAbsolutePath()));
+//                } catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//                URI destination = URI.create(String.valueOf(VarComp.class.getResource("companyLogo.png")));
+//                File destFile = new File(destination);
+//                try {
+//                    Files.copy(file.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        btnLoadCompanyIcon.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                File file = fileChooserIcon.showOpenDialog(new Stage());
+//                try {
+//                    imgCompanyIcon.setImage(new Image(file.getAbsolutePath()));
+//                } catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
 /* KPI Tab */
     /* KPI Class Table and Buttons */
@@ -573,7 +573,7 @@ public class SettingsController implements Initializable {
         } catch (ParseException e) {
             System.out.println("Funding percentage is not a number!");
         }
-        VarComp.getCurrentCompany().setCompany_logo_show(chkShowCompanyLogo.isSelected());
+//        VarComp.getCurrentCompany().setCompany_logo_show(chkShowCompanyLogo.isSelected());
 
         Boolean success = CompanyConnector.updateCompany(VarComp.getCurrentCompany());
         System.out.println(success);

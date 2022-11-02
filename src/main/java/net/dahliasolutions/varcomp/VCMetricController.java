@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import javafx.util.Callback;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
@@ -36,7 +37,7 @@ public class VCMetricController implements Initializable {
     @FXML
     private Button btnMetricHome;
     @FXML
-    private Pane paneParent;
+    private VBox paneParent;
     @FXML
     private ScrollPane spnMetricDetail;
     @FXML
@@ -55,7 +56,7 @@ public class VCMetricController implements Initializable {
     private TableColumn<Metric, String> tbcMetricStatus;
 
     @FXML
-    private Pane paneFormNewMetric;
+    private VBox paneFormNewMetric;
     @FXML
     private TextField txtFormNewLabel;
     @FXML
@@ -72,7 +73,7 @@ public class VCMetricController implements Initializable {
     private Button btnFormNewMetric_save;
 
     @FXML
-    private Pane paneMetricDetail;
+    private VBox paneMetricDetail;
     @FXML
     private TextField txtDetailMetricLabel;
     @FXML
@@ -160,6 +161,10 @@ public class VCMetricController implements Initializable {
     }
 
     private void showFormNewMetric(Boolean show) {
+        paneFormNewMetric.setLayoutX(tblMetrics.getLayoutX());
+        paneFormNewMetric.setLayoutY(tblMetrics.getLayoutY());
+        paneFormNewMetric.setPrefHeight(tblMetrics.getPrefHeight());
+        paneFormNewMetric.setPrefWidth(tblMetrics.getPrefWidth());
         paneFormNewMetric.setVisible(show);
     }
 

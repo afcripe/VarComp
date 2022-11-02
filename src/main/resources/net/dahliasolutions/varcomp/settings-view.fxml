@@ -32,10 +32,10 @@
             <Line endX="85.0" layoutX="130.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
             <Label fx:id="lblCompanyName" layoutX="25.0" layoutY="25.0" prefHeight="17.0" prefWidth="100.0" text="Company Name:" />
             <TextField fx:id="txtCompanyName" layoutX="130.0" layoutY="21.0" prefHeight="25.0" prefWidth="381.0" promptText="txtCompanyName" />
-            <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />
-            <Label layoutX="25.0" layoutY="85.0" prefHeight="17.0" prefWidth="100.0" text="Company Logo:" />
-            <VBox layoutX="125.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="220.0" style="-fx-background-color: lightgrey;" />
-            <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="220.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
+<!--            <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />-->
+<!--            <Label layoutX="25.0" layoutY="85.0" prefHeight="17.0" prefWidth="100.0" text="Company Logo:" />-->
+<!--            <VBox layoutX="125.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="220.0" style="-fx-background-color: lightgrey;" />-->
+<!--            <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="220.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
             <Label layoutX="25.0" layoutY="170.0" prefHeight="17.0" prefWidth="100.0" text="Shares Issued:" />
             <TextField fx:id="txtSharesIssued" layoutX="135.0" layoutY="166.0" prefHeight="25.0" prefWidth="108.0" />
             <Label layoutX="25.0" layoutY="220.0" prefHeight="17.0" prefWidth="100.0" text="Shares Per Issue:" />
@@ -43,15 +43,15 @@
             <Label layoutX="275.0" layoutY="170.0" prefHeight="17.0" prefWidth="120.0" text="Shares Outstanding:" />
             <TextField fx:id="txtSharesOutstanding" layoutX="395.0" layoutY="166.0" prefHeight="25.0" prefWidth="108.0" />
             <Label layoutX="275.0" layoutY="220.0" prefHeight="17.0" prefWidth="120.0" text="Funding Percentage:" />
-            <Label layoutX="360.0" layoutY="89.0" prefHeight="17.0" prefWidth="108.0" text="Company Icon:" />
-            <VBox layoutX="449.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="95.0" style="-fx-background-color: lightgrey;" />
-            <ImageView fx:id="imgCompanyIcon" fitHeight="62.0" fitWidth="95.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
+<!--            <Label layoutX="360.0" layoutY="89.0" prefHeight="17.0" prefWidth="108.0" text="Company Icon:" />-->
+<!--            <VBox layoutX="449.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="95.0" style="-fx-background-color: lightgrey;" />-->
+<!--            <ImageView fx:id="imgCompanyIcon" fitHeight="62.0" fitWidth="95.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
             <TextField fx:id="txtFundingPercentage" layoutX="395.0" layoutY="216.0" prefHeight="25.0" prefWidth="108.0" />
             <Label layoutX="25.0" layoutY="266.0" prefHeight="17.0" prefWidth="100.0" text="Years Issued:" />
             <TextField fx:id="txtYearsIssued" layoutX="135.0" layoutY="266.0" prefHeight="25.0" prefWidth="108.0" />
             <Button fx:id="btnSaveCompany" layoutX="395.0" layoutY="266.0" mnemonicParsing="false" prefWidth="75.0" text="Save" />
-            <Button fx:id="btnLoadCompanyLogo" layoutX="58.0" layoutY="104.0" mnemonicParsing="false" text="Upload" />
-            <Button fx:id="btnLoadCompanyIcon" layoutX="388.0" layoutY="108.0" mnemonicParsing="false" text="Upload" />
+<!--            <Button fx:id="btnLoadCompanyLogo" layoutX="58.0" layoutY="104.0" mnemonicParsing="false" text="Upload" />-->
+<!--            <Button fx:id="btnLoadCompanyIcon" layoutX="388.0" layoutY="108.0" mnemonicParsing="false" text="Upload" />-->
 
         </Pane>
 
