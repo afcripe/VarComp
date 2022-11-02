@@ -204,6 +204,7 @@ public class VCMetricController implements Initializable {
     }
 
     private void fillPaneMetricDetail(Metric metric) {
-
+        paneMetricTable.setVisible(false);
+        paneMetricDetail.setVisible(true);
     }
 }
