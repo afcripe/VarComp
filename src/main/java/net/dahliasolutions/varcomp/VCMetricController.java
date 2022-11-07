@@ -1,33 +1,30 @@
 package net.dahliasolutions.varcomp;
 
-import javafx.beans.binding.Bindings;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Window;
 import javafx.util.Callback;
-import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
 import net.dahliasolutions.varcomp.connectors.MetricConnector;
 import net.dahliasolutions.varcomp.models.*;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 
 public class VCMetricController implements Initializable {
@@ -95,6 +92,8 @@ public class VCMetricController implements Initializable {
     @FXML
     private Button btnDetailRemoveMetricDetail;
     @FXML
+    private Button btnMetricSave;
+    @FXML
     private TextField txtDetailMetricEarning;
     @FXML
     private TextField txtDetailMetricFunding;
@@ -105,6 +104,11 @@ public class VCMetricController implements Initializable {
     @FXML
     private TextField txtDetailMetricEPS;
     @FXML
+    private Label lblDetailMetricYearWarn;
+    @FXML
+    private Label lblDetailMetricPeriodWarn;
+
+    @FXML
     private TableView<EmployeeScore> tblDetailEmployeeScores;
 
     ObservableList<Metric> metricList;
@@ -112,12 +116,9 @@ public class VCMetricController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        spnMetricDetail.prefHeightProperty().bind(Bindings.subtract(paneParent.heightProperty(), 44));
-//        spnMetricDetail.prefWidthProperty().bind(paneParent.widthProperty());
-
         metricList = FXCollections.observableArrayList(MetricConnector.getMetrics());
 
-        btnMetricHome.setOnAction(event -> newMetric());
+        btnMetricHome.setOnAction(event -> navMetricHome());
         bntNewMetric.setOnAction(event -> newMetric());
         txtFormNewYear.setOnKeyPressed(keyEvent -> updateFormNewMetricLabel(keyEvent));
         txtFormNewPeriod.setOnKeyPressed(keyEvent -> updateFormNewMetricLabel(keyEvent));
@@ -142,11 +143,24 @@ public class VCMetricController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    fillPaneMetricDetail((Metric) tblMetrics.getSelectionModel().getSelectedItem());
+                    navMetricDetail((Metric) tblMetrics.getSelectionModel().getSelectedItem());
                 }
             }
         });
         btnFormNewMetric_save.setOnAction(event -> saveNewMetric());
+        txtDetailMetricYear.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            focusState(newValue);
+        });
+        txtDetailMetricPeriod.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            focusState(newValue);
+        });
+
+    }
+
+    private void focusState(Boolean b) {
+      if(!b) {
+          metricDetailUpdateLabel();
+      }
     }
 
     private void newMetric() {
@@ -203,8 +217,55 @@ public class VCMetricController implements Initializable {
         tblMetrics.setItems(metricList);
     }
 
-    private void fillPaneMetricDetail(Metric metric) {
-        paneMetricTable.setVisible(false);
-        paneMetricDetail.setVisible(true);
+    private void navMetricHome(){
+        fillPaneMetricDetail(new Metric());
+        showPaneMetricDetail(false);
     }
+    private void navMetricDetail(Metric metric){
+        fillPaneMetricDetail(metric);
+        showPaneMetricDetail(true);
+    }
+
+    private void fillPaneMetricDetail(Metric metric) {
+        txtDetailMetricLabel.setText(metric.getMetric_label());
+        txtDetailMetricYear.setText(metric.getMetric_year().toString());
+        txtDetailMetricPeriod.setText(metric.getMetric_period().toString());
+        chkDetailMetricLocked.setSelected(metric.getLocked());
+        txtDetailMetricEarning.setText(metric.getMetric_earnings().toString());
+        txtDetailMetricFunding.setText(metric.getMetric_funding().toString());
+        txtDetailMetricPayout.setText(metric.getMetric_payout().toString());
+        txtDetailMetricShares.setText(metric.getMetric_shares().toString());
+        txtDetailMetricEPS.setText(metric.getMetric_eps().toString());
+    }
+
+    private void showPaneMetricDetail(Boolean show) {
+        lblDetailMetricYearWarn.setVisible(false);
+        lblDetailMetricPeriodWarn.setVisible(false);
+
+        btnMetricSave.setVisible(show);
+        btnMetricHome.setVisible(show);
+
+        paneMetricTable.setVisible(!show);
+        paneMetricDetail.setVisible(show);
+    }
+
+     private void metricDetailUpdateLabel() {
+         lblDetailMetricYearWarn.setVisible(false);
+         lblDetailMetricPeriodWarn.setVisible(false);
+        try {
+             Integer nY = Integer.parseInt(txtDetailMetricYear.getText());
+         } catch (Exception e) {
+            lblDetailMetricYearWarn.setVisible(true);
+            lblDetailMetricYearWarn.setTooltip(new Tooltip("Must be a number!"));
+            return;
+         }
+         try {
+             Integer nY = Integer.parseInt(txtDetailMetricPeriod.getText());
+         } catch (Exception e) {
+             lblDetailMetricPeriodWarn.setVisible(true);
+             lblDetailMetricPeriodWarn.setTooltip(new Tooltip("Must be a number!"));
+             return;
+         }
+         txtDetailMetricLabel.setText(txtDetailMetricYear.getText()+" - "+txtDetailMetricPeriod.getText());
+     }
 }

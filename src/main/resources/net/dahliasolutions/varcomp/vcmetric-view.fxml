@@ -18,12 +18,15 @@
 <AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
 
    <children>
-      <Label fx:id="lblTitle" layoutX="14.0" layoutY="14.0" text="Metrics">
+      <Label fx:id="lblTitle" text="Metrics" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnMetricHome" layoutX="494.0" layoutY="12.0" prefWidth="75" text="Back" visible="false" />
+      <HBox alignment="CENTER_RIGHT" spacing="8" AnchorPane.rightAnchor="16" AnchorPane.topAnchor="14">
+         <Button fx:id="btnMetricSave" prefWidth="75" text="Save" visible="false" />
+         <Button fx:id="btnMetricHome" prefWidth="75" text="Back" visible="false" />
+      </HBox>
 
       <ScrollPane fx:id="spnMetricDetail" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
          <content>
@@ -85,7 +88,7 @@
             <VBox fx:id="paneMetricDetail" fillWidth="false" spacing="8.0" visible="false">
                <HBox alignment="CENTER_LEFT" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />
-                  <TextField fx:id="txtDetailMetricLabel" prefHeight="25.0" prefWidth="273.0" />
+                  <TextField fx:id="txtDetailMetricLabel" editable="false" prefHeight="25.0" prefWidth="273.0" />
                   <HBox prefHeight="25.0" prefWidth="50.0" />
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Close Metric:" />
                   <CheckBox fx:id="chkDetailMetricLocked" mnemonicParsing="false" />
@@ -93,8 +96,16 @@
                <HBox alignment="CENTER_LEFT" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Year:" />
                   <TextField fx:id="txtDetailMetricYear" prefHeight="25.0" prefWidth="95.0" />
+                  <Label fx:id="lblDetailMetricYearWarn" accessibleText="Warning" prefWidth="8" text="*" textFill="RED">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Period:" />
-                  <TextField fx:id="txtDetailMetricPeriod" prefHeight="25.0" prefWidth="95.0" />
+                  <TextField fx:id="txtDetailMetricPeriod" prefHeight="25.0" prefWidth="80.0" />
+                  <Label fx:id="lblDetailMetricPeriodWarn" prefWidth="8" text="*" textFill="RED">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                </HBox>
                <HBox spacing="4.0">
                   <TableView fx:id="tblDetailMetricPeriods" editable="true" prefHeight="94.0" prefWidth="433.0">
