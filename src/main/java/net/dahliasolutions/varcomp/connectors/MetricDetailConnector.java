@@ -1,13 +1,12 @@
 package net.dahliasolutions.varcomp.connectors;
 
-import net.dahliasolutions.varcomp.models.Metric;
 import net.dahliasolutions.varcomp.models.MetricDetail;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class metricDetailConnector {
+public class MetricDetailConnector {
 
     public static MetricDetail getMetricDetail(Integer detailID) {
         Connection connection = null;
@@ -126,7 +125,7 @@ public class metricDetailConnector {
 
         try {
             connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS WHERE METRIC_ID=?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICDETAILS WHERE METRIC_ID=?");
             preparedStatement.setInt(1, metricID);
             resultSet = preparedStatement.executeQuery();
 

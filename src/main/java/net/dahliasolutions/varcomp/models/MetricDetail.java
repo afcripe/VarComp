@@ -1,5 +1,7 @@
 package net.dahliasolutions.varcomp.models;
 
+import net.dahliasolutions.varcomp.connectors.MetricDetailConnector;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -42,9 +44,11 @@ public class MetricDetail {
 
     public MetricDetail getMetricDetail() { return this; }
 
-    public Integer insertMetricDetail() { return 0; }
+    public Integer insertMetricDetail() { return MetricDetailConnector.insertMetric(this).getMetric_detail_id();}
 
-    public void updateMetricDetail() {  }
+    public void updateMetricDetail() { MetricDetailConnector.updateMetricDetail(this); }
+
+    public void deleteMetricDetail() { MetricDetailConnector.deleteMetricDetail(this.metric_detail_id); }
 
     public Integer getMetric_detail_id() { return metric_detail_id; }
 

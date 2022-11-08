@@ -86,6 +86,9 @@
 
 
             <VBox fx:id="paneMetricDetail" fillWidth="false" spacing="8.0" visible="false">
+               <HBox fx:id="boxMetricDetailStatus" minHeight="4">
+
+               </HBox>
                <HBox alignment="CENTER_LEFT" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />
                   <TextField fx:id="txtDetailMetricLabel" editable="false" prefHeight="25.0" prefWidth="273.0" />
@@ -108,11 +111,12 @@
                         </font></Label>
                </HBox>
                <HBox spacing="4.0">
-                  <TableView fx:id="tblDetailMetricPeriods" editable="true" prefHeight="94.0" prefWidth="433.0">
+                  <TableView fx:id="tblDetailMetricPeriods" editable="true" prefHeight="115.0" prefWidth="433.0">
                      <columns>
-                        <TableColumn fx:id="tbcDetailBudget" prefWidth="142.0" text="Budget" />
-                        <TableColumn fx:id="tbcDetailActual" prefWidth="150.0" text="Actual" />
-                        <TableColumn fx:id="tbcDetailEarnings" editable="false" prefWidth="138.0" text="Earnings" />
+                        <TableColumn fx:id="tbcDetailPeriod" prefWidth="45.0" editable="true" text="Period" />
+                        <TableColumn fx:id="tbcDetailBudget" prefWidth="138.0" editable="true" text="Budget" />
+                        <TableColumn fx:id="tbcDetailActual" prefWidth="138.0" editable="true" text="Actual" />
+                        <TableColumn fx:id="tbcDetailEarnings" prefWidth="138.0" editable="true" text="Earnings" />
                      </columns>
                   </TableView>
                   <VBox spacing="4.0">
