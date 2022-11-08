@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
 
    <children>
       <Label fx:id="lblTitle" text="Metrics" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
@@ -84,10 +84,10 @@
                </padding>
             </VBox>
 
-
             <VBox fx:id="paneMetricDetail" fillWidth="false" spacing="8.0" visible="false">
-               <HBox fx:id="boxMetricDetailStatus" minHeight="4">
-
+               <HBox minHeight="4" prefHeight="4.0" prefWidth="450.0">
+                  <HBox minWidth="75" prefHeight="3.0" prefWidth="80.0" />
+                  <HBox fx:id="boxMetricDetailStatus" minHeight="4" prefHeight="5.0" prefWidth="375.0" style="-fx-background-color: DARKGREEN;" />
                </HBox>
                <HBox alignment="CENTER_LEFT" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />
@@ -113,10 +113,10 @@
                <HBox spacing="4.0">
                   <TableView fx:id="tblDetailMetricPeriods" editable="true" prefHeight="115.0" prefWidth="433.0">
                      <columns>
-                        <TableColumn fx:id="tbcDetailPeriod" prefWidth="45.0" editable="true" text="Period" />
-                        <TableColumn fx:id="tbcDetailBudget" prefWidth="138.0" editable="true" text="Budget" />
-                        <TableColumn fx:id="tbcDetailActual" prefWidth="138.0" editable="true" text="Actual" />
-                        <TableColumn fx:id="tbcDetailEarnings" prefWidth="138.0" editable="true" text="Earnings" />
+                        <TableColumn fx:id="tbcDetailPeriod" editable="true" prefWidth="45.0" text="Period" />
+                        <TableColumn fx:id="tbcDetailBudget" editable="true" prefWidth="130.0" text="Budget" />
+                        <TableColumn fx:id="tbcDetailActual" editable="true" prefWidth="130.0" text="Actual" />
+                        <TableColumn fx:id="tbcDetailEarnings" editable="true" prefWidth="130.0" text="Earnings" />
                      </columns>
                   </TableView>
                   <VBox spacing="4.0">
@@ -171,6 +171,37 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <padding>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </padding>
+            </VBox>
+
+            <VBox fx:id="formDetailMetricPeriod" prefHeight="119.0" prefWidth="550.0" spacing="8.0" layoutX="8" layoutY="8"
+                  style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+               <HBox>
+                  <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="72.0" text="Detail Period:" />
+                  <TextField fx:id="txtFormDPPeriod" layoutX="101.0" layoutY="14.0" prefHeight="25.0" prefWidth="369.0" />
+               </HBox>
+               <HBox>
+                  <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Budget:" />
+                  <TextField fx:id="txtFormDPBudget" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
+               </HBox>
+               <HBox>
+                  <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Actual:" />
+                  <TextField fx:id="txtFormDPActual" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
+               </HBox>
+               <HBox>
+                  <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Earnings:" />
+                  <TextField fx:id="txtFormDPEarnings" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
+               </HBox>
+
+               <HBox spacing="4.0">
+                  <HBox prefHeight="25.0" prefWidth="200.0" />
+                  <TextField fx:id="txtFormDPDetailID" prefWidth="25.0" visible="false" />
+                  <TextField fx:id="txtFormDPMetricID" prefWidth="25.0" visible="false" />
+                  <Button fx:id="btnFormDP_cancel" layoutX="317.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                  <Button fx:id="btnFormDP_save" layoutX="432.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Save" />
+               </HBox>
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>

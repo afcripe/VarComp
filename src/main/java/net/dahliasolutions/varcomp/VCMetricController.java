@@ -17,6 +17,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -79,6 +80,8 @@ public class VCMetricController implements Initializable {
     @FXML
     private VBox paneMetricDetail;
     @FXML
+    private HBox boxMetricDetailStatus;
+    @FXML
     private TextField txtDetailMetricLabel;
     @FXML
     private TextField txtDetailMetricYear;
@@ -118,6 +121,25 @@ public class VCMetricController implements Initializable {
     private Label lblDetailMetricPeriodWarn;
 
     @FXML
+    private VBox formDetailMetricPeriod;
+    @FXML
+    private TextField txtFormDPPeriod;
+    @FXML
+    private TextField txtFormDPBudget;
+    @FXML
+    private TextField txtFormDPActual;
+    @FXML
+    private TextField txtFormDPEarnings;
+    @FXML
+    private TextField txtFormDPDetailID;
+    @FXML
+    private TextField txtFormDPMetricID;
+    @FXML
+    private Button btnFormDP_cancel;
+    @FXML
+    private Button btnFormDP_save;
+
+    @FXML
     private TableView<EmployeeScore> tblDetailEmployeeScores;
 
     ObservableList<Metric> metricList;
@@ -153,9 +175,9 @@ public class VCMetricController implements Initializable {
         tbcMetricStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Metric, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Metric, String> param) {
-                String cellValue = "Un-locked";
+                String cellValue = "Open";
                 if(param.getValue().getLocked()) {
-                    cellValue = "Locked";
+                    cellValue = "CLosed";
                 }
                 return new SimpleObjectProperty<String>(cellValue);
             }
@@ -169,7 +191,7 @@ public class VCMetricController implements Initializable {
                     setGraphic(null);
                 } else {
                     setText(item);
-                    if (item == "Locked") {
+                    if (item == "Closed") {
                         setTextFill(Color.DARKRED); // or use setStyle(String)
                     } else {
                         setTextFill(Color.DARKGREEN); // or use setStyle(String)
@@ -198,7 +220,7 @@ public class VCMetricController implements Initializable {
         btnMetricSave.setOnAction(event -> saveMetricDetail());
         btnDetailAddMetricDetail.setOnAction(event -> addMetricPeriodDetail());
         btnDetailRemoveMetricDetail.setOnAction(event -> removeMetricPeriodDetail());
-        tbcDetailPeriod.setCellValueFactory(new PropertyValueFactory<MetricDetail, Integer>("metric_period"));
+        tbcDetailPeriod.setCellValueFactory(new PropertyValueFactory<MetricDetail, Integer>("detail_period"));
         tbcDetailBudget.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MetricDetail, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<MetricDetail, String> param) {
@@ -220,6 +242,16 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getDetail_earnings()));
             }
         });
+        tblDetailMetricPeriods.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                    showFormDP((MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem());
+                }
+            }
+        });
+        btnFormDP_cancel.setOnAction(event -> showFormDP());
+        btnFormDP_save.setOnAction(event -> saveMetricPeriodDetail());
     }
 
     private void focusState(Boolean b) {
@@ -302,7 +334,16 @@ public class VCMetricController implements Initializable {
         txtDetailMetricPayout.setText(metric.getMetric_payout().toString());
         txtDetailMetricShares.setText(metric.getMetric_shares().toString());
         txtDetailMetricEPS.setText(metric.getMetric_eps().toString());
+        setLockStyle();
         fillDetailMetricPeriods();
+    }
+
+    private void setLockStyle() {
+        if(metricDetail.getLocked()) {
+            boxMetricDetailStatus.setStyle("-fx-background-color: DARKRED;");
+        } else {
+            boxMetricDetailStatus.setStyle("-fx-background-color: DARKGREEN;");
+        }
     }
 
     private void fillDetailMetricPeriods() {
@@ -378,21 +419,81 @@ public class VCMetricController implements Initializable {
         }
         metricDetail.setMetric_shares(Integer.parseInt(txtDetailMetricShares.getText()));
         metricDetail.updateMetric();
-
-        navMetricHome();
+        setLockStyle();
+        // navMetricHome();
         metricList = FXCollections.observableArrayList(MetricConnector.getMetrics());
         tblMetrics.getItems().removeAll();
         tblMetrics.setItems(metricList);
      }
 
      private void addMetricPeriodDetail() {
-        BigDecimal detailBudget = new BigDecimal(0.00);
-        BigDecimal detailActual = new BigDecimal(0.00);
-        BigDecimal detailEarnings = new BigDecimal(0.00);
-        MetricDetail md = new MetricDetail(0, metricDetail.getMetric_id(), 0, detailBudget, detailActual, detailEarnings);
-        Integer i = md.insertMetricDetail();
-        fillDetailMetricPeriods();
+         showFormDP(new MetricDetail());
+//        BigDecimal detailBudget = new BigDecimal(0.00);
+//        BigDecimal detailActual = new BigDecimal(0.00);
+//        BigDecimal detailEarnings = new BigDecimal(0.00);
+//        MetricDetail md = new MetricDetail(0, metricDetail.getMetric_id(), 0, detailBudget, detailActual, detailEarnings);
+//        Integer i = md.insertMetricDetail();
+//        fillDetailMetricPeriods();
      }
+
+     private void editMetricPeriodDetail() {
+        showFormDP((MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem());
+     }
+
+     private void saveMetricPeriodDetail() {
+         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+         symbols.setDecimalSeparator('.');
+         String pattern = "#0.0#";
+         DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+         decimalFormat.setParseBigDecimal(true);
+
+         BigDecimal dpBudget = new BigDecimal(0.00);
+         BigDecimal dpActual = new BigDecimal(0.00);
+         BigDecimal dpEarnings = new BigDecimal(0.00);
+
+         try{
+             dpBudget = ((BigDecimal) decimalFormat.parse(txtFormDPBudget.getText()));
+         } catch (ParseException e) {
+             System.out.println("Earnings is not a number!");
+         }
+         try{
+             dpActual = ((BigDecimal) decimalFormat.parse(txtFormDPActual.getText()));
+         } catch (ParseException e) {
+             System.out.println("Funding is not a number!");
+         }
+         try{
+             dpEarnings = ((BigDecimal) decimalFormat.parse(txtFormDPEarnings.getText()));
+         } catch (ParseException e) {
+             System.out.println("Payout is not a number!");
+         }
+
+         MetricDetail md = new MetricDetail(Integer.parseInt(txtFormDPDetailID.getText()),
+                 Integer.parseInt(txtFormDPMetricID.getText()), Integer.parseInt(txtFormDPPeriod.getText()),
+                 dpBudget, dpActual, dpEarnings);
+
+         if(md.getMetric_detail_id().equals(0)) {
+             md.insertMetricDetail();
+         } else {
+             md.updateMetricDetail();
+         }
+         fillDetailMetricPeriods();
+         showFormDP();
+     }
+
+    private void showFormDP() {
+        paneMetricDetail.setVisible(true);
+        formDetailMetricPeriod.setVisible(false);
+    }
+    private void showFormDP(MetricDetail md) {
+        paneMetricDetail.setVisible(false);
+        formDetailMetricPeriod.setVisible(true);
+        txtFormDPPeriod.setText(md.getDetail_period().toString());
+        txtFormDPBudget.setText(md.getDetail_budget().toString());
+        txtFormDPActual.setText(md.getDetail_actual().toString());
+        txtFormDPEarnings.setText(md.getDetail_earnings().toString());
+        txtFormDPDetailID.setText(md.getMetric_detail_id().toString());
+        txtFormDPMetricID.setText(md.getMetric_id().toString());
+    }
 
      private void removeMetricPeriodDetail() {
         MetricDetail md = (MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem();
