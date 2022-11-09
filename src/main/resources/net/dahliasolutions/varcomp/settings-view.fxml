@@ -1,295 +1,433 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.SettingsController">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.SettingsController">
 
-    <children>
-        <HBox alignment="CENTER_LEFT" spacing="8" AnchorPane.rightAnchor="16" AnchorPane.topAnchor="14">
-            <Label fx:id="lblTitle" prefWidth="150.0" text="Settings">
-                <font>
-                    <Font name="Arial Bold" size="18.0" />
-                </font>
-            </Label>
-            <VBox>
-                <Button fx:id="btnSetCompany" mnemonicParsing="false" prefWidth="75.0" text="Company" />
-                <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
-                    <HBox fx:id="boxIndicatorCompany" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" />
-                </HBox>
-            </VBox>
+<!--    Navigation    -->
+    <HBox alignment="CENTER_LEFT" spacing="8" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14">
+        <Label fx:id="lblTitle" prefWidth="150.0" text="Settings">
+            <font>
+                <Font name="Arial Bold" size="18.0" />
+            </font>
+        </Label>
+        <VBox>
+            <Button fx:id="btnSetCompany" mnemonicParsing="false" prefWidth="75.0" text="Company" />
+            <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
+                <HBox fx:id="boxIndicatorCompany" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" />
+            </HBox>
+        </VBox>
 
-            <VBox>
-                <Button fx:id="btnSetKPI" mnemonicParsing="false" prefWidth="75.0" text="KPIs" />
-                <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
-                    <HBox fx:id="boxIndicatorKPI" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" visible="false" />
-                </HBox>
-            </VBox>
-            <VBox>
-                <Button fx:id="btnSetEmployee" mnemonicParsing="false" prefWidth="75.0" text="Positions" />
-                <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
-                    <HBox fx:id="boxIndicatorEmployee" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" visible="false" />
-                </HBox>
-            </VBox>
-            <VBox>
-                <Button fx:id="btnSetUser" mnemonicParsing="false" prefWidth="75.0" text="Users" />
-                <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
-                    <HBox fx:id="boxIndicatorUser" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" visible="false" />
-                </HBox>
-            </VBox>
-        </HBox>
+        <VBox>
+            <Button fx:id="btnSetKPI" mnemonicParsing="false" prefWidth="75.0" text="KPIs" />
+            <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
+                <HBox fx:id="boxIndicatorKPI" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" visible="false" />
+            </HBox>
+        </VBox>
+        <VBox>
+            <Button fx:id="btnSetEmployee" mnemonicParsing="false" prefWidth="75.0" text="Positions" />
+            <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
+                <HBox fx:id="boxIndicatorEmployee" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" visible="false" />
+            </HBox>
+        </VBox>
+        <VBox>
+            <Button fx:id="btnSetUser" mnemonicParsing="false" prefWidth="75.0" text="Users" />
+            <HBox minHeight="4" prefHeight="4.0" prefWidth="75.0">
+                <HBox fx:id="boxIndicatorUser" minHeight="4" minWidth="75.0" prefHeight="5.0" style="-fx-background-color: SKYBLUE;" visible="false" />
+            </HBox>
+        </VBox>
+    </HBox>
 
-        <ScrollPane fx:id="spnMetricDetail" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
-            <content>
-            <Pane fx:id="paneContent">
+<!--    Panels    -->
+    <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+        <Pane>
 
-            <VBox fx:id="paneCompany" spacing="8" visible="false">
-                <HBox spacing="4">
-                    <Label fx:id="lblCompanyName" prefWidth="125.0" text="Company Name:" />
-                    <TextField fx:id="txtCompanyName" prefHeight="25.0" prefWidth="381.0" promptText="txtCompanyName" />
-                </HBox>
+        <VBox fx:id="paneCompany" spacing="8" visible="false">
+            <HBox spacing="4">
+                <Label prefWidth="125.0" text="Company Name:" />
+                <TextField fx:id="txtCompanyName" prefWidth="381.0" promptText="txtCompanyName" />
+            </HBox>
+<!--            <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />-->
+<!--            <Label layoutX="25.0" layoutY="85.0" prefHeight="17.0" prefWidth="100.0" text="Company Logo:" />-->
+<!--            <VBox layoutX="125.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="220.0" style="-fx-background-color: lightgrey;" />-->
+<!--            <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="220.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
+<!--            <Label layoutX="360.0" layoutY="89.0" prefHeight="17.0" prefWidth="108.0" text="Company Icon:" />-->
+<!--            <VBox layoutX="449.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="95.0" style="-fx-background-color: lightgrey;" />-->
+<!--            <ImageView fx:id="imgCompanyIcon" fitHeight="62.0" fitWidth="95.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
+<!--            <Button fx:id="btnLoadCompanyLogo" layoutX="58.0" layoutY="104.0" mnemonicParsing="false" text="Upload" />-->
+<!--            <Button fx:id="btnLoadCompanyIcon" layoutX="388.0" layoutY="108.0" mnemonicParsing="false" text="Upload" />-->
+            <HBox spacing="16.0">
+                <VBox spacing="4.0">
+                    <HBox spacing="4">
+                        <Label prefWidth="125.0" text="Shares Issued:" />
+                        <TextField fx:id="txtSharesIssued" prefWidth="108.0" />
+                    </HBox>
+                    <HBox spacing="4">
+                        <Label prefWidth="125.0" text="Shares Per Issue:" />
+                        <TextField fx:id="txtSharesPerIssue" prefWidth="108.0" />
+                    </HBox>
+                    <HBox spacing="4">
+                        <Label prefWidth="125.0" text="Years Issued:" />
+                        <TextField fx:id="txtYearsIssued" prefWidth="108.0" />
+                    </HBox>
+                </VBox>
+                <VBox spacing="4.0">
+                    <HBox spacing="4">
+                        <Label prefWidth="125.0" text="Shares Outstanding:" />
+                        <TextField fx:id="txtSharesOutstanding" prefWidth="108.0" />
+                    </HBox>
+                    <HBox spacing="4">
+                        <Label layoutX="275.0" layoutY="220.0" prefWidth="125.0" text="Funding Percentage:" />
+                        <TextField fx:id="txtFundingPercentage" prefWidth="108.0" />
+                    </HBox>
+                    <HBox alignment="CENTER_RIGHT" spacing="4">
+                        <Button fx:id="btnSaveCompany" mnemonicParsing="false" prefWidth="75.0" text="Save" />
+                    </HBox>
+                </VBox>
+            </HBox>
 
-    <!--            <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />-->
-    <!--            <Label layoutX="25.0" layoutY="85.0" prefHeight="17.0" prefWidth="100.0" text="Company Logo:" />-->
-    <!--            <VBox layoutX="125.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="220.0" style="-fx-background-color: lightgrey;" />-->
-    <!--            <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="220.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
-    <!--            <Label layoutX="360.0" layoutY="89.0" prefHeight="17.0" prefWidth="108.0" text="Company Icon:" />-->
-    <!--            <VBox layoutX="449.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="95.0" style="-fx-background-color: lightgrey;" />-->
-    <!--            <ImageView fx:id="imgCompanyIcon" fitHeight="62.0" fitWidth="95.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
-    <!--            <Button fx:id="btnLoadCompanyLogo" layoutX="58.0" layoutY="104.0" mnemonicParsing="false" text="Upload" />-->
-    <!--            <Button fx:id="btnLoadCompanyIcon" layoutX="388.0" layoutY="108.0" mnemonicParsing="false" text="Upload" />-->
-                <HBox spacing="16.0">
-                    <VBox spacing="4.0">
-                        <HBox spacing="4">
-                            <Label layoutX="25.0" layoutY="170.0" prefWidth="125.0" text="Shares Issued:" />
-                            <TextField fx:id="txtSharesIssued" layoutX="135.0" layoutY="166.0" prefHeight="25.0" prefWidth="108.0" />
-                        </HBox>
-                        <HBox spacing="4">
-                            <Label layoutX="25.0" layoutY="220.0" prefWidth="125.0" text="Shares Per Issue:" />
-                            <TextField fx:id="txtSharesPerIssue" layoutX="135.0" layoutY="216.0" prefHeight="25.0" prefWidth="108.0" />
-                        </HBox>
-                        <HBox spacing="4">
-                            <Label layoutX="25.0" layoutY="266.0" prefWidth="125.0" text="Years Issued:" />
-                            <TextField fx:id="txtYearsIssued" layoutX="135.0" layoutY="266.0" prefHeight="25.0" prefWidth="108.0" />
-                        </HBox>
-                    </VBox>
-                    <VBox spacing="4.0">
-                        <HBox spacing="4">
-                            <Label layoutX="275.0" layoutY="170.0" prefWidth="125.0" text="Shares Outstanding:" />
-                            <TextField fx:id="txtSharesOutstanding" layoutX="395.0" layoutY="166.0" prefHeight="25.0" prefWidth="108.0" />
-                        </HBox>
-                        <HBox spacing="4">
-                            <Label layoutX="275.0" layoutY="220.0" prefWidth="125.0" text="Funding Percentage:" />
-                            <TextField fx:id="txtFundingPercentage" layoutX="395.0" layoutY="216.0" prefHeight="25.0" prefWidth="108.0" />
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" spacing="4">
-                            <Button fx:id="btnSaveCompany" layoutX="395.0" layoutY="266.0" mnemonicParsing="false" prefWidth="75.0" text="Save" />
-                        </HBox>
-                    </VBox>
-                </HBox>
+            <padding>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </padding>
+        </VBox>
 
+        <VBox fx:id="paneKPI" spacing="8.0" visible="false">
+            <HBox alignment="CENTER" spacing="4">
+                <Label prefWidth="150.0" text="KPI Classes">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                 <HBox HBox.hgrow="ALWAYS" />
+                <Button fx:id="bntNewKPIClass" mnemonicParsing="false" prefWidth="75" text="New" />
+                <Button fx:id="bntDeleteKPIClass" mnemonicParsing="false" prefWidth="75" text="Delete" />
+                 <padding>
+                    <Insets bottom="4.0" left="16.0" right="4.0" top="4.0" />
+                 </padding>
+            </HBox>
+            <TableView fx:id="tblKPIClasses" prefHeight="120.0" prefWidth="350.0">
+                <columns>
+                    <TableColumn fx:id="tbcClassID" prefWidth="40.5" text="ID" />
+                    <TableColumn fx:id="tbcClassName" prefWidth="123.0" text="Name" />
+                    <TableColumn fx:id="tbcClassDescription" prefWidth="191.0" text="Description" />
+                    <TableColumn fx:id="tbcClassAutoFill" minWidth="0.0" prefWidth="100.5" text="Auto Fill" />
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER" spacing="4">
+                <Label prefWidth="150.0" text="Master KPIs">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                 <HBox HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnNewMastKPI" mnemonicParsing="false" prefWidth="75" text="New" />
+                <Button fx:id="btnDeleteMastKPI" mnemonicParsing="false" prefWidth="75" text="Delete" />
+                 <padding>
+                    <Insets bottom="4.0" left="16.0" right="4.0" top="4.0" />
+                 </padding>
+            </HBox>
+            <TableView fx:id="tblMasterKPIs" prefHeight="280" prefWidth="550.0">
+                <columns>
+                   <TableColumn fx:id="tbcKPIid" prefWidth="57.5" text="ID" />
+                   <TableColumn fx:id="tbcKPICode" prefWidth="92.5" text="KPI Code" />
+                   <TableColumn fx:id="tbcKPIDescription" prefWidth="234.5" text="Description" />
+                   <TableColumn fx:id="tbcKPIClass" prefWidth="70.5" text="Class" />
+                </columns>
+            </TableView>
+        </VBox>
+
+        <VBox fx:id="paneFormKPIClass" spacing="4.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="ID:" />
+                <TextField fx:id="txtFormClassKPI_id" editable="false" prefWidth="55.0" />
+                <Label alignment="CENTER_RIGHT" prefWidth="125.0" text="Name:" />
+                <TextField fx:id="txtFormClassKPI_name" prefWidth="90.0" />
+            </HBox>
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Description:" />
+                <TextField fx:id="txtFormClassKPI_description" prefHeight="25.0" prefWidth="279.0" />
+                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Auto-fill:" />
+                <CheckBox fx:id="chkFormClassKPI_auto" />
+            </HBox>
+            <HBox spacing="4">
+                <HBox HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnFormClassKPI_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                <Button fx:id="btnFormClassKPI_save" mnemonicParsing="false" prefWidth="95" text="Save" />
                 <padding>
-                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                   <Insets right="16.0" />
                 </padding>
+            </HBox>
+          <padding>
+             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+          </padding>
+        </VBox>
+
+        <VBox fx:id="paneMasterKPI" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="53.0" text="ID:" />
+                <TextField fx:id="txtFormMastKPI_id" editable="false" prefWidth="40.0" />
+            </HBox>
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="62.0" text="KPI Code:" />
+                <TextField fx:id="txtFormMastKPI_code" prefWidth="142.0" />
+                <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Description:" />
+                <TextField fx:id="txtFormMastKPI_description" prefWidth="237.0" />
+            </HBox>
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="62.0" text="KPI Class:" />
+                <ComboBox fx:id="cmbFormMastKPI_class" prefWidth="142.0" />
+                <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Calculation:" />
+                <TextField fx:id="txtFormMastKPI_calc" prefWidth="237.0" />
+            </HBox>
+            <VBox spacing="4">
+                <Label prefHeight="17.0" prefWidth="150.0" text="Score Ratings:" />
+                <HBox spacing="4" VBox.vgrow="ALWAYS">
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Extraordinary:" />
+                        <TextField fx:id="txtFormMasterKPI_extraordinary" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Great:" />
+                        <TextField fx:id="txtFormMasterKPI_great" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Well:" />
+                        <TextField fx:id="txtFormMasterKPI_well" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Needs Improvement:" />
+                        <TextField fx:id="txtFormMasterKPI_needs_improvement" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Not Acceptable:" />
+                        <TextField fx:id="txtFormMasterKPI_not_acceptable" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                </HBox>
             </VBox>
 
-            <VBox fx:id="paneKPI">
-                <Line endX="85.0" layoutX="230.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
-                <Label fx:id="lblKPITitle" layoutX="14.0" layoutY="181.0" prefHeight="17.0" prefWidth="100.0" text="Master KPIs">
-                    <font>
-                       <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Label layoutX="14.0" layoutY="19.0" text="KPI Classes">
-                    <font>
-                       <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Button fx:id="bntNewKPIClass" layoutX="415.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="New" />
-                <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" />
-                <TableView fx:id="tblKPIClasses" editable="false" layoutX="45.0" layoutY="50.0" prefHeight="120.0" prefWidth="550.0">
-                    <columns>
-                       <TableColumn fx:id="tbcClassID" prefWidth="40.5" text="ID" />
-                       <TableColumn fx:id="tbcClassName" prefWidth="123.0" text="Name" />
-                       <TableColumn fx:id="tbcClassDescription" prefWidth="191.0" text="Description" />
-                       <TableColumn fx:id="tbcClassAutoFill" minWidth="0.0" prefWidth="100.5" text="Auto Fill" />
-                    </columns>
-                </TableView>
-
-                <Button fx:id="btnNewMastKPI" layoutX="415.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="New" />
-                <Button fx:id="btnDeleteMastKPI" layoutX="504.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="Delete" />
-                <TableView fx:id="tblMasterKPIs" layoutX="45.0" layoutY="215.0" prefHeight="280" prefWidth="550.0">
-                    <columns>
-                       <TableColumn fx:id="tbcKPIid" prefWidth="57.5" text="ID" />
-                       <TableColumn fx:id="tbcKPICode" prefWidth="92.5" text="KPI Code" />
-                       <TableColumn fx:id="tbcKPIDescription" prefWidth="234.5" text="Description" />
-                       <TableColumn fx:id="tbcKPIClass" prefWidth="70.5" text="Class" />
-                    </columns>
-                </TableView>
+            <VBox spacing="4">
+                <HBox spacing="4">
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Field 1 Name:" />
+                        <TextField fx:id="txtFormMasterKPI_f1" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Field 2 Name:" />
+                        <TextField fx:id="txtFormMasterKPI_f2" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Field 3 Name:" />
+                        <TextField fx:id="txtFormMasterKPI_f3" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Field 4 Name:" />
+                        <TextField fx:id="txtFormMasterKPI_f4" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                </HBox>
             </VBox>
+            <HBox spacing="4">
+                <HBox HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnFormMasterKPI_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                <Button fx:id="btnFormMasterKPI_save" mnemonicParsing="false" prefWidth="95" text="Save" />
+                <padding>
+                    <Insets right="16.0" />
+                </padding>
+            </HBox>
+          <padding>
+             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+          </padding>
+        </VBox>
 
-            <VBox fx:id="paneMasterKPI" layoutX="45.0" layoutY="215.0" opacity="0.95" prefHeight="280.0" prefWidth="550.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-                <children>
-                    <Label alignment="CENTER_RIGHT" layoutX="15.0" layoutY="8.0" prefHeight="17.0" prefWidth="53.0" text="ID:" />
-                    <TextField fx:id="txtFormMastKPI_id" editable="false" layoutX="73.0" layoutY="4.0" prefHeight="25.0" prefWidth="40.0" />
-                    <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="40.0" prefHeight="17.0" prefWidth="62.0" text="KPI Code:" />
-                    <TextField fx:id="txtFormMastKPI_code" layoutX="72.0" layoutY="36.0" prefHeight="25.0" prefWidth="142.0" />
-                    <Label alignment="CENTER_RIGHT" layoutX="227.0" layoutY="40.0" prefHeight="17.0" prefWidth="72.0" text="Description:" />
-                    <TextField fx:id="txtFormMastKPI_description" layoutX="306.0" layoutY="36.0" prefHeight="25.0" prefWidth="237.0" />
-                    <Label alignment="CENTER_RIGHT" layoutX="5" layoutY="75.0" prefHeight="17.0" prefWidth="62.0" text="KPI Class:" />
-                    <ComboBox fx:id="cmbFormMastKPI_class" layoutX="71.0" layoutY="71.0" prefHeight="25.0" prefWidth="142.0" />
-                    <Label alignment="CENTER_RIGHT" layoutX="227.0" layoutY="75.0" prefHeight="17.0" prefWidth="72.0" text="Calculation:" />
-                    <TextField fx:id="txtFormMastKPI_calc" layoutX="306.0" layoutY="71.0" prefHeight="25.0" prefWidth="237.0" />
-                    <Label layoutX="5.0" layoutY="105.0" prefHeight="17.0" prefWidth="150.0" text="Score Ratings:" />
-                    <Label layoutX="15" layoutY="125.0" text="Extraordinary:" />
-                    <Label layoutX="115.0" layoutY="125.0" text="Great:" />
-                    <Label layoutX="215.0" layoutY="125.0" text="Well:" />
-                    <Label layoutX="320.0" layoutY="125.0" text="Needs Improvement:" />
-                    <Label layoutX="449.0" layoutY="125.0" text="Not Acceptable:" />
-                    <TextField fx:id="txtFormMasterKPI_extraordinary" layoutX="25.0" layoutY="145.0" prefHeight="12" prefWidth="75" />
-                    <TextField fx:id="txtFormMasterKPI_great" layoutX="125.0" layoutY="145.0" prefHeight="12" prefWidth="75" />
-                    <TextField fx:id="txtFormMasterKPI_well" layoutX="225.0" layoutY="145.0" prefHeight="12" prefWidth="75" />
-                    <TextField fx:id="txtFormMasterKPI_needs_improvement" layoutX="330.0" layoutY="145.0" prefHeight="12" prefWidth="75" />
-                    <TextField fx:id="txtFormMasterKPI_not_acceptable" layoutX="459.0" layoutY="145.0" prefHeight="12" prefWidth="75" />
-                    <Label layoutX="15.0" layoutY="180.0" text="Field 1 Name:" />
-                    <Label layoutX="140.0" layoutY="180.0" text="Field 2 Name:" />
-                    <Label layoutX="265.0" layoutY="180.0" text="Field 3 Name:" />
-                    <Label layoutX="390.0" layoutY="180.0" text="Field 4 Name:" />
-                    <TextField fx:id="txtFormMasterKPI_f1" layoutX="25.0" layoutY="205.0" prefHeight="12" prefWidth="100" />
-                    <TextField fx:id="txtFormMasterKPI_f2" layoutX="150.0" layoutY="205.0" prefHeight="12" prefWidth="100" />
-                    <TextField fx:id="txtFormMasterKPI_f3" layoutX="275.0" layoutY="205.0" prefHeight="12" prefWidth="100" />
-                    <TextField fx:id="txtFormMasterKPI_f4" layoutX="400.0" layoutY="205.0" prefHeight="12" prefWidth="100" />
-                    <Button fx:id="btnFormMasterKPI_cancel" layoutX="319.0" layoutY="245.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-                    <Button fx:id="btnFormMasterKPI_save" layoutX="434.0" layoutY="245.0" mnemonicParsing="false" prefWidth="95" text="Save" />
-                </children>
-            </VBox>
-
-            <VBox fx:id="paneFormKPIClass" layoutX="45.0" layoutY="50.0" opacity="0.95" prefHeight="120.0" prefWidth="550.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-                <children>
-                    <Label layoutX="5.0" layoutY="12.0" text="ID:" />
-                    <TextField fx:id="txtFormClassKPI_id" editable="false" layoutX="25.0" layoutY="7.0" prefHeight="25.0" prefWidth="40.0" />
-                    <Label layoutX="140.0" layoutY="12.0" prefHeight="17.0" prefWidth="62.0" text="Name:" />
-                    <TextField fx:id="txtFormClassKPI_name" layoutX="202.0" layoutY="8.0" prefHeight="25.0" prefWidth="90.0" />
-                    <Label layoutX="12.0" layoutY="48.0" prefHeight="17.0" prefWidth="72.0" text="Description:" />
-                    <TextField fx:id="txtFormClassKPI_description" layoutX="84.0" layoutY="44.0" prefHeight="25.0" prefWidth="279.0" />
-                    <Label layoutX="412.0" layoutY="48.0" prefHeight="17.0" prefWidth="62.0" text="Auto-fill:" />
-                    <CheckBox fx:id="chkFormClassKPI_auto" layoutX="474.0" layoutY="48.0" />
-                    <Button fx:id="btnFormClassKPI_cancel" layoutX="317.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-                    <Button fx:id="btnFormClassKPI_save" layoutX="432.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Save" />
-                </children>
-            </VBox>
-
-            <VBox fx:id="paneEmployee" visible="false">
-                <Line endX="85.0" layoutX="330.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
-                <Label fx:id="lblEmployeeTitle" layoutX="14.0" layoutY="19.0" prefHeight="17.0" text="Employee Positions">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Button fx:id="bntNewPosition" layoutX="415.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="New" />
-                <Button fx:id="bntDeletePosition" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" />
-                <TableView fx:id="tblPositions" editable="false" layoutX="45.0" layoutY="50.0" prefHeight="120.0" prefWidth="550.0">
-                    <columns>
-                        <TableColumn fx:id="tbcPositionID" prefWidth="40.5" text="ID" />
-                        <TableColumn fx:id="tbcPositionName" prefWidth="123.0" text="Position" />
-                        <TableColumn fx:id="tbcPositionDescription" prefWidth="191.0" text="Description" />
-                        <TableColumn fx:id="tbcPositionShares" minWidth="0.0" prefWidth="100.5" text="Shares" />
-                    </columns>
-                </TableView>
-                <Pane fx:id="paneFormPosition" layoutX="45.0" layoutY="50.0" opacity="0.95" prefHeight="120.0" prefWidth="550.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-                    <children>
-                        <Label layoutX="5.0" layoutY="12.0" text="ID:" />
-                        <TextField fx:id="txtFormPosition_id" editable="false" layoutX="25.0" layoutY="7.0" prefHeight="25.0" prefWidth="40.0" />
-                        <Label layoutX="84.0" layoutY="12.0" prefHeight="17.0" prefWidth="62.0" text="Name:" />
-                        <TextField fx:id="txtFormPosition_name" layoutX="146.0" layoutY="8.0" prefHeight="25.0" prefWidth="203.0" />
-                        <Label layoutX="374.0" layoutY="11.0" prefHeight="17.0" prefWidth="62.0" text="Shares:" />
-                        <TextField fx:id="txtFormPosition_shares" layoutX="436.0" layoutY="7.0" prefHeight="25.0" prefWidth="100.0" />
-                        <Label layoutX="12.0" layoutY="48.0" prefHeight="17.0" prefWidth="72.0" text="Description:" />
-                        <TextField fx:id="txtFormPosition_description" layoutX="84.0" layoutY="44.0" prefHeight="25.0" prefWidth="452.0" />
-                        <Button fx:id="btnFormPosition_cancel" layoutX="317.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-                        <Button fx:id="btnFormPosition_save" layoutX="432.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Save" />
-                    </children>
-                </Pane>
-
-                <Label fx:id="lblEmployeeTitlePK" layoutX="35.0" layoutY="188.0" prefHeight="17.0" text="Position KPIs">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <Button fx:id="bntAddPositionKPI" layoutX="415.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="Add" />
-                <Button fx:id="bntRemovePositionKPI" layoutX="504.0" layoutY="180.0" mnemonicParsing="false" prefWidth="75" text="Remove" />
-                <TableView fx:id="tblPositionKPI" editable="false" layoutX="45.0" layoutY="215.0" prefHeight="120.0" prefWidth="550.0" visible="false">
+        <VBox fx:id="paneEmployee" spacing="4.0">
+          <HBox alignment="CENTER" spacing="4.0" VBox.vgrow="ALWAYS">
+              <Label fx:id="lblEmployeeTitle" prefWidth="150.0" text="Employee Positions">
+                  <font>
+                      <Font name="System Bold" size="14.0" />
+                  </font>
+                   <padding>
+                      <Insets left="8.0" />
+                   </padding>
+              </Label>
+                <HBox HBox.hgrow="ALWAYS" />
+              <Button fx:id="bntNewPosition" mnemonicParsing="false" prefWidth="75" text="New" />
+              <Button fx:id="bntDeletePosition" mnemonicParsing="false" prefWidth="75" text="Delete" />
+          </HBox>
+            <TableView fx:id="tblPositions" prefHeight="120.0" prefWidth="550.0">
+                <columns>
+                    <TableColumn fx:id="tbcPositionID" prefWidth="40.5" text="ID" />
+                    <TableColumn fx:id="tbcPositionName" prefWidth="123.0" text="Position" />
+                    <TableColumn fx:id="tbcPositionDescription" prefWidth="191.0" text="Description" />
+                    <TableColumn fx:id="tbcPositionShares" minWidth="0.0" prefWidth="100.5" text="Shares" />
+                </columns>
+            </TableView>
+            <VBox fx:id="vboxPositionKPIs" visible="false" spacing="4">
+                <HBox alignment="CENTER" spacing="4.0" VBox.vgrow="ALWAYS">
+                    <Label fx:id="lblEmployeeTitlePK" prefWidth="150.0" text="Position KPIs">
+                      <font>
+                          <Font name="System Bold" size="14.0" />
+                      </font>
+                      <padding>
+                         <Insets left="16.0" />
+                      </padding>
+                    </Label>
+                      <HBox HBox.hgrow="ALWAYS" />
+                    <Button fx:id="bntAddPositionKPI" mnemonicParsing="false" prefWidth="75" text="Add" />
+                    <Button fx:id="bntRemovePositionKPI" mnemonicParsing="false" prefWidth="75" text="Remove" />
+                    <padding>
+                       <Insets top="16.0" />
+                    </padding>
+                </HBox>
+                <TableView fx:id="tblPositionKPI" prefHeight="120.0" prefWidth="550.0">
                     <columns>
                         <TableColumn fx:id="tbcPKMasterKPI" prefWidth="191.0" text="KPI" />
                         <TableColumn fx:id="tbcPKWeight" minWidth="0.0" prefWidth="100.5" text="Weight" />
                     </columns>
                 </TableView>
-                <Pane fx:id="paneFormPositionKPI" layoutX="45.0" layoutY="215.0" opacity="0.95" prefHeight="120.0" prefWidth="550.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-                    <children>
-                        <Label layoutX="14.0" layoutY="86.0" text="ID:" textFill="#00000080" />
-                        <TextField fx:id="txtFormPKItem_id" disable="true" editable="false" layoutX="34.0" layoutY="81.0" prefHeight="25.0" prefWidth="40.0" />
-                        <Label alignment="CENTER_RIGHT" layoutX="19.0" layoutY="15.0" prefHeight="17.0" prefWidth="62.0" text="Position:">
-                          <padding>
-                             <Insets right="5.0" />
-                          </padding>
-                        </Label>
-                        <TextField fx:id="txtFormPK_position" editable="false" layoutX="81.0" layoutY="11.0" prefHeight="25.0" prefWidth="150.0" />
-                        <Label alignment="CENTER_RIGHT" layoutX="19.0" layoutY="49.0" prefHeight="17.0" prefWidth="62.0" text="KPI:">
-                          <padding>
-                             <Insets right="5.0" />
-                          </padding>
-                        </Label>
-                        <ComboBox fx:id="cmbFormPK_kpi" layoutX="81.0" layoutY="45.0" prefHeight="25.0" prefWidth="150.0" />
-                        <Label alignment="CENTER_RIGHT" layoutX="275.0" layoutY="49.0" prefHeight="17.0" prefWidth="62.0" text="Weight:">
-                            <padding>
-                                <Insets right="5.0" />
-                            </padding>
-                        </Label>
-                        <TextField fx:id="txtFormPK_weight" layoutX="337.0" layoutY="45.0" prefHeight="25.0" prefWidth="150.0" />
-                        <Button fx:id="btnFormPK_cancel" layoutX="317.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-                        <Button fx:id="btnFormPK_save" layoutX="432.0" layoutY="81.0" mnemonicParsing="false" prefWidth="95" text="Save" />
-                    </children>
-                </Pane>
-            </VBox>
+                  <padding>
+                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                  </padding>
+                </VBox>
+        </VBox>
 
-            <VBox fx:id="paneUsers" visible="false">
-                <Line endX="85.0" layoutX="430.0" layoutY="2" stroke="#00aaff80" strokeWidth="5.0" />
-                <Label fx:id="lblUsersTitle" layoutX="14.0" layoutY="19.0" prefHeight="17.0" prefWidth="100.0" text="Users">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
+        <VBox fx:id="paneFormPosition" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="45.0" text="ID:">
+                   <padding>
+                      <Insets right="4.0" />
+                   </padding></Label>
+                <TextField fx:id="txtFormPosition_id" editable="false" prefHeight="25.0" prefWidth="45.0" />
+                <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="85.0" text="Name:">
+                   <padding>
+                      <Insets right="4.0" />
+                   </padding></Label>
+                <TextField fx:id="txtFormPosition_name" prefHeight="25.0" prefWidth="203.0" />
+                <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="85.0" text="Shares:">
+                   <padding>
+                      <Insets right="4.0" />
+                   </padding></Label>
+                <TextField fx:id="txtFormPosition_shares" prefHeight="25.0" prefWidth="100.0" />
+            </HBox>
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="85.0" text="Description:">
+                   <padding>
+                      <Insets right="4.0" />
+                   </padding></Label>
+                <TextField fx:id="txtFormPosition_description" prefHeight="25.0" prefWidth="452.0" />
+            </HBox>
+            <HBox spacing="4">
+                <HBox HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnFormPosition_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                <Button fx:id="btnFormPosition_save" mnemonicParsing="false" prefWidth="95" text="Save" />
+            </HBox>
+            <padding>
+               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </padding>
+        </VBox>
+
+        <VBox fx:id="paneFormPositionKPI" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <HBox spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Position:">
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
                 </Label>
-                <Button fx:id="bntNewUsers" layoutX="415.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="New" />
-                <Button fx:id="bntDeleteUsers" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" />
-                <TableView fx:id="tblUsers" layoutX="45.0" layoutY="50.0" prefHeight="260.0" prefWidth="220.0">
+                <TextField fx:id="txtFormPK_position" editable="false" prefHeight="25.0" prefWidth="150.0" />
+            </HBox>
+            <HBox spacing="4">
+
+                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="KPI:">
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
+                </Label>
+                <ComboBox fx:id="cmbFormPK_kpi" prefHeight="25.0" prefWidth="150.0" />
+                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Weight:">
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
+                </Label>
+                <TextField fx:id="txtFormPK_weight" prefHeight="25.0" prefWidth="150.0" />
+            </HBox>
+            <HBox alignment="CENTER" spacing="4">
+                <Label alignment="CENTER_RIGHT" prefWidth="45.0" text="ID:" textFill="#00000080">
+                <HBox.margin>
+                    <Insets />
+                </HBox.margin>
+                <padding>
+                    <Insets right="4.0" />
+                </padding></Label>
+                <TextField fx:id="txtFormPKItem_id" disable="true" editable="false"  prefHeight="25.0" prefWidth="45.0" />
+                <HBox HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnFormPK_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                <Button fx:id="btnFormPK_save" mnemonicParsing="false" prefWidth="95" text="Save" />
+            </HBox>
+          <padding>
+             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+          </padding>
+        </VBox>
+
+        <VBox fx:id="paneUsers" spacing="8.0" visible="false">
+            <HBox alignment="CENTER_RIGHT" spacing="4.0">
+                <Button fx:id="bntNewUsers" mnemonicParsing="false" prefWidth="175" text="New User" />
+                <Button fx:id="bntDeleteUsers" mnemonicParsing="false" prefWidth="175" text="Delete User" />
+            </HBox>
+            <HBox spacing="16">
+                <TableView fx:id="tblUsers" prefHeight="260.0" prefWidth="220.0">
                     <columns>
                         <TableColumn fx:id="tbcUserID" prefWidth="40.5" text="ID" />
                         <TableColumn fx:id="tbcUserName" prefWidth="175.0" text="username" />
                     </columns>
                 </TableView>
-               <Pane fx:id="paneUserForm" layoutX="280.0" layoutY="50.0" prefHeight="260.0" prefWidth="254.0" visible="false">
-                  <children>
-                    <Label layoutX="14.0" layoutY="14.0" text="User ID:" />
-                    <TextField fx:id="txtUserID" disable="true" layoutX="80.0" layoutY="10.0" prefHeight="25.0" prefWidth="75.0" />
-                    <Label layoutX="14.0" layoutY="50.0" text="Username:" />
-                    <TextField fx:id="txtUsername" layoutX="81.0" layoutY="46.0" />
-                    <Label layoutX="14.0" layoutY="86.0" text="Password:" />
-                    <TextField fx:id="txtPassword" layoutX="81.0" layoutY="82.0" />
-                    <Label layoutX="14.0" layoutY="123.0" text="User Type:" />
-                    <ComboBox fx:id="cmbUserType" layoutX="80.0" layoutY="119.0" prefWidth="150.0" />
-                    <Button fx:id="btnUserCancel" layoutX="50.0" layoutY="202.0" mnemonicParsing="false" prefWidth="75" text="Cancel" />
-                    <Button fx:id="btnUserSave" layoutX="150.0" layoutY="202.0" mnemonicParsing="false" prefWidth="75" text="Save" />
-                  </children>
-               </Pane>
 
-            </VBox>
+                <VBox fx:id="paneUserForm" visible="false" spacing="8.0">
+                    <HBox spacing="4">
+                        <Label prefWidth="75.0" text="User ID:" />
+                        <TextField fx:id="txtUserID" disable="true" prefHeight="25.0" prefWidth="75.0" />
+                    </HBox>
+                    <HBox spacing="4">
+                        <Label prefWidth="75.0" text="Username:" />
+                        <TextField fx:id="txtUsername" layoutX="81.0" layoutY="46.0" />
+                    </HBox>
+                    <HBox spacing="4">
+                        <Label prefWidth="75.0" text="Password:" />
+                        <TextField fx:id="txtPassword" layoutX="81.0" layoutY="82.0" />
+                    </HBox>
+                    <HBox spacing="4">
+                        <Label prefWidth="75.0" text="User Type:" />
+                        <ComboBox fx:id="cmbUserType" prefWidth="150.0" />
+                    </HBox>
+                    <HBox alignment="CENTER_RIGHT" spacing="4">
+                        <Button fx:id="btnUserCancel" mnemonicParsing="false" prefWidth="75" text="Cancel" />
+                        <Button fx:id="btnUserSave" mnemonicParsing="false" prefWidth="75" text="Save" />
+                    </HBox>
+                    <HBox.margin>
+                       <Insets />
+                    </HBox.margin>
+                    <padding>
+                       <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                    </padding>
+                </VBox>
+            </HBox>
+              <padding>
+                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+              </padding>
 
-            </Pane>
-            </content>
-        </ScrollPane>
+        </VBox>
 
-    </children>
+        </Pane>
+    </ScrollPane>
 </AnchorPane>

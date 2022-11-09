@@ -8,28 +8,31 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
 
-   <children>
-      <Label fx:id="lblTitle" text="Metrics" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+<!--    Navigation    -->
+   <HBox alignment="CENTER" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" AnchorPane.rightAnchor="14.0">
+      <Label fx:id="lblTitle" text="Metrics">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER_RIGHT" spacing="8" AnchorPane.rightAnchor="16" AnchorPane.topAnchor="14">
+      <HBox HBox.hgrow="ALWAYS" />
+      <HBox alignment="CENTER_RIGHT" spacing="8">
          <Button fx:id="btnMetricSave" prefWidth="75" text="Save" visible="false" />
          <Button fx:id="btnMetricHome" prefWidth="75" text="Back" visible="false" />
       </HBox>
+   </HBox>
 
-      <ScrollPane fx:id="spnMetricDetail" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
-         <content>
-            <Pane fx:id="paneContent">
+
+   <ScrollPane fx:id="spnMetricDetail" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+            <Pane>
 
             <VBox fx:id="paneMetricTable" spacing="8.0">
                <HBox>
                   <HBox prefHeight="25.0" prefWidth="350.0" />
-                  <Button fx:id="bntNewMetric" mnemonicParsing="true" prefWidth="125" text="New Metric" />
+                  <Button fx:id="bntNewMetric" prefWidth="125" text="New Metric" />
                </HBox>
                <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
-               <TableView fx:id="tblMetrics" editable="false" prefHeight="220.0" prefWidth="550.0">
+               <TableView fx:id="tblMetrics" prefHeight="220.0" prefWidth="550.0">
                   <columns>
                      <TableColumn fx:id="tbcMetricLabel" editable="false" prefWidth="150" text="Metric" />
                      <TableColumn fx:id="tbcMetricEarnings" editable="false" prefWidth="100" text="Earnings" />
@@ -42,33 +45,33 @@
                </padding>
             </VBox>
 
-            <VBox fx:id="paneFormNewMetric" prefHeight="119.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <VBox fx:id="paneFormNewMetric" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
                <HBox>
-                  <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="72.0" text="Metric Label:" />
-                  <TextField fx:id="txtFormNewLabel" disable="true" layoutX="101.0" layoutY="14.0" prefHeight="25.0" prefWidth="369.0" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Metric Label:" />
+                  <TextField fx:id="txtFormNewLabel" disable="true" prefWidth="369.0" />
                </HBox>
                <HBox>
-                  <Label alignment="CENTER_RIGHT" layoutX="17.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Year:" />
-                  <TextField fx:id="txtFormNewYear" layoutX="104.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
-                  <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="72.0" text="Period:" />
-                  <TextField fx:id="txtFormNewPeriod" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="125.0" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Year:" />
+                  <TextField fx:id="txtFormNewYear" prefWidth="125.0" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Period:" />
+                  <TextField fx:id="txtFormNewPeriod" prefWidth="125.0" />
                </HBox>
                <HBox>
-                  <Label fx:id="lblFormNewYearError" layoutX="105.0" layoutY="75.0" prefHeight="25.0" prefWidth="125.0" text="Must be a Number!" textFill="#ba0202" visible="false">
+                  <Label fx:id="lblFormNewYearError" prefWidth="125.0" text="Must be a Number!" textFill="#ba0202" visible="false">
                      <font>
                         <Font name="System Bold" size="10.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblFormNewPeriodError" layoutX="347.0" layoutY="75.0" prefHeight="25.0" prefWidth="125.0" text="Must be a Number!" textFill="#ba0202" visible="false">
+                  <Label fx:id="lblFormNewPeriodError" prefWidth="125.0" text="Must be a Number!" textFill="#ba0202" visible="false">
                      <font>
                         <Font name="System Bold" size="10.0" />
                      </font>
                   </Label>
                </HBox>
                <HBox spacing="4.0">
-                  <HBox prefHeight="25.0" prefWidth="250.0" />
-                  <Button fx:id="btnFormNewMetric_cancel" layoutX="317.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-                  <Button fx:id="btnFormNewMetric_save" layoutX="432.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Save" />
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnFormNewMetric_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                  <Button fx:id="btnFormNewMetric_save" mnemonicParsing="false" prefWidth="95" text="Save" />
                </HBox>
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -81,20 +84,20 @@
                </HBox>
                <HBox alignment="CENTER_LEFT" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />
-                  <TextField fx:id="txtDetailMetricLabel" editable="false" prefHeight="25.0" prefWidth="273.0" />
+                  <TextField fx:id="txtDetailMetricLabel" editable="false" prefWidth="273.0" />
                   <HBox prefHeight="25.0" prefWidth="50.0" />
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Close Metric:" />
                   <CheckBox fx:id="chkDetailMetricLocked" mnemonicParsing="false" />
                </HBox>
                <HBox alignment="CENTER_LEFT" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Year:" />
-                  <TextField fx:id="txtDetailMetricYear" prefHeight="25.0" prefWidth="95.0" />
+                  <TextField fx:id="txtDetailMetricYear" prefWidth="95.0" />
                   <Label fx:id="lblDetailMetricYearWarn" accessibleText="Warning" prefWidth="8" text="*" textFill="RED">
                         <font>
                            <Font name="System Bold" size="18.0" />
                         </font></Label>
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Period:" />
-                  <TextField fx:id="txtDetailMetricPeriod" prefHeight="25.0" prefWidth="80.0" />
+                  <TextField fx:id="txtDetailMetricPeriod" prefWidth="80.0" />
                   <Label fx:id="lblDetailMetricPeriodWarn" prefWidth="8" text="*" textFill="RED">
                         <font>
                            <Font name="System Bold" size="18.0" />
@@ -110,8 +113,8 @@
                      </columns>
                   </TableView>
                   <VBox spacing="4.0">
-                     <Button fx:id="btnDetailAddMetricDetail" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Insert" />
-                     <Button fx:id="btnDetailRemoveMetricDetail" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Remove" />
+                     <Button fx:id="btnDetailAddMetricDetail" mnemonicParsing="false" prefWidth="81.0" text="Insert" />
+                     <Button fx:id="btnDetailRemoveMetricDetail" mnemonicParsing="false" prefWidth="81.0" text="Remove" />
                   </VBox>
                </HBox>
                <HBox>
@@ -132,19 +135,19 @@
                   <VBox spacing="8.0">
                      <HBox alignment="CENTER_LEFT" spacing="4.0">
                         <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Shares:" />
-                        <TextField fx:id="txtDetailMetricShares" editable="false" prefHeight="25.0" prefWidth="95.0" />
+                        <TextField fx:id="txtDetailMetricShares" editable="false" prefWidth="95.0" />
                         <Button fx:id="btnSharesRefresh" prefWidth="25" text="r" />
                      </HBox>
                      <HBox alignment="CENTER_LEFT" spacing="4.0">
                         <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="EPS:" />
-                        <TextField fx:id="txtDetailMetricEPS" editable="false" prefHeight="25.0" prefWidth="95.0" />
+                        <TextField fx:id="txtDetailMetricEPS" editable="false" prefWidth="95.0" />
                      </HBox>
                   </VBox>
                </HBox>
 
             <!-- Company KPI Info -->
                <HBox alignment="CENTER_LEFT" spacing="8.0">
-                  <Label layoutX="23.0" layoutY="297.0" prefHeight="15.0" prefWidth="150.0" text="Company KPIs">
+                  <Label prefWidth="150.0" text="Company KPIs">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -155,14 +158,12 @@
                      </VBox.margin>
                </HBox>
                <HBox alignment="CENTER_RIGHT" spacing="4.0">
-                  <children>
-                     <HBox prefWidth="200.0" />
-                     <Button fx:id="btnAddCompanyKPI" mnemonicParsing="false" text="Add Employees" />
-                     <Button fx:id="btnRemoveCompanyKPI" mnemonicParsing="false" text="Remove Selected" />
-                     <Button fx:id="btnRefreshCompanyKPI" mnemonicParsing="false" prefWidth="25.0" text="r" />
-                  </children>
+                  <HBox prefWidth="200.0" />
+                  <Button fx:id="btnAddCompanyKPI" mnemonicParsing="false" text="Add Employees" />
+                  <Button fx:id="btnRemoveCompanyKPI" mnemonicParsing="false" text="Remove Selected" />
+                  <Button fx:id="btnRefreshCompanyKPI" mnemonicParsing="false" prefWidth="25.0" text="r" />
                </HBox>
-               <TableView fx:id="tblDetailCompanyKPI" editable="false" prefHeight="200.0" prefWidth="517.0">
+               <TableView fx:id="tblDetailCompanyKPI" prefHeight="200.0" prefWidth="517.0">
                   <columns>
                      <TableColumn prefWidth="75.0" text="ID" />
                      <TableColumn prefWidth="175.0" text="KPI" />
@@ -174,7 +175,7 @@
 
             <!-- Employee Score and Bonus Info -->
                <HBox alignment="CENTER_LEFT" spacing="8.0">
-                  <Label layoutX="23.0" layoutY="297.0" prefHeight="15.0" prefWidth="150.0" text="Scores and Bonuses">
+                  <Label prefWidth="150.0" text="Scores and Bonuses">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -185,14 +186,12 @@
                   </VBox.margin>
                </HBox>
                <HBox alignment="CENTER_RIGHT" spacing="4.0">
-                  <children>
-                     <HBox prefWidth="200.0" />
-                     <Button fx:id="btnAddEmployee" mnemonicParsing="false" text="Add Employees" />
-                     <Button fx:id="btnRemoveEmployee" mnemonicParsing="false" text="Remove Selected" />
-                     <Button fx:id="btnRefreshEmployee" mnemonicParsing="false" prefWidth="25.0" text="r" />
-                  </children>
+                  <HBox prefWidth="200.0" />
+                  <Button fx:id="btnAddEmployee" mnemonicParsing="false" text="Add Employees" />
+                  <Button fx:id="btnRemoveEmployee" mnemonicParsing="false" text="Remove Selected" />
+                  <Button fx:id="btnRefreshEmployee" mnemonicParsing="false" prefWidth="25.0" text="r" />
                </HBox>
-               <TableView fx:id="tblDetailEmployeeScores" editable="false" prefHeight="200.0" prefWidth="517.0">
+               <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" prefWidth="517.0">
                   <columns>
                      <TableColumn prefWidth="75.0" text="ID" />
                      <TableColumn prefWidth="175.0" text="Name" />
@@ -209,7 +208,7 @@
                </padding>
             </VBox>
 
-            <VBox fx:id="formDetailMetricPeriod" layoutX="8" layoutY="8" prefHeight="119.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <VBox fx:id="formDetailMetricPeriod" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
                <HBox>
                   <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="95.0" text="Detail Period:">
                         <padding>
@@ -250,9 +249,6 @@
             </VBox>
 
             </Pane>
-         </content>
       </ScrollPane>
 
-
-   </children>
 </AnchorPane>

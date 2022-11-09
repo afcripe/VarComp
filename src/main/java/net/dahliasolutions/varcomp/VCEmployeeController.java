@@ -9,30 +9,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
-import net.dahliasolutions.varcomp.connectors.KPIClassConnector;
 import net.dahliasolutions.varcomp.connectors.PositionsConnector;
 import net.dahliasolutions.varcomp.models.Employee;
-import net.dahliasolutions.varcomp.models.KPIClass;
 import net.dahliasolutions.varcomp.models.Position;
 
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class VCEmployeeController implements Initializable {
 
-    @FXML
-    private Label lblTitle;
     @FXML
     private Button btnEmployeeHome;
     @FXML
@@ -74,25 +64,7 @@ public class VCEmployeeController implements Initializable {
 
     @FXML
     private Pane paneEmployeeDetail;
-    @FXML
-    private Button btnEditEmployee;
-    @FXML
-    private Label lblEmployeeName;
-    @FXML
-    private Label lblEmployeeID;
-    @FXML
-    private Label lblEmployeeStartDate;
-    @FXML
-    private Label lblEmployeePosition;
-    @FXML
-    private Label lblEmployeeIsActive;
-    @FXML
-    private Label lblShares;
-    @FXML
-    private ScrollPane spnEmployeeDetail;
 
-    @FXML
-    private Pane paneEmployeeInfo;
     @FXML
     private TextField txtEmployeeID;
     @FXML
@@ -108,11 +80,9 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private DatePicker pkrEmployeeStartDate;
     @FXML
-    private Button btnEditEmployee_cancel;
-    @FXML
     private Button btnEditEmployee_save;
 
-    private Employee selectedEmployee = new Employee();
+    private final Employee selectedEmployee = new Employee();
     ObservableList<Employee> employeeList;
     ObservableList<Position> positionList;
 
@@ -172,8 +142,6 @@ public class VCEmployeeController implements Initializable {
         btnFormEmployee_save.setOnAction(event -> saveEmployee());
 
     /* Employee Detail */
-        btnEditEmployee.setOnAction(event -> showEditFormEmployee(true));
-        btnEditEmployee_cancel.setOnAction(event -> showEditFormEmployee(false));
         btnEditEmployee_save.setOnAction(event -> updateEmployee());
 
         txtEmployeeID.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -183,18 +151,19 @@ public class VCEmployeeController implements Initializable {
             }
         });
 
-        showPaneEmployeeList(true);
+        showPaneEmployeeList();
     }
 
     private void navEmployeeHome() {
         showPaneEmployeeDetail(false);
-        showPaneEmployeeList(true);
+        showPaneEmployeeList();
     }
 
-    private void showPaneEmployeeList(Boolean show) {
-        paneEmployeeDetail.setVisible(!show);
-        paneEmployeeTable.setVisible(show);
-        btnEmployeeHome.setVisible(!show);
+    private void showPaneEmployeeList() {
+        paneEmployeeDetail.setVisible(false);
+        paneEmployeeTable.setVisible(true);
+        btnEmployeeHome.setVisible(false);
+        btnEditEmployee_save.setVisible(false);
         showPaneFormEmployee(false);
     }
 
@@ -246,36 +215,13 @@ public class VCEmployeeController implements Initializable {
     }
 
     private void showPaneEmployeeDetail(Boolean show) {
-        paneEmployeeInfo.setVisible(false);
         paneEmployeeTable.setVisible(!show);
         paneEmployeeDetail.setVisible(show);
         btnEmployeeHome.setVisible(show);
+        btnEditEmployee_save.setVisible(show);
     }
     private void fillPaneEmployeeDetail(Employee employee) {
         selectedEmployee.setEmployee(employee);
-        lblEmployeeID.setText(selectedEmployee.getEmployee_id());
-        lblEmployeeName.setText(selectedEmployee.getLast_name()+ ", "+selectedEmployee.getFirst_name());
-        lblEmployeeStartDate.setText(selectedEmployee.getStart_date().toString());
-        lblShares.setText(selectedEmployee.getShares_assigned().toString());
-        for (Position p: positionList) {
-            if (p.getPosition_id() == selectedEmployee.getPosition()) {
-                lblEmployeePosition.setText(p.getPosition_id()+": "+p.getPosition_name());
-            }
-        }
-        if(selectedEmployee.getIs_active()) {
-            lblEmployeeIsActive.setText("Active");
-        } else {
-            lblEmployeeIsActive.setText("Inactive");
-        }
-
-        showPaneEmployeeDetail(true);
-    }
-
-    private void showEditFormEmployee(Boolean show) {
-        if (show) fillFormEditEmployee();
-        paneEmployeeInfo.setVisible(show);
-    }
-    private void fillFormEditEmployee() {
         txtEmployeeID.setText(selectedEmployee.getEmployee_id());
         txtEmployeeFirstName.setText(selectedEmployee.getFirst_name());
         txtEmployeeLastName.setText(selectedEmployee.getLast_name());
@@ -293,7 +239,10 @@ public class VCEmployeeController implements Initializable {
             }
         }
         cmbEmployeePosition.setValue(cb);
+
+        showPaneEmployeeDetail(true);
     }
+
 
     private void updateEmployee() {
         String split[] = cmbEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
@@ -306,6 +255,5 @@ public class VCEmployeeController implements Initializable {
         employeeList = FXCollections.observableArrayList(EmployeeConnector.getEmployees());
         tblEmployees.getItems().removeAll();
         tblEmployees.setItems(employeeList);
-        showEditFormEmployee(false);
     }
 }

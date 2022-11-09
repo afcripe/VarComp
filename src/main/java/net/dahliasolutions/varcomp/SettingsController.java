@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -58,9 +59,15 @@ public class SettingsController implements Initializable {
     @FXML
     private Button btnSetKPI;
     @FXML
+    private HBox boxIndicatorKPI;
+    @FXML
     private Button btnSetEmployee;
     @FXML
+    private HBox boxIndicatorEmployee;
+    @FXML
     private Button btnSetUser;
+    @FXML
+    private HBox boxIndicatorUser;
     @FXML
     private Pane paneCompany;
     @FXML
@@ -234,6 +241,8 @@ public class SettingsController implements Initializable {
     @FXML
     private Button btnFormPK_save;
 
+    @FXML
+    private VBox vboxPositionKPIs;
     @FXML
     private TableView<PositionKPI> tblPositionKPI;
     @FXML
@@ -516,12 +525,21 @@ public class SettingsController implements Initializable {
     }
 
     private void settingsNave(String location) {
+        paneFormKPIClass.setVisible(false);
+        paneMasterKPI.setVisible(false);
+        paneFormPosition.setVisible(false);
+        paneFormPositionKPI.setVisible(false);
+        paneUserForm.setVisible(false);
+
         paneCompany.setVisible(false);
         paneKPI.setVisible(false);
         paneEmployee.setVisible(false);
         paneUsers.setVisible(false);
 
         boxIndicatorCompany.setVisible(false);
+        boxIndicatorKPI.setVisible(false);
+        boxIndicatorEmployee.setVisible(false);
+        boxIndicatorUser.setVisible(false);
 
         switch (location){
             case "company":
@@ -530,13 +548,16 @@ public class SettingsController implements Initializable {
                 break;
             case "kpi":
                 paneKPI.setVisible(true);
+                boxIndicatorKPI.setVisible(true);
                 break;
             case "employee":
                 paneEmployee.setVisible(true);
-                tblPositionKPI.setVisible(false);
+                vboxPositionKPIs.setVisible(false);
+                boxIndicatorEmployee.setVisible(true);
                 break;
             case "user":
                 paneUsers.setVisible(true);
+                boxIndicatorUser.setVisible(true);
                 break;
 
         }
@@ -607,6 +628,10 @@ public class SettingsController implements Initializable {
         chkFormClassKPI_auto.setSelected(kpiClass.getAuto_fill_employees());
     }
     private void showPaneFormClassKPI() {
+        paneFormKPIClass.setLayoutX(tblKPIClasses.getLayoutX());
+        paneFormKPIClass.setLayoutY(tblKPIClasses.getLayoutY());
+        paneFormKPIClass.setPrefWidth(tblKPIClasses.getPrefWidth());
+        paneFormKPIClass.setPrefHeight(tblKPIClasses.getPrefHeight());
         paneFormKPIClass.setVisible(true);
     }
 
@@ -835,6 +860,10 @@ public class SettingsController implements Initializable {
     }
 
     private void showFormPosition() {
+        paneFormPosition.setLayoutX(tblPositions.getLayoutX());
+        paneFormPosition.setLayoutY(tblPositions.getLayoutY());
+        paneFormPosition.setPrefWidth(tblPositions.getPrefWidth());
+        paneFormPosition.setPrefHeight(tblPositions.getPrefHeight());
         paneFormPosition.setVisible(true);
     }
 
@@ -878,12 +907,12 @@ public class SettingsController implements Initializable {
         positionKPIList = FXCollections.observableArrayList(PositionKPIConnector.getPositionKPIsPosition(positionID));
         tblPositionKPI.getItems().removeAll();
         tblPositionKPI.setItems(positionKPIList);
-        tblPositionKPI.setVisible(true);
+        vboxPositionKPIs.setVisible(true);
         bntAddPositionKPI.setVisible(true);
         bntRemovePositionKPI.setVisible(true);
     }
     private void hidePositionKPIs() {
-        tblPositionKPI.setVisible(false);
+        vboxPositionKPIs.setVisible(false);
         bntAddPositionKPI.setVisible(false);
         bntRemovePositionKPI.setVisible(false);
     }
@@ -973,6 +1002,10 @@ public class SettingsController implements Initializable {
     }
 
     private void showFormPositionKPI() {
+        paneFormPositionKPI.setLayoutX(vboxPositionKPIs.getLayoutX());
+        paneFormPositionKPI.setLayoutY(vboxPositionKPIs.getLayoutY());
+        paneFormPositionKPI.setPrefWidth(tblPositionKPI.getPrefWidth());
+        paneFormPositionKPI.setPrefHeight(tblPositionKPI.getPrefHeight());
         paneFormPositionKPI.setVisible(true);
     }
 

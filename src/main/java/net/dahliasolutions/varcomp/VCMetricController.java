@@ -1,20 +1,15 @@
 package net.dahliasolutions.varcomp;
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -39,13 +34,8 @@ import java.util.ResourceBundle;
 public class VCMetricController implements Initializable {
 
     @FXML
-    private Label lblTitle;
-    @FXML
     private Button btnMetricHome;
-    @FXML
-    private VBox paneParent;
-    @FXML
-    private ScrollPane spnMetricDetail;
+
     @FXML
     private Pane paneMetricTable;
     @FXML
@@ -143,11 +133,27 @@ public class VCMetricController implements Initializable {
     private Button btnFormDP_save;
 
     @FXML
+    private Button btnAddCompanyKPI;
+    @FXML
+    private Button btnRemoveCompanyKPI;
+    @FXML
+    private Button btnRefreshCompanyKPI;
+    @FXML
+    private Button btnAddEmployee;
+    @FXML
+    private Button btnRemoveEmployee;
+    @FXML
+    private Button btnRefreshEmployee;
+
+    @FXML
+    private TableView<CompanyKPI> tblDetailCompanyKPI;
+
+    @FXML
     private TableView<EmployeeScore> tblDetailEmployeeScores;
 
     ObservableList<Metric> metricList;
     ObservableList<MetricDetail> metricDetailList;
-    private Metric metricDetail = new Metric();
+    private final Metric metricDetail = new Metric();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -155,8 +161,8 @@ public class VCMetricController implements Initializable {
 
         btnMetricHome.setOnAction(event -> navMetricHome());
         bntNewMetric.setOnAction(event -> newMetric());
-        txtFormNewYear.setOnKeyPressed(keyEvent -> updateFormNewMetricLabel(keyEvent));
-        txtFormNewPeriod.setOnKeyPressed(keyEvent -> updateFormNewMetricLabel(keyEvent));
+        txtFormNewYear.setOnKeyPressed(this::updateFormNewMetricLabel);
+        txtFormNewPeriod.setOnKeyPressed(this::updateFormNewMetricLabel);
         btnFormNewMetric_cancel.setOnAction(event -> cancelNewMetric());
 
     /* Metric Table */
@@ -194,7 +200,7 @@ public class VCMetricController implements Initializable {
                     setGraphic(null);
                 } else {
                     setText(item);
-                    if (item == "Closed") {
+                    if (item.equals("Closed")) {
                         setTextFill(Color.DARKRED); // or use setStyle(String)
                     } else {
                         setTextFill(Color.DARKGREEN); // or use setStyle(String)
@@ -287,12 +293,12 @@ public class VCMetricController implements Initializable {
 
     private void newMetric() {
         LocalDate localDate = LocalDate.now();
-        Integer nY = localDate.getYear();
-        Integer nP = (localDate.getMonthValue() / 4)+1;
+        int nY = localDate.getYear();
+        int nP = (localDate.getMonthValue() / 4)+1;
 
-        txtFormNewYear.setText(nY.toString());
-        txtFormNewPeriod.setText(nP.toString());
-        txtFormNewLabel.setText(nY.toString()+" - "+nP.toString());
+        txtFormNewYear.setText(Integer.toString(nY));
+        txtFormNewPeriod.setText(Integer.toString(nP));
+        txtFormNewLabel.setText(nY +" - "+ nP);
         showFormNewMetric(true);
     }
 
@@ -341,6 +347,7 @@ public class VCMetricController implements Initializable {
     }
 
     private void navMetricHome(){
+        paneFormNewMetric.setVisible(false);
         fillPaneMetricDetail(new Metric());
         showPaneMetricDetail(false);
     }
@@ -469,10 +476,6 @@ public class VCMetricController implements Initializable {
 //        fillDetailMetricPeriods();
      }
 
-     private void editMetricPeriodDetail() {
-        showFormDP((MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem());
-     }
-
      private void saveMetricPeriodDetail() {
          DecimalFormatSymbols symbols = new DecimalFormatSymbols();
          symbols.setDecimalSeparator('.');
@@ -480,24 +483,27 @@ public class VCMetricController implements Initializable {
          DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
          decimalFormat.setParseBigDecimal(true);
 
-         BigDecimal dpBudget = new BigDecimal(0.00);
-         BigDecimal dpActual = new BigDecimal(0.00);
-         BigDecimal dpEarnings = new BigDecimal(0.00);
+         BigDecimal dpBudget;
+         BigDecimal dpActual;
+         BigDecimal dpEarnings;
 
          try{
              dpBudget = ((BigDecimal) decimalFormat.parse(txtFormDPBudget.getText()));
          } catch (ParseException e) {
              System.out.println("Budget is not a number!");
+             dpBudget = BigDecimal.valueOf(0);
          }
          try{
              dpActual = ((BigDecimal) decimalFormat.parse(txtFormDPActual.getText()));
          } catch (ParseException e) {
              System.out.println("Actual is not a number!");
+             dpActual = BigDecimal.valueOf(0);
          }
          try{
              dpEarnings = ((BigDecimal) decimalFormat.parse(txtFormDPEarnings.getText()));
          } catch (ParseException e) {
              System.out.println("Earnings is not a number!");
+             dpEarnings = BigDecimal.valueOf(0);
          }
 
          MetricDetail md = new MetricDetail(Integer.parseInt(txtFormDPDetailID.getText()),
@@ -515,12 +521,16 @@ public class VCMetricController implements Initializable {
      }
 
     private void showFormDP() {
-        paneMetricDetail.setVisible(true);
+//        paneMetricDetail.setVisible(true);
         formDetailMetricPeriod.setVisible(false);
     }
     private void showFormDP(MetricDetail md) {
-        paneMetricDetail.setVisible(false);
+        formDetailMetricPeriod.setLayoutX(tblDetailMetricPeriods.getLayoutX());
+        formDetailMetricPeriod.setLayoutY(tblDetailMetricPeriods.getLayoutY());
+        formDetailMetricPeriod.setPrefHeight(tblDetailMetricPeriods.getPrefHeight());
+        formDetailMetricPeriod.setPrefWidth(tblDetailMetricPeriods.getPrefWidth());
         formDetailMetricPeriod.setVisible(true);
+
         txtFormDPPeriod.setText(md.getDetail_period().toString());
         txtFormDPBudget.setText(md.getDetail_budget().toString());
         txtFormDPActual.setText(md.getDetail_actual().toString());
@@ -542,8 +552,8 @@ public class VCMetricController implements Initializable {
         DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
         decimalFormat.setParseBigDecimal(true);
 
-        BigDecimal dpBudget = new BigDecimal(0.00);
-        BigDecimal dpActual = new BigDecimal(0.00);
+        BigDecimal dpBudget;
+        BigDecimal dpActual;
 
         try{
             dpBudget = ((BigDecimal) decimalFormat.parse(txtFormDPBudget.getText()));
@@ -563,7 +573,7 @@ public class VCMetricController implements Initializable {
                 BigDecimal dpEarnings = dpBudget.subtract(dpActual);
                 txtFormDPEarnings.setText(dpEarnings.toString());
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e.toString());
             }
 
         }
@@ -573,7 +583,7 @@ public class VCMetricController implements Initializable {
         metricDetail.setMetric_shares(VarComp.getCurrentCompany().getShares_issued_amount());
         txtDetailMetricShares.setText(metricDetail.getMetric_shares().toString());
         if(metricDetail.getMetric_funding().doubleValue() > 0) {
-            Double eps = metricDetail.getMetric_funding().doubleValue() / metricDetail.getMetric_shares();
+            double eps = metricDetail.getMetric_funding().doubleValue() / metricDetail.getMetric_shares();
             BigDecimal metricEPS = new BigDecimal(eps);
             metricEPS = metricEPS.setScale(2, RoundingMode.HALF_UP);
             metricDetail.setMetric_eps(metricEPS);
@@ -582,12 +592,12 @@ public class VCMetricController implements Initializable {
     }
 
     private void calcMetric() {
-        BigDecimal metricEarnings = new BigDecimal(0.00);
-        BigDecimal metricFunding = new BigDecimal(0.00);
-        BigDecimal metricEPS = new BigDecimal(0.00);
-        Double eps = 0.00;
+        BigDecimal metricEarnings = BigDecimal.valueOf(0.00);
+        BigDecimal metricFunding = BigDecimal.valueOf(0.00);
+        BigDecimal metricEPS = BigDecimal.valueOf(0.00);
+        double eps = 0.00;
         BigDecimal metricPayout = calcMetricPayout();
-        Integer metricShares = Integer.parseInt(txtDetailMetricShares.getText());
+        int metricShares = Integer.parseInt(txtDetailMetricShares.getText());
 
         for (MetricDetail md : metricDetailList) {
             metricEarnings = metricEarnings.add(md.getDetail_earnings());
@@ -613,7 +623,7 @@ public class VCMetricController implements Initializable {
     }
 
     private BigDecimal calcMetricPayout() {
-        return new BigDecimal(0.00);
+        return BigDecimal.valueOf(0.00);
     }
 
 }
