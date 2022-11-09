@@ -12,6 +12,7 @@ import net.dahliasolutions.varcomp.connectors.UserConnector;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;
 
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;

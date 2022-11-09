@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class VarComp extends Application {
@@ -25,6 +26,18 @@ public class VarComp extends Application {
 
         Image appIcon = new Image(VarComp.class.getResource("VcompIcon.png").openStream());
         stage.getIcons().add(appIcon);
+
+        //Set icon on the taskbar/dock
+        if (Taskbar.isTaskbarSupported()) {
+            var taskbar = Taskbar.getTaskbar();
+
+            if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+                final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+                var dockIcon = defaultToolkit.getImage(getClass().getResource("VcompIcon.png"));
+                taskbar.setIconImage(dockIcon);
+            }
+
+        }
 
         double recWidth = DBUtils.getStageSize("app_width");
         double recHeight = DBUtils.getStageSize("app_height");
