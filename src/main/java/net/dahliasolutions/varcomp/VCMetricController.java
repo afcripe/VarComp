@@ -27,6 +27,7 @@ import net.dahliasolutions.varcomp.connectors.MetricDetailConnector;
 import net.dahliasolutions.varcomp.models.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -106,6 +107,8 @@ public class VCMetricController implements Initializable {
     @FXML
     private Button btnMetricSave;
     @FXML
+    private Button btnSharesRefresh;
+    @FXML
     private TextField txtDetailMetricEarning;
     @FXML
     private TextField txtDetailMetricFunding;
@@ -177,7 +180,7 @@ public class VCMetricController implements Initializable {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Metric, String> param) {
                 String cellValue = "Open";
                 if(param.getValue().getLocked()) {
-                    cellValue = "CLosed";
+                    cellValue = "Closed";
                 }
                 return new SimpleObjectProperty<String>(cellValue);
             }
@@ -220,6 +223,15 @@ public class VCMetricController implements Initializable {
         btnMetricSave.setOnAction(event -> saveMetricDetail());
         btnDetailAddMetricDetail.setOnAction(event -> addMetricPeriodDetail());
         btnDetailRemoveMetricDetail.setOnAction(event -> removeMetricPeriodDetail());
+        btnSharesRefresh.setOnAction(event -> updateShares());
+        chkDetailMetricLocked.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CheckBox chk = (CheckBox) event.getTarget();
+                setMetricLock(chk.isSelected());
+            }
+        });
+
         tbcDetailPeriod.setCellValueFactory(new PropertyValueFactory<MetricDetail, Integer>("detail_period"));
         tbcDetailBudget.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MetricDetail, String>, ObservableValue<String>>() {
             @Override
@@ -250,6 +262,14 @@ public class VCMetricController implements Initializable {
                 }
             }
         });
+
+    /* Period Detail Form */
+        txtFormDPBudget.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            dpFocusState(newValue);
+        });
+        txtFormDPActual.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            dpFocusState(newValue);
+        });
         btnFormDP_cancel.setOnAction(event -> showFormDP());
         btnFormDP_save.setOnAction(event -> saveMetricPeriodDetail());
     }
@@ -258,6 +278,11 @@ public class VCMetricController implements Initializable {
       if(!b) {
           metricDetailUpdateLabel();
       }
+    }
+    private void dpFocusState(Boolean b) {
+        if(!b) {
+            dpFormCalcEarnings();
+        }
     }
 
     private void newMetric() {
@@ -306,6 +331,7 @@ public class VCMetricController implements Initializable {
         metric.setMetric_label(txtFormNewLabel.getText());
         metric.setMetric_year(Integer.parseInt(txtFormNewYear.getText()));
         metric.setMetric_period(Integer.parseInt(txtFormNewPeriod.getText()));
+        metric.setMetric_shares(VarComp.getCurrentCompany().getShares_issued_amount());
         metric.insertMetric();
 
         cancelNewMetric();
@@ -341,9 +367,16 @@ public class VCMetricController implements Initializable {
     private void setLockStyle() {
         if(metricDetail.getLocked()) {
             boxMetricDetailStatus.setStyle("-fx-background-color: DARKRED;");
+            btnMetricSave.setDisable(true);
         } else {
             boxMetricDetailStatus.setStyle("-fx-background-color: DARKGREEN;");
+            btnMetricSave.setDisable(false);
         }
+    }
+    private void setMetricLock(Boolean locked) {
+        metricDetail.setLocked(locked);
+        setLockStyle();
+        saveMetricDetail();
     }
 
     private void fillDetailMetricPeriods() {
@@ -454,17 +487,17 @@ public class VCMetricController implements Initializable {
          try{
              dpBudget = ((BigDecimal) decimalFormat.parse(txtFormDPBudget.getText()));
          } catch (ParseException e) {
-             System.out.println("Earnings is not a number!");
+             System.out.println("Budget is not a number!");
          }
          try{
              dpActual = ((BigDecimal) decimalFormat.parse(txtFormDPActual.getText()));
          } catch (ParseException e) {
-             System.out.println("Funding is not a number!");
+             System.out.println("Actual is not a number!");
          }
          try{
              dpEarnings = ((BigDecimal) decimalFormat.parse(txtFormDPEarnings.getText()));
          } catch (ParseException e) {
-             System.out.println("Payout is not a number!");
+             System.out.println("Earnings is not a number!");
          }
 
          MetricDetail md = new MetricDetail(Integer.parseInt(txtFormDPDetailID.getText()),
@@ -477,6 +510,7 @@ public class VCMetricController implements Initializable {
              md.updateMetricDetail();
          }
          fillDetailMetricPeriods();
+         calcMetric();
          showFormDP();
      }
 
@@ -495,9 +529,91 @@ public class VCMetricController implements Initializable {
         txtFormDPMetricID.setText(md.getMetric_id().toString());
     }
 
-     private void removeMetricPeriodDetail() {
-        MetricDetail md = (MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem();
-        md.deleteMetricDetail();
-        fillDetailMetricPeriods();
-     }
+    private void removeMetricPeriodDetail() {
+       MetricDetail md = (MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem();
+       md.deleteMetricDetail();
+       fillDetailMetricPeriods();
+    }
+
+    private void dpFormCalcEarnings() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        String pattern = "#0.0#";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+
+        BigDecimal dpBudget = new BigDecimal(0.00);
+        BigDecimal dpActual = new BigDecimal(0.00);
+
+        try{
+            dpBudget = ((BigDecimal) decimalFormat.parse(txtFormDPBudget.getText()));
+        } catch (ParseException e) {
+            System.out.println("Budget is not a number!");
+            return;
+        }
+        try{
+            dpActual = ((BigDecimal) decimalFormat.parse(txtFormDPActual.getText()));
+        } catch (ParseException e) {
+            System.out.println("Actual is not a number!");
+            return;
+        }
+
+        if(dpBudget.doubleValue() > 0 && dpActual.doubleValue() > 0) {
+            try {
+                BigDecimal dpEarnings = dpBudget.subtract(dpActual);
+                txtFormDPEarnings.setText(dpEarnings.toString());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+        }
+    }
+
+    private void updateShares() {
+        metricDetail.setMetric_shares(VarComp.getCurrentCompany().getShares_issued_amount());
+        txtDetailMetricShares.setText(metricDetail.getMetric_shares().toString());
+        if(metricDetail.getMetric_funding().doubleValue() > 0) {
+            Double eps = metricDetail.getMetric_funding().doubleValue() / metricDetail.getMetric_shares();
+            BigDecimal metricEPS = new BigDecimal(eps);
+            metricEPS = metricEPS.setScale(2, RoundingMode.HALF_UP);
+            metricDetail.setMetric_eps(metricEPS);
+            txtDetailMetricEPS.setText(metricEPS.toString());
+        }
+    }
+
+    private void calcMetric() {
+        BigDecimal metricEarnings = new BigDecimal(0.00);
+        BigDecimal metricFunding = new BigDecimal(0.00);
+        BigDecimal metricEPS = new BigDecimal(0.00);
+        Double eps = 0.00;
+        BigDecimal metricPayout = calcMetricPayout();
+        Integer metricShares = Integer.parseInt(txtDetailMetricShares.getText());
+
+        for (MetricDetail md : metricDetailList) {
+            metricEarnings = metricEarnings.add(md.getDetail_earnings());
+        }
+
+        if(metricEarnings.doubleValue() > 0){
+            metricFunding = metricEarnings.multiply(VarComp.getCurrentCompany().getFunding_percentage());
+            metricFunding = metricFunding.setScale(2, RoundingMode.HALF_UP);
+            eps = metricFunding.doubleValue() / metricShares;
+            metricEPS = new BigDecimal(eps);
+            metricEPS = metricEPS.setScale(2, RoundingMode.HALF_UP);
+        }
+
+        metricDetail.setMetric_earnings(metricEarnings);
+        metricDetail.setMetric_funding(metricFunding);
+        metricDetail.setMetric_eps(metricEPS);
+        metricDetail.setMetric_payout(metricPayout);
+
+        txtDetailMetricEarning.setText(metricEarnings.toString());
+        txtDetailMetricFunding.setText(metricFunding.toString());
+        txtDetailMetricEPS.setText(metricEPS.toString());
+        txtDetailMetricPayout.setText(metricPayout.toString());
+    }
+
+    private BigDecimal calcMetricPayout() {
+        return new BigDecimal(0.00);
+    }
+
 }
