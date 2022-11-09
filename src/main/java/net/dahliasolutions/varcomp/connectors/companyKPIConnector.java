@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.CompanyKPI;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class companyKPIConnector {
         CompanyKPI companyKPI = new CompanyKPI();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLCOMPANYKPIS WHERE COMPANY_KPI_ID=?");
             preparedStatement.setInt(1, companyKPIid);
             resultSet = preparedStatement.executeQuery();
@@ -62,7 +63,7 @@ public class companyKPIConnector {
         CompanyKPI newCompanyKPI = new CompanyKPI();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO TBLCOMPANYKPIS " +
                     "SET KPI_CODE=?, KPI_MASTER_ID=?, WEIGHT=?, METRIC_ID=?, KPI_CLASS=?, F1_NAME=?, F2_NAME=?, " +
                     "F3_NAME=?, F4_NAME=?, F1_DATA=?, F2_DATA=?, F3_DATA=?, F4_DATA=?, CALC_INSTRUCTIONS=?, " +
@@ -130,7 +131,7 @@ public class companyKPIConnector {
         ArrayList<CompanyKPI> companyKPIList = new ArrayList<>();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLCOMPANYKPIS");
             resultSet = preparedStatement.executeQuery();
 
@@ -176,7 +177,7 @@ public class companyKPIConnector {
         ArrayList<CompanyKPI> companyKPIList = new ArrayList<>();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLCOMPANYKPIS WHERE METRIC_ID=?");
             preparedStatement.setInt(1, metricID);
             resultSet = preparedStatement.executeQuery();
@@ -222,7 +223,7 @@ public class companyKPIConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLCOMPANYKPIS " +
                     "SET KPI_CODE=?, KPI_MASTER_ID=?, WEIGHT=?, METRIC_ID=?, KPI_CLASS=?, F1_NAME=?, F2_NAME=?, " +
                     "F3_NAME=?, F4_NAME=?, F1_DATA=?, F2_DATA=?, F3_DATA=?, F4_DATA=?, CALC_INSTRUCTIONS=?, " +
@@ -260,7 +261,7 @@ public class companyKPIConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM TBLCOMPANYKPIS WHERE COMPANY_KPI_ID=?");
             preparedStatement.setInt(1, companyKPIid);
             preparedStatement.executeUpdate();

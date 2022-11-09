@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.KPIClass;
 
 import java.sql.*;
@@ -14,7 +15,7 @@ public class KPIClassConnector {
         KPIClass kpiClass = new KPIClass();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblkpiclasses WHERE kpi_class_id=?");
             preparedStatement.setInt(1, classID);
             resultSet = preparedStatement.executeQuery();
@@ -46,7 +47,7 @@ public class KPIClassConnector {
         KPIClass newKPIClass = new KPIClass();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO tblkpiclasses " +
                     "SET name=?, description=?, auto_fill_employees=?");
             preparedStatement.setString(1, kpiClass.getName());
@@ -85,7 +86,7 @@ public class KPIClassConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblkpiclasses");
             resultSet = preparedStatement.executeQuery();
 
@@ -115,7 +116,7 @@ public class KPIClassConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tblkpiclasses " +
                     "SET name=?, description=?, auto_fill_employees=? WHERE kpi_class_id=?");
             preparedStatement.setString(1, kpiClass.getName());
@@ -138,7 +139,7 @@ public class KPIClassConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM tblkpiclasses WHERE kpi_class_id=?");
             preparedStatement.setInt(1, classID);
             preparedStatement.executeUpdate();

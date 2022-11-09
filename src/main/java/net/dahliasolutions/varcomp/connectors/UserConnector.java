@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.User;
 
 import java.sql.*;
@@ -14,7 +15,7 @@ public class UserConnector {
         User user = new User();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblusers WHERE user_name=?");
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
@@ -49,7 +50,7 @@ public class UserConnector {
         User newUser = new User();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO tblusers " +
                     "SET user_name=?, user_password=?, user_type=?");
             preparedStatement.setString(1, user.getUser_name());
@@ -88,7 +89,7 @@ public class UserConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblusers");
             resultSet = preparedStatement.executeQuery();
 
@@ -118,7 +119,7 @@ public class UserConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tblusers " +
                     "SET user_name=?, user_password=?, user_type=? WHERE user_id=?");
             preparedStatement.setString(1, user.getUser_name());
@@ -146,7 +147,7 @@ public class UserConnector {
         }
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM tblusers WHERE user_id=?");
             preparedStatement.setInt(1, userID);
             preparedStatement.executeUpdate();

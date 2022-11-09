@@ -4,13 +4,23 @@ import java.sql.*;
 
 public class DBUtils {
 
+    private static String varCompDB = "jdbc:h2:./varcompdb";
+
+    public static String getDBLocation() {
+        return varCompDB;
+    }
+
+    public void setDBLocations(String db) {
+        varCompDB = "jdbc:h2:"+db+"varcompdb";
+    }
+
     public static Boolean updateDBTable(double w, double h) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tbldbsettings SET app_width=?, app_height=? WHERE DB_ID=1 ORDER BY DB_ID DESC LIMIT 1");
             preparedStatement.setDouble(1, w);
             preparedStatement.setDouble(2, h);
@@ -38,7 +48,7 @@ public class DBUtils {
         double returnSize = 750;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT " + col + " FROM tbldbsettings  WHERE DB_ID=1");
             resultSet = preparedStatement.executeQuery();
 

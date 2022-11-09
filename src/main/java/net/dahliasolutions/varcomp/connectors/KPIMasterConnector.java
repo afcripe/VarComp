@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.KPIMaster;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class KPIMasterConnector {
         KPIMaster kpiMaster = new KPIMaster();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblkpimaster WHERE KPI_MASTER_ID=?");
             preparedStatement.setInt(1, masterID);
             resultSet = preparedStatement.executeQuery();
@@ -60,7 +61,7 @@ public class KPIMasterConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblkpimaster");
             resultSet = preparedStatement.executeQuery();
 
@@ -104,7 +105,7 @@ public class KPIMasterConnector {
         KPIMaster newKPIMaster = new KPIMaster();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO tblkpimaster " +
                     "SET kpi_code=?, description=?, kpi_class=?, calc_instructions=?, " +
                     "SCORE_EXTRAORDINARY=?, SCORE_GREAT=?, SCORE_WELL=?, SCORE_NEEDS_IMPROVEMENT=?, " +
@@ -166,7 +167,7 @@ public class KPIMasterConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tblkpimaster " +
                     "SET kpi_code=?, description=?, kpi_class=?, calc_instructions=?, " +
                     "SCORE_EXTRAORDINARY=?, SCORE_GREAT=?, SCORE_WELL=?, SCORE_NEEDS_IMPROVEMENT=?, " +
@@ -201,7 +202,7 @@ public class KPIMasterConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM tblkpimaster WHERE kpi_master_id=?");
             preparedStatement.setInt(1, masterID);
             preparedStatement.executeUpdate();

@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.Metric;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class MetricConnector {
         Metric metric = new Metric();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS WHERE metric_id=?");
             preparedStatement.setInt(1, metricID);
             resultSet = preparedStatement.executeQuery();
@@ -57,7 +58,7 @@ public class MetricConnector {
         Metric newMetric = new Metric();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO TBLMETRICS " +
                     "SET COMPANY_ID=?, METRIC_LABEL=?, METRIC_EARNINGS=?, METRIC_FUNDING=?, METRIC_EPS=?, METRIC_SHARES=?, " +
                     "METRIC_PAYOUT=?, METRIC_YEAR=?, METRIC_PERIOD=?, LOCKED=?, LOCK_DATE=?");
@@ -115,7 +116,7 @@ public class MetricConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS");
             resultSet = preparedStatement.executeQuery();
 
@@ -157,7 +158,7 @@ public class MetricConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS WHERE LOCKED=?");
             preparedStatement.setBoolean(1, locked);
             resultSet = preparedStatement.executeQuery();
@@ -198,7 +199,7 @@ public class MetricConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLMETRICS " +
                     "SET COMPANY_ID=?, METRIC_LABEL=?, METRIC_EARNINGS=?, METRIC_FUNDING=?, METRIC_EPS=?, METRIC_SHARES=?, " +
                     "METRIC_PAYOUT=?, METRIC_YEAR=?, METRIC_PERIOD=?, LOCKED=?, LOCK_DATE=? WHERE METRIC_ID=?");
@@ -230,7 +231,7 @@ public class MetricConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM TBLMETRICS WHERE METRIC_ID=?");
             preparedStatement.setInt(1, metricID);
             preparedStatement.executeUpdate();

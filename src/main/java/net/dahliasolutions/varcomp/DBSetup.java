@@ -12,7 +12,7 @@ public class DBSetup {
 
     public static void initializeDB() {
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
         } catch (SQLException e) {
             e.printStackTrace();
         }

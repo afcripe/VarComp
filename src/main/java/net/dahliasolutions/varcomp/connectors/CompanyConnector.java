@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.Company;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class CompanyConnector {
         Company company = new Company();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblcompany WHERE company_id=?");
             preparedStatement.setInt(1, companyID);
             resultSet = preparedStatement.executeQuery();
@@ -52,7 +53,7 @@ public class CompanyConnector {
         ArrayList<Company> companies = new ArrayList<>();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblcompany");
             resultSet = preparedStatement.executeQuery();
 
@@ -88,7 +89,7 @@ public class CompanyConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tblcompany SET COMPANY_NAME= ?," +
                     "SHARES_TOTAL=?, SHARES_OUTSTANDING=?, FUNDING_PERCENTAGE=?," +
                     "SHARES_ISSUED_AMOUNT=?, SHARES_ISSUED_YEARS=?, COMPANY_LOGO_SHOW=? WHERE company_id=?");

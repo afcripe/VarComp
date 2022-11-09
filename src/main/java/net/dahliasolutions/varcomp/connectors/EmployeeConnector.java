@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.Employee;
 
 import java.sql.*;
@@ -14,7 +15,7 @@ public class EmployeeConnector {
         Employee employee = new Employee();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEES WHERE employee_id=?");
             preparedStatement.setString(1, employeeID);
             resultSet = preparedStatement.executeQuery();
@@ -43,6 +44,36 @@ public class EmployeeConnector {
         return employee.getEmployee();
     }
 
+    public static String getEmployeeName(String employeeID) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String employee = "";
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT first_name, last_name FROM TBLEMPLOYEES WHERE employee_id=?");
+            preparedStatement.setString(1, employeeID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("Employee not found.");
+            } else {
+                while (resultSet.next()) {
+                    String recFirstName = resultSet.getString("first_name");
+                    String recLastName = resultSet.getString("last_name");
+
+                    employee = recFirstName + " " + recLastName;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            employee = "";
+        }
+
+        return employee;
+    }
+
     public static Boolean insertEmployee(Employee employee) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -50,7 +81,7 @@ public class EmployeeConnector {
         Boolean insertSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             // check for existing ID
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEES WHERE employee_id=?");
             preparedStatement.setString(1, employee.getEmployee_id());
@@ -88,7 +119,7 @@ public class EmployeeConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEES");
             resultSet = preparedStatement.executeQuery();
 
@@ -124,7 +155,7 @@ public class EmployeeConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEES WHERE IS_ACTIVE=?");
             preparedStatement.setBoolean(1, isActive);
             resultSet = preparedStatement.executeQuery();
@@ -159,7 +190,7 @@ public class EmployeeConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLEMPLOYEES " +
                     "SET POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, SHARES_ASSIGNED=? WHERE EMPLOYEE_ID=?");
             preparedStatement.setInt(1, employee.getPosition());
@@ -185,7 +216,7 @@ public class EmployeeConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM TBLEMPLOYEES WHERE employee_id=?");
             preparedStatement.setString(1, employeeID);
             preparedStatement.executeUpdate();

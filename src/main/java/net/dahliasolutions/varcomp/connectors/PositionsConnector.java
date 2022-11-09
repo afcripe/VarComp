@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.Position;
 
 import java.sql.*;
@@ -14,7 +15,7 @@ public class PositionsConnector {
         Position position = new Position();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblpositions WHERE position_id=?");
             preparedStatement.setInt(1, positionID);
             resultSet = preparedStatement.executeQuery();
@@ -46,7 +47,7 @@ public class PositionsConnector {
         Position newPosition = new Position();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO tblpositions " +
                     "SET position=?, description=?, shares=?");
             preparedStatement.setString(1, position.getPosition_name());
@@ -85,7 +86,7 @@ public class PositionsConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblpositions");
             resultSet = preparedStatement.executeQuery();
 
@@ -115,7 +116,7 @@ public class PositionsConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tblpositions " +
                     "SET position=?, description=?, shares=? WHERE position_id=?");
             preparedStatement.setString(1, position.getPosition_name());
@@ -138,7 +139,7 @@ public class PositionsConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM tblpositions WHERE position_id=?");
             preparedStatement.setInt(1, positionID);
             preparedStatement.executeUpdate();

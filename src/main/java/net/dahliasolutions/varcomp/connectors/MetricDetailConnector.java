@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.MetricDetail;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class MetricDetailConnector {
         MetricDetail metricDetail = new MetricDetail();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICDETAILS WHERE METRIC_DETAIL_ID=?");
             preparedStatement.setInt(1, detailID);
             resultSet = preparedStatement.executeQuery();
@@ -49,7 +50,7 @@ public class MetricDetailConnector {
         MetricDetail newMetricDetail = new MetricDetail();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO TBLMETRICDETAILS " +
                     "SET METRIC_ID=?, DETAIL_PERIOD=?, DETAIL_BUDGET=?, DETAIL_ACTUAL=?, DETAIL_EARNINGS=?");
             preparedStatement.setInt(1, metricDetail.getMetric_id());
@@ -91,7 +92,7 @@ public class MetricDetailConnector {
         ArrayList<MetricDetail> metricDetailList = new ArrayList<>();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICDETAILS");
             resultSet = preparedStatement.executeQuery();
 
@@ -124,7 +125,7 @@ public class MetricDetailConnector {
         ArrayList<MetricDetail> metricDetailList = new ArrayList<>();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICDETAILS WHERE METRIC_ID=?");
             preparedStatement.setInt(1, metricID);
             resultSet = preparedStatement.executeQuery();
@@ -157,7 +158,7 @@ public class MetricDetailConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLMETRICDETAILS " +
                     "SET METRIC_ID=?, DETAIL_PERIOD=?, DETAIL_BUDGET=?, DETAIL_ACTUAL=?, DETAIL_EARNINGS=? WHERE METRIC_DETAIL_ID=?");
             preparedStatement.setInt(1, metricDetail.getMetric_id());
@@ -182,7 +183,7 @@ public class MetricDetailConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM TBLMETRICDETAILS WHERE METRIC_DETAIL_ID=?");
             preparedStatement.setInt(1, detailID);
             preparedStatement.executeUpdate();

@@ -1,29 +1,34 @@
 package net.dahliasolutions.varcomp.models;
 
+import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class EmployeeScore {
 
     private Integer score_id;
-    private Integer employee_id;
+    private String employee_id;
     private Integer employee_kpi_id;
     private Integer metric_id;
     private Integer shares;
     private BigDecimal score;
     private BigDecimal bonus;
 
+    private String employee_name;
+
     public EmployeeScore() {
         setScore_id(0);
-        setEmployee_id(0);
+        setEmployee_id("");
         setEmployee_kpi_id(0);
         setMetric_id(0);
         setShares(0);
         setScore(new BigDecimal(0.00));
         setBonus(new BigDecimal(0.00));
+        setEmployee_name("");
     }
 
-    public EmployeeScore(Integer scoreID, Integer employeeID, Integer employeeKPIid, Integer metricID,
+    public EmployeeScore(Integer scoreID, String employeeID, Integer employeeKPIid, Integer metricID,
                          Integer shares, BigDecimal score, BigDecimal bonus) {
         setScore_id(scoreID);
         setEmployee_id(employeeID);
@@ -32,6 +37,19 @@ public class EmployeeScore {
         setShares(shares);
         setScore(score);
         setBonus(bonus);
+        setEmployee_name(EmployeeConnector.getEmployeeName(getEmployee_id()));
+    }
+
+    public EmployeeScore(Integer scoreID, String employeeID, Integer employeeKPIid, Integer metricID,
+                         Integer shares, BigDecimal score, BigDecimal bonus, String employeeName) {
+        setScore_id(scoreID);
+        setEmployee_id(employeeID);
+        setEmployee_kpi_id(employeeKPIid);
+        setMetric_id(metricID);
+        setShares(shares);
+        setScore(score);
+        setBonus(bonus);
+        setEmployee_name(EmployeeConnector.getEmployeeName(getEmployee_id()));
     }
 
     public void setEmployeeScore(EmployeeScore employeeScore) {
@@ -42,6 +60,7 @@ public class EmployeeScore {
         this.shares = employeeScore.getShares();
         this.score = employeeScore.getScore();
         this.bonus = employeeScore.getBonus();
+        this.employee_name = employeeScore.getEmployee_name();
     }
 
     public EmployeeScore getEmployeeScore() { return this; }
@@ -54,9 +73,9 @@ public class EmployeeScore {
 
     public void setScore_id(Integer score_id) { this.score_id = score_id; }
 
-    public Integer getEmployee_id() { return employee_id; }
+    public String getEmployee_id() { return employee_id; }
 
-    public void setEmployee_id(Integer employee_id) { this.employee_id = employee_id; }
+    public void setEmployee_id(String employee_id) { this.employee_id = employee_id; }
 
     public Integer getEmployee_kpi_id() { return employee_kpi_id; }
 
@@ -82,5 +101,14 @@ public class EmployeeScore {
     public void setBonus(BigDecimal bonus) {
         this.bonus = bonus;
         this.bonus = this.bonus.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public void setEmployee_name(String employee_name) { this.employee_name = employee_name; }
+
+    public String getEmployee_name() { return employee_name; }
+
+    public String refreshEmployeeName() {
+        setEmployee_name(EmployeeConnector.getEmployeeName(getEmployee_id()));
+        return getEmployee_name();
     }
 }

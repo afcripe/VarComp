@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.PositionKPI;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class PositionKPIConnector {
         PositionKPI positionKPI = new PositionKPI();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLPOSITIONKPIS WHERE item_id=?");
             preparedStatement.setInt(1, itemID);
             resultSet = preparedStatement.executeQuery();
@@ -47,7 +48,7 @@ public class PositionKPIConnector {
         PositionKPI newPositionKPI = new PositionKPI();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO TBLPOSITIONKPIS " +
                     "SET POSITION_ID=?, KPI_MASTER_ID=?, WEIGHT=?");
             preparedStatement.setInt(1, positionKPI.getPosition_id());
@@ -86,7 +87,7 @@ public class PositionKPIConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLPOSITIONKPIS");
             resultSet = preparedStatement.executeQuery();
 
@@ -116,7 +117,7 @@ public class PositionKPIConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLPOSITIONKPIS " +
                     "SET POSITION_ID=?, KPI_MASTER_ID=?, WEIGHT=? WHERE ITEM_ID=?");
             preparedStatement.setInt(1, positionKPI.getPosition_id());
@@ -139,7 +140,7 @@ public class PositionKPIConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM TBLPOSITIONKPIS WHERE ITEM_ID=?");
             preparedStatement.setInt(1, itemID);
             preparedStatement.executeUpdate();
@@ -160,7 +161,7 @@ public class PositionKPIConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLPOSITIONKPIS WHERE POSITION_ID=?");
             preparedStatement.setInt(1, positionID);
             resultSet = preparedStatement.executeQuery();
@@ -193,7 +194,7 @@ public class PositionKPIConnector {
 
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLPOSITIONKPIS WHERE KPI_MASTER_ID=?");
             preparedStatement.setInt(1, kpiMasterID);
             resultSet = preparedStatement.executeQuery();

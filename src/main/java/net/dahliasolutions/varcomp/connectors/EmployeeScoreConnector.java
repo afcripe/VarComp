@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
+import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.CompanyKPI;
 import net.dahliasolutions.varcomp.models.EmployeeScore;
 
@@ -16,7 +17,7 @@ public class EmployeeScoreConnector {
         EmployeeScore employeeScore = new EmployeeScore();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE SCORE_ID=?");
             preparedStatement.setInt(1, scoreID);
             resultSet = preparedStatement.executeQuery();
@@ -26,7 +27,7 @@ public class EmployeeScoreConnector {
             } else {
                 while (resultSet.next()) {
                     Integer recSCoreID = resultSet.getInt("score_id");
-                    Integer recEmployeeID = resultSet.getInt("employee_id");
+                    String recEmployeeID = resultSet.getString("employee_id");
                     Integer recEmployeeKPIid = resultSet.getInt("employee_kpi_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
@@ -52,11 +53,11 @@ public class EmployeeScoreConnector {
         EmployeeScore newEmployeeScore = new EmployeeScore();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO TBLEMPLOYEESCORES " +
                     "SET EMPLOYEE_ID=?, EMPLOYEE_KPI_ID=?, METRIC_ID=?, METRIC_ID=?, SHARES=?, " +
                     "SCORE=?, BONUS=?");
-            preparedStatement.setInt(1, employeeScore.getEmployee_id());
+            preparedStatement.setString(1, employeeScore.getEmployee_id());
             preparedStatement.setInt(2, employeeScore.getEmployee_kpi_id());
             preparedStatement.setInt(3, employeeScore.getMetric_id());
             preparedStatement.setInt(4, employeeScore.getShares());
@@ -72,7 +73,7 @@ public class EmployeeScoreConnector {
             } else {
                 while (resultSet.next()) {
                     Integer recSCoreID = resultSet.getInt("score_id");
-                    Integer recEmployeeID = resultSet.getInt("employee_id");
+                    String recEmployeeID = resultSet.getString("employee_id");
                     Integer recEmployeeKPIid = resultSet.getInt("employee_kpi_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
@@ -98,7 +99,7 @@ public class EmployeeScoreConnector {
         ArrayList<EmployeeScore> employeeScoreList = new ArrayList<>();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES");
             resultSet = preparedStatement.executeQuery();
 
@@ -107,7 +108,7 @@ public class EmployeeScoreConnector {
             } else {
                 while (resultSet.next()) {
                     Integer recSCoreID = resultSet.getInt("score_id");
-                    Integer recEmployeeID = resultSet.getInt("employee_id");
+                    String recEmployeeID = resultSet.getString("employee_id");
                     Integer recEmployeeKPIid = resultSet.getInt("employee_kpi_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
@@ -133,7 +134,7 @@ public class EmployeeScoreConnector {
         ArrayList<EmployeeScore> employeeScoreList = new ArrayList<>();
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE METRIC_ID=?");
             preparedStatement.setInt(1, metricID);
             resultSet = preparedStatement.executeQuery();
@@ -143,7 +144,7 @@ public class EmployeeScoreConnector {
             } else {
                 while (resultSet.next()) {
                     Integer recSCoreID = resultSet.getInt("score_id");
-                    Integer recEmployeeID = resultSet.getInt("employee_id");
+                    String recEmployeeID = resultSet.getString("employee_id");
                     Integer recEmployeeKPIid = resultSet.getInt("employee_kpi_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
@@ -168,11 +169,11 @@ public class EmployeeScoreConnector {
         Boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLEMPLOYEESCORES " +
                     "SET EMPLOYEE_ID=?, EMPLOYEE_KPI_ID=?, METRIC_ID=?, METRIC_ID=?, SHARES=?, " +
                     "SCORE=?, BONUS=? WHERE SCORE_ID=?");
-            preparedStatement.setInt(1, employeeScore.getEmployee_id());
+            preparedStatement.setString(1, employeeScore.getEmployee_id());
             preparedStatement.setInt(2, employeeScore.getEmployee_kpi_id());
             preparedStatement.setInt(3, employeeScore.getMetric_id());
             preparedStatement.setInt(4, employeeScore.getShares());
@@ -195,7 +196,7 @@ public class EmployeeScoreConnector {
         Boolean deleteSuccess = false;
 
         try {
-            connection = DriverManager.getConnection("jdbc:h2:./varcompdb", "sa", "password");
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("DELETE FROM TBLEMPLOYEESCORES WHERE SCORE_ID=?");
             preparedStatement.setInt(1, scoreID);
             preparedStatement.executeUpdate();

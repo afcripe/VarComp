@@ -17,6 +17,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -52,6 +53,8 @@ public class SettingsController implements Initializable {
     private Label lblTitle;
     @FXML
     private Button btnSetCompany;
+    @FXML
+    private HBox boxIndicatorCompany;
     @FXML
     private Button btnSetKPI;
     @FXML
@@ -518,9 +521,12 @@ public class SettingsController implements Initializable {
         paneEmployee.setVisible(false);
         paneUsers.setVisible(false);
 
+        boxIndicatorCompany.setVisible(false);
+
         switch (location){
             case "company":
                 paneCompany.setVisible(true);
+                boxIndicatorCompany.setVisible(true);
                 break;
             case "kpi":
                 paneKPI.setVisible(true);
