@@ -4,3 +4,7 @@ New Metric created =>
     auto generate companyKPI details for all KPIs of type 'Company'.
     auto generate employeeKPI details for all active employees and assign 'Company' KPI or create empty KPI.
     auto generate employeeScores
+
+
+DB Updates
+    Add Share Bonus column to employee table that adds to auto-assigned shares

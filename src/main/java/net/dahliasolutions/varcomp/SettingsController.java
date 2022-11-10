@@ -242,7 +242,7 @@ public class SettingsController implements Initializable {
     private Button btnFormPK_save;
 
     @FXML
-    private VBox vboxPositionKPIs;
+    private HBox boxPositionKPIs;
     @FXML
     private TableView<PositionKPI> tblPositionKPI;
     @FXML
@@ -552,7 +552,8 @@ public class SettingsController implements Initializable {
                 break;
             case "employee":
                 paneEmployee.setVisible(true);
-                vboxPositionKPIs.setVisible(false);
+                boxPositionKPIs.setVisible(false);
+                tblPositionKPI.setVisible(false);
                 boxIndicatorEmployee.setVisible(true);
                 break;
             case "user":
@@ -907,12 +908,14 @@ public class SettingsController implements Initializable {
         positionKPIList = FXCollections.observableArrayList(PositionKPIConnector.getPositionKPIsPosition(positionID));
         tblPositionKPI.getItems().removeAll();
         tblPositionKPI.setItems(positionKPIList);
-        vboxPositionKPIs.setVisible(true);
+        boxPositionKPIs.setVisible(true);
+        tblPositionKPI.setVisible(true);
         bntAddPositionKPI.setVisible(true);
         bntRemovePositionKPI.setVisible(true);
     }
     private void hidePositionKPIs() {
-        vboxPositionKPIs.setVisible(false);
+        boxPositionKPIs.setVisible(false);
+        tblPositionKPI.setVisible(false);
         bntAddPositionKPI.setVisible(false);
         bntRemovePositionKPI.setVisible(false);
     }
@@ -959,8 +962,10 @@ public class SettingsController implements Initializable {
             decWeight = new BigDecimal(100.00);
         }
 
+        Integer classID = KPIMasterConnector.getKPIMaster(Integer.parseInt(split[0])).getKpi_class();
+
         PositionKPI positionKPI = new PositionKPI(Integer.parseInt(txtFormPKItem_id.getText()),
-                Integer.parseInt(splitName[0]), Integer.parseInt(split[0]), decWeight);
+                Integer.parseInt(splitName[0]), Integer.parseInt(split[0]), classID, decWeight);
 
         if ( positionKPI.getItem_id().equals(0)) {
             Integer i = positionKPI.insertPositionKPI();
@@ -1002,8 +1007,8 @@ public class SettingsController implements Initializable {
     }
 
     private void showFormPositionKPI() {
-        paneFormPositionKPI.setLayoutX(vboxPositionKPIs.getLayoutX());
-        paneFormPositionKPI.setLayoutY(vboxPositionKPIs.getLayoutY());
+        paneFormPositionKPI.setLayoutX(tblPositionKPI.getLayoutX());
+        paneFormPositionKPI.setLayoutY(tblPositionKPI.getLayoutY());
         paneFormPositionKPI.setPrefWidth(tblPositionKPI.getPrefWidth());
         paneFormPositionKPI.setPrefHeight(tblPositionKPI.getPrefHeight());
         paneFormPositionKPI.setVisible(true);

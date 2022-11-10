@@ -159,17 +159,15 @@
                </HBox>
                <HBox alignment="CENTER_RIGHT" spacing="4.0">
                   <HBox prefWidth="200.0" />
-                  <Button fx:id="btnAddCompanyKPI" mnemonicParsing="false" text="Add Employees" />
+                  <Button fx:id="btnAddCompanyKPI" mnemonicParsing="false" text="Add KPIs" />
                   <Button fx:id="btnRemoveCompanyKPI" mnemonicParsing="false" text="Remove Selected" />
                   <Button fx:id="btnRefreshCompanyKPI" mnemonicParsing="false" prefWidth="25.0" text="r" />
                </HBox>
                <TableView fx:id="tblDetailCompanyKPI" prefHeight="200.0" prefWidth="517.0">
                   <columns>
-                     <TableColumn prefWidth="75.0" text="ID" />
-                     <TableColumn prefWidth="175.0" text="KPI" />
-                     <TableColumn prefWidth="138.0" text="Weight" />
-                     <TableColumn prefWidth="138.0" text="Grade" />
-                     <TableColumn prefWidth="138.0" text="Score" />
+                     <TableColumn fx:id="tbcCompanyKPICode" prefWidth="175.0" text="KPI" />
+                     <TableColumn fx:id="tbcCompanyKPIGrade" prefWidth="138.0" text="Grade" />
+                     <TableColumn fx:id="tbcCompanyKPIScore" prefWidth="138.0" text="Score" />
                   </columns>
                </TableView>
 
@@ -193,11 +191,10 @@
                </HBox>
                <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" prefWidth="517.0">
                   <columns>
-                     <TableColumn prefWidth="75.0" text="ID" />
-                     <TableColumn prefWidth="175.0" text="Name" />
-                     <TableColumn prefWidth="138.0" text="Shares" />
-                     <TableColumn prefWidth="138.0" text="Score" />
-                     <TableColumn prefWidth="138.0" text="Bonus" />
+                     <TableColumn fx:id="tbcEmployeeName" prefWidth="175.0" text="Name" />
+                     <TableColumn fx:id="tbcEmployeeShares" prefWidth="138.0" text="Shares" />
+                     <TableColumn fx:id="tbcEmployeeScore" prefWidth="138.0" text="Score" />
+                     <TableColumn fx:id="tbcEmployeeBonus" prefWidth="138.0" text="Bonus" />
                   </columns>
                </TableView>
                <opaqueInsets>

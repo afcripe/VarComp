@@ -274,33 +274,31 @@
                     <TableColumn fx:id="tbcPositionShares" minWidth="0.0" prefWidth="100.5" text="Shares" />
                 </columns>
             </TableView>
-            <VBox fx:id="vboxPositionKPIs" visible="false" spacing="4">
-                <HBox alignment="CENTER" spacing="4.0" VBox.vgrow="ALWAYS">
-                    <Label fx:id="lblEmployeeTitlePK" prefWidth="150.0" text="Position KPIs">
-                      <font>
-                          <Font name="System Bold" size="14.0" />
-                      </font>
-                      <padding>
-                         <Insets left="16.0" />
-                      </padding>
-                    </Label>
-                      <HBox HBox.hgrow="ALWAYS" />
-                    <Button fx:id="bntAddPositionKPI" mnemonicParsing="false" prefWidth="75" text="Add" />
-                    <Button fx:id="bntRemovePositionKPI" mnemonicParsing="false" prefWidth="75" text="Remove" />
-                    <padding>
-                       <Insets top="16.0" />
-                    </padding>
-                </HBox>
-                <TableView fx:id="tblPositionKPI" prefHeight="120.0" prefWidth="550.0">
-                    <columns>
-                        <TableColumn fx:id="tbcPKMasterKPI" prefWidth="191.0" text="KPI" />
-                        <TableColumn fx:id="tbcPKWeight" minWidth="0.0" prefWidth="100.5" text="Weight" />
-                    </columns>
-                </TableView>
+            <HBox fx:id="boxPositionKPIs" alignment="CENTER" spacing="4.0" VBox.vgrow="ALWAYS">
+                <Label fx:id="lblEmployeeTitlePK" prefWidth="150.0" text="Position KPIs">
+                  <font>
+                      <Font name="System Bold" size="14.0" />
+                  </font>
                   <padding>
-                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     <Insets left="16.0" />
                   </padding>
-                </VBox>
+                </Label>
+                  <HBox HBox.hgrow="ALWAYS" />
+                <Button fx:id="bntAddPositionKPI" mnemonicParsing="false" prefWidth="75" text="Add" />
+                <Button fx:id="bntRemovePositionKPI" mnemonicParsing="false" prefWidth="75" text="Remove" />
+                <padding>
+                   <Insets top="16.0" />
+                </padding>
+            </HBox>
+            <TableView fx:id="tblPositionKPI" prefHeight="120.0" prefWidth="550.0">
+                <columns>
+                    <TableColumn fx:id="tbcPKMasterKPI" prefWidth="191.0" text="KPI" />
+                    <TableColumn fx:id="tbcPKWeight" minWidth="0.0" prefWidth="100.5" text="Weight" />
+                </columns>
+            </TableView>
+              <padding>
+                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+              </padding>
         </VBox>
 
         <VBox fx:id="paneFormPosition" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">

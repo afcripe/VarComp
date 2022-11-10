@@ -250,7 +250,7 @@ public class DBSetup {
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblpositionkpis " +
                     "(item_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                    "position_id BIGINT, kpi_master_id BIGINT, weight NUMERIC(7,4))");
+                    "position_id BIGINT, kpi_master_id BIGINT, kpi_class_id BIGINT, weight NUMERIC(7,4))");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

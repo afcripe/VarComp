@@ -43,6 +43,28 @@ public class CompanyKPI {
         setKpi_score(new BigDecimal(0.00));
     }
 
+    public CompanyKPI(Integer companyKPIid, String KPICode, Integer masterID, Integer metricID,
+                      Integer kpiClass, String f1Name, String f2Name, String f3Name, String f4Name,
+                      String calcInstructions) {
+        setCompany_kpi_id(companyKPIid);
+        setKpi_code(KPICode);
+        setKpi_master_id(masterID);
+        setWeight(new BigDecimal(0.00));
+        setMetric_id(metricID);
+        setKpi_class(kpiClass);
+        setF1_name(f1Name);
+        setF2_name(f2Name);
+        setF3_name(f3Name);
+        setF4_name(f4Name);
+        setF1_data(new BigDecimal(0.00));
+        setF2_data(new BigDecimal(0.00));
+        setF3_data(new BigDecimal(0.00));
+        setF4_data(new BigDecimal(0.00));
+        setCalc_instructions(calcInstructions);
+        setKpi_grade(new BigDecimal(0.00));
+        setKpi_score(new BigDecimal(0.00));
+    }
+
     public CompanyKPI(Integer companyKPIid, String KPICode, Integer masterID, BigDecimal weight, Integer metricID,
                       Integer kpiClass, String f1Name, String f2Name, String f3Name, String f4Name,
                       BigDecimal f1Data, BigDecimal f2Data, BigDecimal f3Data, BigDecimal f4Data,

@@ -1,9 +1,12 @@
 package net.dahliasolutions.varcomp.models;
 
-import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
+import net.dahliasolutions.varcomp.connectors.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class Employee {
     private String employee_id;
@@ -105,5 +108,39 @@ public class Employee {
 
     public void setShares_assigned(Integer shares_assigned) {
         this.shares_assigned = shares_assigned;
+    }
+
+    public void addToMetric(Integer metricID) {
+        // get list of KPIs for employee by position
+        ArrayList<PositionKPI> positionKPIArrayList = PositionKPIConnector.getPositionKPIsPosition(getPosition());
+
+        //get Company KPIs, Loop and Insert
+        ArrayList<CompanyKPI> companyKPIArrayList = CompanyKPIConnector.getCompanyKPIs(metricID);
+        for (CompanyKPI companyKPI : companyKPIArrayList) {
+            if (!findKPIByPosition(positionKPIArrayList, companyKPI.getKpi_master_id()).isEmpty()) {
+                EmployeeKPIConnector.insertEmployeeKPI(new EmployeeKPI(0,
+                        companyKPI.getKpi_code(), companyKPI.getKpi_master_id(), getPositionKPIWeight(companyKPI.getKpi_master_id()),
+                        metricID, companyKPI.getKpi_class(), companyKPI.getCompany_kpi_id(), companyKPI.getF1_name(),
+                        companyKPI.getF2_name(), companyKPI.getF3_name(), companyKPI.getF4_name(), companyKPI.getF1_data(),
+                        companyKPI.getF2_data(), companyKPI.getF3_data(), companyKPI.getF4_data(), companyKPI.getCalc_instructions(),
+                        companyKPI.getKpi_grade(), companyKPI.getKpi_score()
+                ));
+            }
+        }
+
+        // filter list of KPIs by employee class, Loop and Insert
+//        ArrayList<PositionKPI> filteredList = positionKPIArrayList.stream()
+//                .filter(t -> t.getKPIClass.equals(kpiID))
+//                .collect(Collectors.toList());
+    }
+
+    private BigDecimal getPositionKPIWeight(Integer masterID) {
+        return PositionKPIConnector.getPositionKPIByMasterAndPosition(masterID, getPosition()).getWeight();
+    }
+
+    private ArrayList<PositionKPI> findKPIByPosition(ArrayList<PositionKPI> aList, Integer kpiID) {
+        return (ArrayList<PositionKPI>) aList.stream()
+                .filter(t -> t.getKpi_master_id().equals(kpiID))
+                .collect(Collectors.toList());
     }
 }

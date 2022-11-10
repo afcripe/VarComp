@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class companyKPIConnector {
+public class CompanyKPIConnector {
 
     public static CompanyKPI getCompanyKPI(Integer companyKPIid) {
         Connection connection = null;

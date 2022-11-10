@@ -4,6 +4,7 @@ import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.KPIMaster;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -63,6 +64,51 @@ public class KPIMasterConnector {
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM tblkpimaster");
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("No KPIs found.");
+            } else {
+                while (resultSet.next()) {
+                    Integer recKPIId = resultSet.getInt("kpi_master_id");
+                    String recKPICode = resultSet.getString("kpi_code");
+                    String recDescription = resultSet.getString("description");
+                    Integer recKPIClass = resultSet.getInt("kpi_class");
+                    String recCalcInstructions = resultSet.getString("calc_instructions");
+                    BigDecimal recScoreExtraordinary = resultSet.getBigDecimal("score_extraordinary");
+                    BigDecimal recScoreGreat = resultSet.getBigDecimal("score_great");
+                    BigDecimal recScoreWell = resultSet.getBigDecimal("score_well");
+                    BigDecimal recScoreNeedsImprovement = resultSet.getBigDecimal("score_needs_improvement");
+                    BigDecimal recScoreNotAcceptable = resultSet.getBigDecimal("score_not_acceptable");
+                    String recF1Name = resultSet.getString("f1_name");
+                    String recF2Name = resultSet.getString("f2_name");
+                    String recF3Name = resultSet.getString("f3_name");
+                    String recF4Name = resultSet.getString("f4_name");
+
+                    kpiMasterList.add(new KPIMaster(recKPIId, recKPICode, recDescription, recKPIClass, recCalcInstructions,
+                            recScoreExtraordinary, recScoreGreat, recScoreWell, recScoreNeedsImprovement,
+                            recScoreNotAcceptable, recF1Name, recF2Name, recF3Name, recF4Name));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            kpiMasterList.add(new KPIMaster());
+        }
+
+        return kpiMasterList;
+    }
+
+    public static ArrayList<KPIMaster> getKPIMasters(Integer classID) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<KPIMaster> kpiMasterList = new ArrayList<>();
+
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT * FROM tblkpimaster WHERE KPI_CLASS=?");
+            preparedStatement.setInt(1, classID);
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {

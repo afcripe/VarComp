@@ -28,9 +28,10 @@ public class PositionKPIConnector {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
                     Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
+                    Integer recKPIClassID = resultSet.getInt("kpi_class_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
-                    positionKPI = new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight);
+                    positionKPI = new PositionKPI(recItemId, recPositionID, recKPIMasterID, recKPIClassID, recWeight);
                 }
             }
         } catch (SQLException e) {
@@ -66,9 +67,10 @@ public class PositionKPIConnector {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
                     Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
+                    Integer recKPIClassID = resultSet.getInt("kpi_class_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
-                    newPositionKPI = new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight);
+                    newPositionKPI = new PositionKPI(recItemId, recPositionID, recKPIMasterID, recKPIClassID, recWeight);
                 }
             }
         } catch (SQLException e) {
@@ -98,9 +100,10 @@ public class PositionKPIConnector {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
                     Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
+                    Integer recKPIClassID = resultSet.getInt("kpi_class_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
-                    positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight));
+                    positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recKPIClassID, recWeight));
                 }
             }
         } catch (SQLException e) {
@@ -119,11 +122,12 @@ public class PositionKPIConnector {
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLPOSITIONKPIS " +
-                    "SET POSITION_ID=?, KPI_MASTER_ID=?, WEIGHT=? WHERE ITEM_ID=?");
+                    "SET POSITION_ID=?, KPI_MASTER_ID=?, KPI_CLASS_ID=?, WEIGHT=? WHERE ITEM_ID=?");
             preparedStatement.setInt(1, positionKPI.getPosition_id());
             preparedStatement.setInt(2, positionKPI.getKpi_master_id());
-            preparedStatement.setBigDecimal(3, positionKPI.getWeight());
-            preparedStatement.setInt(4, positionKPI.getItem_id());
+            preparedStatement.setInt(3, positionKPI.getKpi_class_id());
+            preparedStatement.setBigDecimal(4, positionKPI.getWeight());
+            preparedStatement.setInt(5, positionKPI.getItem_id());
             preparedStatement.executeUpdate();
 
             updateSuccess = true;
@@ -153,6 +157,41 @@ public class PositionKPIConnector {
         return deleteSuccess;
     }
 
+    public static PositionKPI getPositionKPIByMasterAndPosition(Integer masterID, Integer positionID) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        PositionKPI positionKPI = new PositionKPI();
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLPOSITIONKPIS" +
+                                        "WHERE KPI_MASTER_ID=? AND POSTION_ID=?");
+            preparedStatement.setInt(1, masterID);
+            preparedStatement.setInt(2, positionID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("Position KPI not found.");
+            } else {
+                while (resultSet.next()) {
+                    Integer recItemId = resultSet.getInt("item_id");
+                    Integer recPositionID = resultSet.getInt("position_id");
+                    Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
+                    Integer recKPIClassID = resultSet.getInt("kpi_class_id");
+                    BigDecimal recWeight = resultSet.getBigDecimal("weight");
+
+                    positionKPI = new PositionKPI(recItemId, recPositionID, recKPIMasterID, recKPIClassID, recWeight);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            positionKPI = new PositionKPI();
+        }
+
+        return positionKPI.getPositionKPI();
+    }
+
     public static ArrayList<PositionKPI> getPositionKPIsPosition(Integer positionID) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -173,9 +212,10 @@ public class PositionKPIConnector {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
                     Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
+                    Integer recKPIClassID = resultSet.getInt("kpi_class_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
-                    positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight));
+                    positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recKPIClassID, recWeight));
                 }
             }
         } catch (SQLException e) {
@@ -206,9 +246,10 @@ public class PositionKPIConnector {
                     Integer recItemId = resultSet.getInt("item_id");
                     Integer recPositionID = resultSet.getInt("position_id");
                     Integer recKPIMasterID = resultSet.getInt("kpi_master_id");
+                    Integer recKPIClassID = resultSet.getInt("kpi_class_id");
                     BigDecimal recWeight = resultSet.getBigDecimal("weight");
 
-                    positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recWeight));
+                    positionKPISList.add(new PositionKPI(recItemId, recPositionID, recKPIMasterID, recKPIClassID, recWeight));
                 }
             }
         } catch (SQLException e) {

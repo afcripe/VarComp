@@ -17,8 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import net.dahliasolutions.varcomp.connectors.MetricConnector;
-import net.dahliasolutions.varcomp.connectors.MetricDetailConnector;
+import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
 import java.math.BigDecimal;
@@ -29,7 +28,10 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class VCMetricController implements Initializable {
 
@@ -147,12 +149,28 @@ public class VCMetricController implements Initializable {
 
     @FXML
     private TableView<CompanyKPI> tblDetailCompanyKPI;
+    @FXML
+    private TableColumn<CompanyKPI, String> tbcCompanyKPICode;
+    @FXML
+    private TableColumn<CompanyKPI, String> tbcCompanyKPIGrade;
+    @FXML
+    private TableColumn<CompanyKPI, String> tbcCompanyKPIScore;
 
     @FXML
     private TableView<EmployeeScore> tblDetailEmployeeScores;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcEmployeeName;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcEmployeeShares;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcEmployeeScore;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcEmployeeBonus;
 
     ObservableList<Metric> metricList;
     ObservableList<MetricDetail> metricDetailList;
+    ObservableList<CompanyKPI> companyKPIObservableList;
+    ObservableList<EmployeeScore> employeeScoresObservableList;
     private final Metric metricDetail = new Metric();
 
     @Override
@@ -278,6 +296,51 @@ public class VCMetricController implements Initializable {
         });
         btnFormDP_cancel.setOnAction(event -> showFormDP());
         btnFormDP_save.setOnAction(event -> saveMetricPeriodDetail());
+
+    /* Company KPIs */
+        btnAddCompanyKPI.setOnAction(event -> addMissingEmployees());
+        btnRemoveCompanyKPI.setOnAction(event -> removeMissingEmployees());
+        tbcCompanyKPICode.setCellValueFactory(new PropertyValueFactory<CompanyKPI, String>("kpi_code"));
+        tbcCompanyKPIGrade.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CompanyKPI, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<CompanyKPI, String> param) {
+                NumberFormat fm = NumberFormat.getNumberInstance();
+                return new SimpleObjectProperty<String>(fm.format(param.getValue().getKpi_grade()));
+            }
+        });
+        tbcCompanyKPIScore.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CompanyKPI, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<CompanyKPI, String> param) {
+                NumberFormat fm = NumberFormat.getNumberInstance();
+                return new SimpleObjectProperty<String>(fm.format(param.getValue().getKpi_score()));
+            }
+        });
+
+    /* Employee Scores */
+        btnAddEmployee.setOnAction(event -> addMissingCompanyKPIs());
+        btnRemoveEmployee.setOnAction(event -> removeCompanyKPI());
+        tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<EmployeeScore, String>("kpi_code"));
+        tbcEmployeeShares.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeScore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeScore, String> param) {
+                NumberFormat fm = NumberFormat.getNumberInstance();
+                return new SimpleObjectProperty<String>(fm.format(param.getValue().getShares()));
+            }
+        });
+        tbcEmployeeScore.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeScore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeScore, String> param) {
+                NumberFormat fm = NumberFormat.getNumberInstance();
+                return new SimpleObjectProperty<String>(fm.format(param.getValue().getScore()));
+            }
+        });
+        tbcEmployeeBonus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeScore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeScore, String> param) {
+                NumberFormat fm = NumberFormat.getNumberInstance();
+                return new SimpleObjectProperty<String>(fm.format(param.getValue().getBonus()));
+            }
+        });
     }
 
     private void focusState(Boolean b) {
@@ -338,6 +401,7 @@ public class VCMetricController implements Initializable {
         metric.setMetric_year(Integer.parseInt(txtFormNewYear.getText()));
         metric.setMetric_period(Integer.parseInt(txtFormNewPeriod.getText()));
         metric.setMetric_shares(VarComp.getCurrentCompany().getShares_issued_amount());
+        metric.setCompany_id(VarComp.getCurrentCompany().getCompany_id());
         metric.insertMetric();
 
         cancelNewMetric();
@@ -369,6 +433,7 @@ public class VCMetricController implements Initializable {
         txtDetailMetricEPS.setText(metric.getMetric_eps().toString());
         setLockStyle();
         fillDetailMetricPeriods();
+        fillCompanyKPIs();
     }
 
     private void setLockStyle() {
@@ -390,6 +455,18 @@ public class VCMetricController implements Initializable {
         metricDetailList = FXCollections.observableArrayList(MetricDetailConnector.getMetricDetails(metricDetail.getMetric_id()));
         tblDetailMetricPeriods.getItems().removeAll();
         tblDetailMetricPeriods.setItems(metricDetailList);
+    }
+
+    private void fillCompanyKPIs() {
+        companyKPIObservableList = FXCollections.observableArrayList(CompanyKPIConnector.getCompanyKPIs(metricDetail.getMetric_id()));
+        tblDetailCompanyKPI.getItems().removeAll();
+        tblDetailCompanyKPI.setItems(companyKPIObservableList);
+    }
+
+    private void fillEmployees() {
+        employeeScoresObservableList = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScores(metricDetail.getMetric_id()));
+        tblDetailEmployeeScores.getItems().removeAll();
+        tblDetailEmployeeScores.setItems(employeeScoresObservableList);
     }
 
     private void showPaneMetricDetail(Boolean show) {
@@ -507,7 +584,7 @@ public class VCMetricController implements Initializable {
          }
 
          MetricDetail md = new MetricDetail(Integer.parseInt(txtFormDPDetailID.getText()),
-                 Integer.parseInt(txtFormDPMetricID.getText()), Integer.parseInt(txtFormDPPeriod.getText()),
+                 metricDetail.getMetric_id(), Integer.parseInt(txtFormDPPeriod.getText()),
                  dpBudget, dpActual, dpEarnings);
 
          if(md.getMetric_detail_id().equals(0)) {
@@ -624,6 +701,59 @@ public class VCMetricController implements Initializable {
 
     private BigDecimal calcMetricPayout() {
         return BigDecimal.valueOf(0.00);
+    }
+
+    private void addMissingCompanyKPIs() {
+        // get KPIs from master list that are company-wide
+        ArrayList<KPIMaster> masterKPIArrayList = KPIMasterConnector.getKPIMasters();
+        // create metric KPIs from master list
+        for (KPIMaster kpm : masterKPIArrayList) {
+            if(findByCKPIMasterID(kpm.getKpi_master_id()).isEmpty()) {
+                CompanyKPIConnector.insertCompanyKPI(new CompanyKPI(VarComp.getCurrentCompany().getCompany_id(),
+                        kpm.getKpi_code(), kpm.getKpi_master_id(), metricDetail.getMetric_id(), kpm.getKpi_class(),
+                        kpm.getF1_name(), kpm.getF2_name(), kpm.getF3_name(), kpm.getF4_name(), kpm.getCalc_instructions()));
+            }
+        }
+        fillCompanyKPIs();
+    }
+    private ArrayList<CompanyKPI> findByCKPIMasterID(Integer i) {
+        return (ArrayList<CompanyKPI>) companyKPIObservableList.stream()
+                .filter(t -> t.getKpi_master_id().equals(i))
+                .collect(Collectors.toList());
+    }
+
+    private void removeCompanyKPI() {
+        CompanyKPIConnector.deleteCompanyKPI(tblDetailCompanyKPI.getSelectionModel().getSelectedItem().getCompany_kpi_id());
+        fillCompanyKPIs();
+    }
+
+    private void removeMissingEmployees() {
+        // ToDo
+    }
+
+    private void addMissingEmployees() {
+        // get active employees
+        ArrayList<Employee> employeeArrayList = EmployeeConnector.getEmployees(true);
+        // loop over current employees and add missing
+        for ( Employee employee : employeeArrayList ) {
+            if (findByEmployeeID(employee.getEmployee_id()).isEmpty()) {
+                addEmployeeScoreKPIs(employee.getEmployee_id());
+            }
+        }
+    }
+    private ArrayList<EmployeeScore> findByEmployeeID(String s) {
+        return (ArrayList<EmployeeScore>) employeeScoresObservableList.stream()
+                .filter(t -> t.getEmployee_id().equals(s))
+                .collect(Collectors.toList());
+    }
+
+    private void addEmployeeScoreKPIs(String employeeID) {
+        // get employee
+        Employee employee = EmployeeConnector.getEmployee(employeeID);
+        // create Company KPIs from list
+        for (CompanyKPI companyKPI : companyKPIObservableList) {
+
+        }
     }
 
 }
