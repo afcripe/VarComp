@@ -166,7 +166,7 @@ public class PositionKPIConnector {
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT * FROM TBLPOSITIONKPIS" +
-                                        "WHERE KPI_MASTER_ID=? AND POSTION_ID=?");
+                                        " WHERE KPI_MASTER_ID=? AND POSITION_ID=?");
             preparedStatement.setInt(1, masterID);
             preparedStatement.setInt(2, positionID);
             resultSet = preparedStatement.executeQuery();

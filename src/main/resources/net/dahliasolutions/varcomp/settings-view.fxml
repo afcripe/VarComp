@@ -271,7 +271,7 @@
                     <TableColumn fx:id="tbcPositionID" prefWidth="40.5" text="ID" />
                     <TableColumn fx:id="tbcPositionName" prefWidth="123.0" text="Position" />
                     <TableColumn fx:id="tbcPositionDescription" prefWidth="191.0" text="Description" />
-                    <TableColumn fx:id="tbcPositionShares" minWidth="0.0" prefWidth="100.5" text="Shares" />
+                    <TableColumn fx:id="tbcPositionShares" minWidth="0.0" prefWidth="100.5" text="Share Factor" />
                 </columns>
             </TableView>
             <HBox fx:id="boxPositionKPIs" alignment="CENTER" spacing="4.0" VBox.vgrow="ALWAYS">
@@ -312,8 +312,8 @@
                    <padding>
                       <Insets right="4.0" />
                    </padding></Label>
-                <TextField fx:id="txtFormPosition_name" prefHeight="25.0" prefWidth="203.0" />
-                <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="85.0" text="Shares:">
+                <TextField fx:id="txtFormPosition_name" prefHeight="25.0" prefWidth="183.0" />
+                <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="105.0" text="Share Factor:">
                    <padding>
                       <Insets right="4.0" />
                    </padding></Label>

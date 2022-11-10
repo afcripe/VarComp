@@ -56,6 +56,55 @@ public class CompanyKPIConnector {
         return companyKPI.getCompanyKPI();
     }
 
+    public static CompanyKPI getCompanyKPIByMaster(Integer metricID, Integer mastKPIid) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        CompanyKPI companyKPI = new CompanyKPI();
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLCOMPANYKPIS " +
+                    "WHERE METRIC_ID=? AND KPI_MASTER_ID=?");
+            preparedStatement.setInt(1, metricID);
+            preparedStatement.setInt(2, mastKPIid);
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("Company KPI not found.");
+            } else {
+                while (resultSet.next()) {
+                    Integer recCompanyKPIid = resultSet.getInt("company_kpi_id");
+                    String recKPICode = resultSet.getString("kpi_code");
+                    Integer recMasterKPI = resultSet.getInt("kpi_master_id");
+                    BigDecimal recWeight = resultSet.getBigDecimal("weight");
+                    Integer recMetricID = resultSet.getInt("metric_id");
+                    Integer recKPIClass = resultSet.getInt("kpi_class");
+                    String recF1Name = resultSet.getString("f1_name");
+                    String recF2Name = resultSet.getString("f2_name");
+                    String recF3Name = resultSet.getString("f3_name");
+                    String recF4Name = resultSet.getString("f4_name");
+                    BigDecimal recF1Data = resultSet.getBigDecimal("f1_data");
+                    BigDecimal recF2Data = resultSet.getBigDecimal("f2_data");
+                    BigDecimal recF3Data = resultSet.getBigDecimal("f3_data");
+                    BigDecimal recF4Data = resultSet.getBigDecimal("f4_data");
+                    String recCalc = resultSet.getString("calc_instructions");
+                    BigDecimal recGrade = resultSet.getBigDecimal("kpi_grade");
+                    BigDecimal recScore = resultSet.getBigDecimal("kpi_score");
+
+                    companyKPI = new CompanyKPI(recCompanyKPIid, recKPICode, recMasterKPI, recWeight, recMetricID,
+                            recKPIClass, recF1Name, recF2Name, recF3Name, recF4Name, recF1Data, recF2Data, recF3Data,
+                            recF4Data, recCalc, recGrade, recScore);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            companyKPI = new CompanyKPI();
+        }
+
+        return companyKPI.getCompanyKPI();
+    }
+
     public static CompanyKPI insertCompanyKPI(CompanyKPI companyKPI) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

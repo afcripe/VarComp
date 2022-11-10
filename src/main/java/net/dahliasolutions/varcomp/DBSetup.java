@@ -158,7 +158,7 @@ public class DBSetup {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployees " +
                     "(employee_id VARCHAR(5) PRIMARY KEY, " +
                     "position VARCHAR(25), first_name VARCHAR(45), last_name VARCHAR(45), " +
-                    "start_date DATE, is_active VARCHAR(45), shares_assigned INT)");
+                    "start_date DATE, is_active VARCHAR(45), starting_shares INT, shares_assigned INT)");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -282,7 +282,7 @@ public class DBSetup {
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployeekpis " +
-                    "(employee_kpi_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, kpi_code VARCHAR(25), " +
+                    "(employee_kpi_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, score_id BIGINT, kpi_code VARCHAR(25), " +
                     "kpi_master_id BIGINT, weight NUMERIC(7,4), metric_id BIGINT, kpi_class BIGINT, company_kpi_id BIGINT, " +
                     "f1_name VARCHAR(45), f2_name VARCHAR(45), f3_name VARCHAR(45), f4_name VARCHAR(45), " +
                     "f1_data NUMERIC(18,2), f2_data NUMERIC(18,2), f3_data NUMERIC(18,2), f4_data NUMERIC(18,2), " +
@@ -300,8 +300,8 @@ public class DBSetup {
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployeescores " +
-                    "(score_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, employee_id BIGINT, " +
-                    "employee_kpi_id BIGINT, metric_id BIGINT, " +
+                    "(score_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY," +
+                    "employee_id VARCHAR(5), metric_id BIGINT, " +
                     "shares INT, score NUMERIC(7,4), bonus NUMERIC(7,4))");
             preparedStatement.execute();
         } catch (SQLException e) {

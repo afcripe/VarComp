@@ -103,7 +103,7 @@
                            <Font name="System Bold" size="18.0" />
                         </font></Label>
                </HBox>
-               <HBox spacing="4.0">
+               <HBox fx:id="boxMetricDetailTable" spacing="4.0">
                   <TableView fx:id="tblDetailMetricPeriods" prefHeight="115.0" prefWidth="433.0">
                      <columns>
                         <TableColumn fx:id="tbcDetailPeriod" prefWidth="45.0" text="Period" />
@@ -163,7 +163,7 @@
                   <Button fx:id="btnRemoveCompanyKPI" mnemonicParsing="false" text="Remove Selected" />
                   <Button fx:id="btnRefreshCompanyKPI" mnemonicParsing="false" prefWidth="25.0" text="r" />
                </HBox>
-               <TableView fx:id="tblDetailCompanyKPI" prefHeight="200.0" prefWidth="517.0">
+               <TableView fx:id="tblDetailCompanyKPI" prefHeight="100.0" prefWidth="517.0">
                   <columns>
                      <TableColumn fx:id="tbcCompanyKPICode" prefWidth="175.0" text="KPI" />
                      <TableColumn fx:id="tbcCompanyKPIGrade" prefWidth="138.0" text="Grade" />
@@ -211,34 +211,33 @@
                         <padding>
                            <Insets right="4.0" />
                         </padding></Label>
-                  <TextField fx:id="txtFormDPPeriod" layoutX="101.0" layoutY="14.0" prefHeight="25.0" prefWidth="75.0" />
+                  <TextField fx:id="txtFormDPPeriod" prefWidth="75.0" />
                </HBox>
                <HBox>
-                  <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="95.0" text="Budget:">
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Budget:">
                         <padding>
                            <Insets right="4.0" />
                         </padding></Label>
-                  <TextField fx:id="txtFormDPBudget" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0" />
-                  <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="95.0" text="Actual:">
+                  <TextField fx:id="txtFormDPBudget" prefWidth="115.0" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Actual:">
                         <padding>
                            <Insets right="4.0" />
                         </padding></Label>
-                  <TextField fx:id="txtFormDPActual" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0" />
+                  <TextField fx:id="txtFormDPActual" prefWidth="115.0" />
                </HBox>
                <HBox>
-                  <Label alignment="CENTER_RIGHT" layoutX="259.0" layoutY="59.0" prefHeight="17.0" prefWidth="95.0" text="Earnings:">
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Earnings:">
                         <padding>
                            <Insets right="4.0" />
                         </padding></Label>
-                  <TextField fx:id="txtFormDPEarnings" layoutX="346.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0" />
+                  <TextField fx:id="txtFormDPEarnings" prefWidth="115.0" />
                </HBox>
 
                <HBox spacing="4.0">
                   <HBox prefHeight="25.0" prefWidth="200.0" />
-                  <TextField fx:id="txtFormDPDetailID" prefWidth="25.0" visible="false" />
-                  <TextField fx:id="txtFormDPMetricID" prefWidth="25.0" visible="false" />
-                  <Button fx:id="btnFormDP_cancel" layoutX="317.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-                  <Button fx:id="btnFormDP_save" layoutX="432.0" layoutY="110.0" mnemonicParsing="false" prefWidth="95" text="Save" />
+                  <TextField fx:id="txtFormDPDetailID" disable="true" prefWidth="50.0" />
+                  <Button fx:id="btnFormDP_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                  <Button fx:id="btnFormDP_save" mnemonicParsing="false" prefWidth="95" text="Save" />
                </HBox>
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />

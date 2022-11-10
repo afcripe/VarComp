@@ -7,6 +7,7 @@ public class EmployeeKPI {
 
     private Integer employee_kpi_id;
     private String kpi_code;
+    private Integer score_id;
     private Integer kpi_master_id;
     private BigDecimal weight;
     private Integer metric_id;
@@ -27,6 +28,7 @@ public class EmployeeKPI {
     public EmployeeKPI() {
         setEmployee_kpi_id(0);
         setKpi_code("");
+        setScore_id(0);
         setKpi_master_id(0);
         setWeight(new BigDecimal(0.00));
         setMetric_id(0);
@@ -45,12 +47,13 @@ public class EmployeeKPI {
         setKpi_score(new BigDecimal(0.00));
     }
 
-    public EmployeeKPI(Integer employeeKPIid, String KPICode, Integer masterID, BigDecimal weight, Integer metricID,
+    public EmployeeKPI(Integer employeeKPIid, String KPICode, Integer scoreID, Integer masterID, BigDecimal weight, Integer metricID,
                        Integer kpiClass, Integer companyKPIid, String f1Name, String f2Name, String f3Name, String f4Name,
                        BigDecimal f1Data, BigDecimal f2Data, BigDecimal f3Data, BigDecimal f4Data,
                        String calcInstructions, BigDecimal kpiGrade, BigDecimal kpiScore) {
         setEmployee_kpi_id(employeeKPIid);
         setKpi_code(KPICode);
+        setScore_id(scoreID);
         setKpi_master_id(masterID);
         setWeight(weight);
         setMetric_id(metricID);
@@ -72,6 +75,7 @@ public class EmployeeKPI {
     public void setEmployeeKPI(EmployeeKPI employeeKPI) {
         this.employee_kpi_id = employeeKPI.getEmployee_kpi_id();
         this.kpi_code = employeeKPI.getKpi_code();
+        this.score_id = employeeKPI.getScore_id();
         this.kpi_master_id = employeeKPI.getKpi_master_id();
         this.weight = employeeKPI.getWeight();
         this.metric_id = employeeKPI.getMetric_id();
@@ -103,6 +107,10 @@ public class EmployeeKPI {
     public String getKpi_code() { return kpi_code; }
 
     public void setKpi_code(String kpi_code) { this.kpi_code = kpi_code; }
+
+    public Integer getScore_id() { return score_id; }
+
+    public void setScore_id(Integer score_id) { this.score_id = score_id; }
 
     public Integer getKpi_master_id() { return kpi_master_id; }
 

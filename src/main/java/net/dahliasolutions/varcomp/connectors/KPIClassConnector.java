@@ -111,6 +111,8 @@ public class KPIClassConnector {
     }
 
     public static Boolean updateKPIClass(KPIClass kpiClass) {
+        if (kpiClass.getKpi_class_id() < 2) return false;
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         Boolean updateSuccess = false;
@@ -134,6 +136,8 @@ public class KPIClassConnector {
     }
 
     public static Boolean deleteKPIClass(Integer classID) {
+        if (classID < 2) return false;
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         Boolean deleteSuccess = false;

@@ -83,6 +83,8 @@ public class VCMetricController implements Initializable {
     @FXML
     private CheckBox chkDetailMetricLocked;
     @FXML
+    private HBox boxMetricDetailTable;
+    @FXML
     private TableView<MetricDetail> tblDetailMetricPeriods;
     @FXML
     private TableColumn<MetricDetail, Integer> tbcDetailPeriod;
@@ -127,8 +129,6 @@ public class VCMetricController implements Initializable {
     private TextField txtFormDPEarnings;
     @FXML
     private TextField txtFormDPDetailID;
-    @FXML
-    private TextField txtFormDPMetricID;
     @FXML
     private Button btnFormDP_cancel;
     @FXML
@@ -298,8 +298,8 @@ public class VCMetricController implements Initializable {
         btnFormDP_save.setOnAction(event -> saveMetricPeriodDetail());
 
     /* Company KPIs */
-        btnAddCompanyKPI.setOnAction(event -> addMissingEmployees());
-        btnRemoveCompanyKPI.setOnAction(event -> removeMissingEmployees());
+        btnAddCompanyKPI.setOnAction(event -> addMissingCompanyKPIs());
+        btnRemoveCompanyKPI.setOnAction(event -> removeCompanyKPI());
         tbcCompanyKPICode.setCellValueFactory(new PropertyValueFactory<CompanyKPI, String>("kpi_code"));
         tbcCompanyKPIGrade.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CompanyKPI, String>, ObservableValue<String>>() {
             @Override
@@ -317,9 +317,9 @@ public class VCMetricController implements Initializable {
         });
 
     /* Employee Scores */
-        btnAddEmployee.setOnAction(event -> addMissingCompanyKPIs());
-        btnRemoveEmployee.setOnAction(event -> removeCompanyKPI());
-        tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<EmployeeScore, String>("kpi_code"));
+        btnAddEmployee.setOnAction(event -> addMissingEmployees());
+        btnRemoveEmployee.setOnAction(event -> removeMissingEmployees());
+        tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<EmployeeScore, String>("employee_id"));
         tbcEmployeeShares.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeScore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeScore, String> param) {
@@ -434,6 +434,7 @@ public class VCMetricController implements Initializable {
         setLockStyle();
         fillDetailMetricPeriods();
         fillCompanyKPIs();
+        fillEmployees();
     }
 
     private void setLockStyle() {
@@ -602,9 +603,8 @@ public class VCMetricController implements Initializable {
         formDetailMetricPeriod.setVisible(false);
     }
     private void showFormDP(MetricDetail md) {
-        formDetailMetricPeriod.setLayoutX(tblDetailMetricPeriods.getLayoutX());
-        formDetailMetricPeriod.setLayoutY(tblDetailMetricPeriods.getLayoutY());
-        formDetailMetricPeriod.setPrefHeight(tblDetailMetricPeriods.getPrefHeight());
+        formDetailMetricPeriod.setLayoutX(boxMetricDetailTable.getLayoutX());
+        formDetailMetricPeriod.setLayoutY(boxMetricDetailTable.getLayoutY());
         formDetailMetricPeriod.setPrefWidth(tblDetailMetricPeriods.getPrefWidth());
         formDetailMetricPeriod.setVisible(true);
 
@@ -613,7 +613,6 @@ public class VCMetricController implements Initializable {
         txtFormDPActual.setText(md.getDetail_actual().toString());
         txtFormDPEarnings.setText(md.getDetail_earnings().toString());
         txtFormDPDetailID.setText(md.getMetric_detail_id().toString());
-        txtFormDPMetricID.setText(md.getMetric_id().toString());
     }
 
     private void removeMetricPeriodDetail() {
@@ -708,10 +707,12 @@ public class VCMetricController implements Initializable {
         ArrayList<KPIMaster> masterKPIArrayList = KPIMasterConnector.getKPIMasters();
         // create metric KPIs from master list
         for (KPIMaster kpm : masterKPIArrayList) {
-            if(findByCKPIMasterID(kpm.getKpi_master_id()).isEmpty()) {
-                CompanyKPIConnector.insertCompanyKPI(new CompanyKPI(VarComp.getCurrentCompany().getCompany_id(),
-                        kpm.getKpi_code(), kpm.getKpi_master_id(), metricDetail.getMetric_id(), kpm.getKpi_class(),
-                        kpm.getF1_name(), kpm.getF2_name(), kpm.getF3_name(), kpm.getF4_name(), kpm.getCalc_instructions()));
+            if(kpm.getKpi_class().equals(1)) {
+                if (findByCKPIMasterID(kpm.getKpi_master_id()).isEmpty()) {
+                    CompanyKPIConnector.insertCompanyKPI(new CompanyKPI(VarComp.getCurrentCompany().getCompany_id(),
+                            kpm.getKpi_code(), kpm.getKpi_master_id(), metricDetail.getMetric_id(), kpm.getKpi_class(),
+                            kpm.getF1_name(), kpm.getF2_name(), kpm.getF3_name(), kpm.getF4_name(), kpm.getCalc_instructions()));
+                }
             }
         }
         fillCompanyKPIs();
@@ -728,7 +729,9 @@ public class VCMetricController implements Initializable {
     }
 
     private void removeMissingEmployees() {
-        // ToDo
+        Employee employee = EmployeeConnector.getEmployee(tblDetailEmployeeScores.getSelectionModel().getSelectedItem().getEmployee_id());
+        employee.removeFromMetric(metricDetail.getMetric_id());
+        fillEmployees();
     }
 
     private void addMissingEmployees() {
@@ -737,23 +740,15 @@ public class VCMetricController implements Initializable {
         // loop over current employees and add missing
         for ( Employee employee : employeeArrayList ) {
             if (findByEmployeeID(employee.getEmployee_id()).isEmpty()) {
-                addEmployeeScoreKPIs(employee.getEmployee_id());
+                employee.addToMetric(metricDetail.getMetric_id());
             }
         }
+        fillEmployees();
     }
     private ArrayList<EmployeeScore> findByEmployeeID(String s) {
         return (ArrayList<EmployeeScore>) employeeScoresObservableList.stream()
                 .filter(t -> t.getEmployee_id().equals(s))
                 .collect(Collectors.toList());
-    }
-
-    private void addEmployeeScoreKPIs(String employeeID) {
-        // get employee
-        Employee employee = EmployeeConnector.getEmployee(employeeID);
-        // create Company KPIs from list
-        for (CompanyKPI companyKPI : companyKPIObservableList) {
-
-        }
     }
 
 }

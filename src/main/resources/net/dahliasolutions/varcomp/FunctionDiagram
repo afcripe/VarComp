@@ -1,10 +1,23 @@
-Each employee have KPIs that are assigned to Metrics and derived from a master KPI
+    Each employee has KPIs that are assigned to Metrics and derived from a master KPI
 
-New Metric created =>
-    auto generate companyKPI details for all KPIs of type 'Company'.
-    auto generate employeeKPI details for all active employees and assign 'Company' KPI or create empty KPI.
-    auto generate employeeScores
+    New Metric created =>
+        auto generate companyKPI details for all KPIs of type 'Company'.
+        auto generate employeeKPI details for all active employees and assign 'Company' KPI or create empty KPI.
+        auto generate employeeScores
 
 
-DB Updates
-    Add Share Bonus column to employee table that adds to auto-assigned shares
+UI Updates
+    Edit Form for CompanyKPIs in Metrics
+
+    Edit Form for EmployeeKPIs
+
+    Add missing KPIs for EmployeeScores in Metric
+
+    Update Employee Shares
+        !! Remember Position Shares is a factor
+
+    Calculate Scores, Bonuses, and Payouts in Metric
+
+    Metric Payroll Report
+
+    !! Lock first 2 KPI Classes in UI, Already done in Connector Class !!

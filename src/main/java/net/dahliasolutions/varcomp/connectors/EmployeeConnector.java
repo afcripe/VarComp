@@ -30,10 +30,11 @@ public class EmployeeConnector {
                     String recLastName = resultSet.getString("last_name");
                     Date recStartDate = resultSet.getDate("start_date");
                     Boolean recIsActive = resultSet.getBoolean("is_active");
+                    Integer recStartingShares = resultSet.getInt("starting_shares");
                     Integer recSharesAssigned = resultSet.getInt("shares_assigned");
 
                     employee = new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate.toLocalDate(),
-                            recIsActive, recSharesAssigned);
+                            recIsActive, recStartingShares, recSharesAssigned);
                 }
             }
         } catch (SQLException e) {
@@ -93,14 +94,16 @@ public class EmployeeConnector {
             }
             // insert new employee
             preparedStatement = connection.prepareStatement("INSERT INTO TBLEMPLOYEES " +
-                    "SET EMPLOYEE_ID=?, POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, SHARES_ASSIGNED=?");
+                    "SET EMPLOYEE_ID=?, POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, " +
+                    "IS_ACTIVE=?, STARTING_SHARES=?, SHARES_ASSIGNED=?");
             preparedStatement.setString(1, employee.getEmployee_id());
             preparedStatement.setInt(2, employee.getPosition());
             preparedStatement.setString(3, employee.getFirst_name());
             preparedStatement.setString(4, employee.getLast_name());
             preparedStatement.setDate(5, Date.valueOf(employee.getStart_date()));
             preparedStatement.setBoolean(6, employee.getIs_active());
-            preparedStatement.setInt(7, employee.getShares_assigned());
+            preparedStatement.setInt(7, employee.getStarting_shares());
+            preparedStatement.setInt(8, employee.getShares_assigned());
             preparedStatement.executeUpdate();
             insertSuccess = true;
 
@@ -133,10 +136,11 @@ public class EmployeeConnector {
                     String recLastName = resultSet.getString("last_name");
                     Date recStartDate = resultSet.getDate("start_date");
                     Boolean recIsActive = resultSet.getBoolean("is_active");
+                    Integer recStartingShares = resultSet.getInt("starting_shares");
                     Integer recSharesAssigned = resultSet.getInt("shares_assigned");
 
                     employeeList.add(new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate.toLocalDate(),
-                            recIsActive, recSharesAssigned));
+                            recIsActive, recStartingShares, recSharesAssigned));
                 }
             }
         } catch (SQLException e) {
@@ -170,10 +174,11 @@ public class EmployeeConnector {
                     String recLastName = resultSet.getString("last_name");
                     Date recStartDate = resultSet.getDate("start_date");
                     Boolean recIsActive = resultSet.getBoolean("is_active");
+                    Integer recStartingShares = resultSet.getInt("starting_shares");
                     Integer recSharesAssigned = resultSet.getInt("shares_assigned");
 
                     EmployeeList.add(new Employee(recEmployeeId, recPositionID, recFirstName, recLastName, recStartDate.toLocalDate(),
-                            recIsActive, recSharesAssigned));
+                            recIsActive, recStartingShares, recSharesAssigned));
                 }
             }
         } catch (SQLException e) {
@@ -192,14 +197,16 @@ public class EmployeeConnector {
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLEMPLOYEES " +
-                    "SET POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, SHARES_ASSIGNED=? WHERE EMPLOYEE_ID=?");
+                    "SET POSITION=?, FIRST_NAME=?, LAST_NAME=?, START_DATE=?, IS_ACTIVE=?, " +
+                    "STARTING_SHARES=?, SHARES_ASSIGNED=? WHERE EMPLOYEE_ID=?");
             preparedStatement.setInt(1, employee.getPosition());
             preparedStatement.setString(2, employee.getFirst_name());
             preparedStatement.setString(3, employee.getLast_name());
             preparedStatement.setDate(4, Date.valueOf(employee.getStart_date()));
             preparedStatement.setBoolean(5, employee.getIs_active());
-            preparedStatement.setInt(6, employee.getShares_assigned());
-            preparedStatement.setString(7, employee.getEmployee_id());
+            preparedStatement.setInt(6, employee.getStarting_shares());
+            preparedStatement.setInt(7, employee.getShares_assigned());
+            preparedStatement.setString(8, employee.getEmployee_id());
             preparedStatement.executeUpdate();
 
             updateSuccess = true;

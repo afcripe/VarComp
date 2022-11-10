@@ -52,6 +52,8 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private ComboBox cmbFormEmployeePosition;
     @FXML
+    private TextField txtFormEmployeeStartingShares;
+    @FXML
     private TextField txtFormEmployeeShares;
     @FXML
     private CheckBox chkFormEmployeeActive;
@@ -176,6 +178,7 @@ public class VCEmployeeController implements Initializable {
         txtFormEmployeeID.setText(employee.getEmployee_id());
         txtFormEmployeeFirstName.setText(employee.getFirst_name());
         txtFormEmployeeLastName.setText(employee.getLast_name());
+        txtFormEmployeeStartingShares.setText(employee.getStarting_shares().toString());
         txtFormEmployeeShares.setText(employee.getShares_assigned().toString());
         chkFormEmployeeActive.setSelected(employee.getIs_active());
 
@@ -194,6 +197,7 @@ public class VCEmployeeController implements Initializable {
         txtFormEmployeeID.setText("");
         txtFormEmployeeLastName.setText("");
         txtFormEmployeeLastName.setText("");
+        txtFormEmployeeStartingShares.setText("");
         txtFormEmployeeShares.setText("");
         cmbFormEmployeePosition.setValue("");
         chkFormEmployeeActive.setSelected(false);
@@ -202,8 +206,9 @@ public class VCEmployeeController implements Initializable {
     private void saveEmployee() {
         String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
 
-        Employee employee = new Employee(txtFormEmployeeID.getText(), Integer.parseInt(split[0]), txtFormEmployeeFirstName.getText(), txtFormEmployeeLastName.getText(),
-                pkrStartDate.getValue(), chkFormEmployeeActive.isSelected(), Integer.parseInt(txtFormEmployeeShares.getText()));
+        Employee employee = new Employee(txtFormEmployeeID.getText(), Integer.parseInt(split[0]), txtFormEmployeeFirstName.getText(),
+                txtFormEmployeeLastName.getText(), pkrStartDate.getValue(), chkFormEmployeeActive.isSelected(),
+                Integer.parseInt(txtFormEmployeeStartingShares.getText()), Integer.parseInt(txtFormEmployeeShares.getText()));
 
         Boolean employeeInsert = employee.insertEmployee();
 
@@ -247,8 +252,9 @@ public class VCEmployeeController implements Initializable {
     private void updateEmployee() {
         String split[] = cmbEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
 
-        Employee employee = new Employee(selectedEmployee.getEmployee_id(), Integer.parseInt(split[0]), txtEmployeeFirstName.getText(), txtEmployeeLastName.getText(),
-                pkrEmployeeStartDate.getValue(), chkEmployeeActive.isSelected(), Integer.parseInt(txtEmployeeShares.getText()));
+        Employee employee = new Employee(selectedEmployee.getEmployee_id(), Integer.parseInt(split[0]), txtEmployeeFirstName.getText(),
+                txtEmployeeLastName.getText(), pkrEmployeeStartDate.getValue(), chkEmployeeActive.isSelected(),
+                Integer.parseInt(txtFormEmployeeStartingShares.getText()), Integer.parseInt(txtEmployeeShares.getText()));
 
         employee.updateEmployee();
         fillPaneEmployeeDetail(employee);

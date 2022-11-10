@@ -15,7 +15,7 @@ public class Position {
         this.position_id = new SimpleIntegerProperty(0);
         this.position_name = new SimpleStringProperty("");
         this.position_description = new SimpleStringProperty("");
-        this.position_shares = new SimpleIntegerProperty(0);
+        this.position_shares = new SimpleIntegerProperty(1);
     }
     public Position(Integer positionID, String positionName, String PositionDescription, Integer positionShares) {
         this.position_id = new SimpleIntegerProperty(positionID);
