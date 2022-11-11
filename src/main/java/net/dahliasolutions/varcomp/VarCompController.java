@@ -28,8 +28,6 @@ public class VarCompController extends ViewController implements Initializable {
     @FXML
     private Button btnNavMetrics;
     @FXML
-    private Button btnNavKPIs;
-    @FXML
     private Button btnNavEmployees;
     @FXML
     private Button btnNavSettings;
@@ -41,13 +39,11 @@ public class VarCompController extends ViewController implements Initializable {
 
         btnNavHome.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
-        btnNavKPIs.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavEmployees.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavSettings.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
 
         btnNavHome.setOnAction(event -> setCenterView("vchome-view"));
         btnNavMetrics.setOnAction(event -> setCenterView("vcmetric-view"));
-        btnNavKPIs.setOnAction(event -> setCenterView("vckpi-view"));
         btnNavEmployees.setOnAction(event -> setCenterView("vcemployee-view"));
         btnNavSettings.setOnAction(event -> setCenterView("settings-view"));
         if (VarComp.getUser().getUser_type().equals("admin")) {

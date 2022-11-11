@@ -1,7 +1,6 @@
 package net.dahliasolutions.varcomp.connectors;
 
 import net.dahliasolutions.varcomp.DBUtils;
-import net.dahliasolutions.varcomp.models.CompanyKPI;
 import net.dahliasolutions.varcomp.models.EmployeeScore;
 
 import java.math.BigDecimal;

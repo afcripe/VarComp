@@ -29,7 +29,6 @@
       <VBox fx:id="vboxNavigation" minWidth="100" prefHeight="200.0" prefWidth="100.0" spacing="2.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
           <Button fx:id="btnNavHome" style="-fx-cursor: hand;" text="Home" />
           <Button fx:id="btnNavMetrics" style="-fx-cursor: hand;" text="Metrics" />
-          <Button fx:id="btnNavKPIs" style="-fx-cursor: hand;" text="KPIs" />
           <Button fx:id="btnNavEmployees" style="-fx-cursor: hand;" text="Employees" />
           <Button fx:id="btnNavSettings" style="-fx-cursor: hand;" text="Settings" />
          <BorderPane.margin>

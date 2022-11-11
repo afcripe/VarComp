@@ -4,14 +4,12 @@ import java.sql.*;
 
 public class DBUtils {
 
-    private static String varCompDB = "jdbc:h2:./varcompdb";
+    private static String varCompDB = "jdbc:h2:~/varcompdb";
+//    private static String varCompDB = "jdbc:h2:tcp://localhost/Users/afcripe/Desktop/varcompdb";
 
     public static String getDBLocation() {
         return varCompDB;
-    }
-
-    public void setDBLocations(String db) {
-        varCompDB = "jdbc:h2:"+db+"varcompdb";
+//        return "jdbc:h2:tcp://localhost/Users/afcripe/Desktop/varcompdb";
     }
 
     public static Boolean updateDBTable(double w, double h) {

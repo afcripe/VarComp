@@ -6,8 +6,6 @@ import net.dahliasolutions.varcomp.connectors.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 public class Employee {
     private String employee_id;

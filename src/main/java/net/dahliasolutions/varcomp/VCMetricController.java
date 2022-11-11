@@ -29,7 +29,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -167,11 +166,17 @@ public class VCMetricController implements Initializable {
     @FXML
     private TableColumn<EmployeeScore, String> tbcEmployeeBonus;
 
+    @FXML
+    private ScrollPane paneEmployeeKPI;
+    @FXML
+    private Button btnEmployeeKPIBack;
+
     ObservableList<Metric> metricList;
     ObservableList<MetricDetail> metricDetailList;
     ObservableList<CompanyKPI> companyKPIObservableList;
     ObservableList<EmployeeScore> employeeScoresObservableList;
     private final Metric metricDetail = new Metric();
+    private final EmployeeScore employeeScore = new EmployeeScore();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -341,6 +346,17 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getBonus()));
             }
         });
+        tblDetailEmployeeScores.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                    openEmployeeKPIEditor((EmployeeScore) tblDetailEmployeeScores.getSelectionModel().getSelectedItem());
+                }
+            }
+        });
+
+        /* Employee KPI Editor */
+        btnEmployeeKPIBack.setOnAction(event -> closeEmployeeKPIEdit());
     }
 
     private void focusState(Boolean b) {
@@ -412,6 +428,7 @@ public class VCMetricController implements Initializable {
 
     private void navMetricHome(){
         paneFormNewMetric.setVisible(false);
+        paneEmployeeKPI.setVisible(false);
         fillPaneMetricDetail(new Metric());
         showPaneMetricDetail(false);
     }
@@ -473,6 +490,7 @@ public class VCMetricController implements Initializable {
     private void showPaneMetricDetail(Boolean show) {
         lblDetailMetricYearWarn.setVisible(false);
         lblDetailMetricPeriodWarn.setVisible(false);
+        paneEmployeeKPI.setVisible(false);
 
         btnMetricSave.setVisible(show);
         btnMetricHome.setVisible(show);
@@ -682,9 +700,14 @@ public class VCMetricController implements Initializable {
         if(metricEarnings.doubleValue() > 0){
             metricFunding = metricEarnings.multiply(VarComp.getCurrentCompany().getFunding_percentage());
             metricFunding = metricFunding.setScale(2, RoundingMode.HALF_UP);
-            eps = metricFunding.doubleValue() / metricShares;
-            metricEPS = new BigDecimal(eps);
-            metricEPS = metricEPS.setScale(2, RoundingMode.HALF_UP);
+            try {
+                eps = metricFunding.doubleValue() / metricShares;
+                metricEPS = new BigDecimal(eps);
+                metricEPS = metricEPS.setScale(2, RoundingMode.HALF_UP);
+            } catch (Exception e) {
+                metricEPS = BigDecimal.valueOf(0.00);
+            }
+
         }
 
         metricDetail.setMetric_earnings(metricEarnings);
@@ -749,6 +772,15 @@ public class VCMetricController implements Initializable {
         return (ArrayList<EmployeeScore>) employeeScoresObservableList.stream()
                 .filter(t -> t.getEmployee_id().equals(s))
                 .collect(Collectors.toList());
+    }
+
+    private void closeEmployeeKPIEdit() {
+        paneEmployeeKPI.setVisible(false);
+    }
+
+    private void openEmployeeKPIEditor(EmployeeScore score) {
+        employeeScore.setEmployeeScore(score);
+        paneEmployeeKPI.setVisible(true);
     }
 
 }

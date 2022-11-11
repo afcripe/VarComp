@@ -6,11 +6,17 @@
 
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCHomeController">
-   <children>
-      <Label fx:id="lblTitle" layoutX="14.0" layoutY="14.0" text="Home">
+
+   <!--   Navigation    -->
+   <HBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" AnchorPane.rightAnchor="14.0">
+      <Label fx:id="lblTitle" text="Employees">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-   </children>
+      <HBox HBox.hgrow="ALWAYS" />
+      <Button fx:id="btnEditEmployee_save" prefWidth="75" text="Save" visible="false" />
+      <Button fx:id="btnEmployeeHome" prefWidth="75" text="Back" visible="false" />
+   </HBox>
+
 </AnchorPane>

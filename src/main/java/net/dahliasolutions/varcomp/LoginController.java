@@ -12,7 +12,6 @@ import net.dahliasolutions.varcomp.connectors.UserConnector;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;
 
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -28,12 +27,15 @@ public class LoginController extends ViewController implements Initializable {
     private Button btnLogin;
     @FXML
     private ChoiceBox<String> choiceCompanies;
+    @FXML
+    private Label lblDBL;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         btnLogin.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
+        lblDBL.setText(DBUtils.getDBLocation());
 
         txtUsername.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
