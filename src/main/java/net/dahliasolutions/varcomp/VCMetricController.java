@@ -170,13 +170,49 @@ public class VCMetricController implements Initializable {
     private ScrollPane paneEmployeeKPI;
     @FXML
     private Button btnEmployeeKPIBack;
+    @FXML
+    private Label txtEditorEmployeeID;
+    @FXML
+    private Label txtEditorEmployeeFirstName;
+    @FXML
+    private Label txtEditorEmployeeLastName;
+    @FXML
+    private Label txtEditorEmployeePosition;
+    @FXML
+    private Label txtEditorEmployeeShares;
+    @FXML
+    private Label txtEditorEmployeeScore;
+    @FXML
+    private Label txtEditorEmployeeSBonus;
+    @FXML
+    private TableView<EmployeeKPI> tblEditorKPIs;
+    @FXML
+    private TableColumn<EmployeeKPI, String> tbcEditorKPICode;
+    @FXML
+    private TableColumn<EmployeeKPI, BigDecimal> tbcEditorKPIWeight;
+    @FXML
+    private TableColumn<EmployeeKPI, String> tbcEditorKPIClass;
+    @FXML
+    private TableColumn<EmployeeKPI, BigDecimal> tbcEditorKPIGrade;
+    @FXML
+    private TableColumn<EmployeeKPI, BigDecimal> tbcEditorKPIScore;
+
+    @FXML
+    private VBox paneFormEditorKPI;
+    @FXML
+    private TextField txtEditorKPICode;
+    @FXML
+    private TextField txtEditorKPIClass;
+
 
     ObservableList<Metric> metricList;
     ObservableList<MetricDetail> metricDetailList;
     ObservableList<CompanyKPI> companyKPIObservableList;
     ObservableList<EmployeeScore> employeeScoresObservableList;
+    ObservableList<EmployeeKPI> employeeKPIObservableList;
     private final Metric metricDetail = new Metric();
     private final EmployeeScore employeeScore = new EmployeeScore();
+    private final Employee employeeEdit = new Employee();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -355,8 +391,29 @@ public class VCMetricController implements Initializable {
             }
         });
 
-        /* Employee KPI Editor */
+    /* Employee KPI Editor */
         btnEmployeeKPIBack.setOnAction(event -> closeEmployeeKPIEdit());
+        tbcEditorKPICode.setCellValueFactory(new PropertyValueFactory<EmployeeKPI, String>("kpi_code"));
+        tbcEditorKPIWeight.setCellValueFactory(new PropertyValueFactory<EmployeeKPI, BigDecimal>("weight"));
+        tbcEditorKPIClass.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeKPI, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeKPI, String> param) {
+                return new SimpleObjectProperty<String>(KPIClassConnector.getKPIClass(param.getValue().getKpi_class()).getName());
+            }
+        });
+        tbcEditorKPIGrade.setCellValueFactory(new PropertyValueFactory<EmployeeKPI, BigDecimal>("kpi_grade"));
+        tbcEditorKPIScore.setCellValueFactory(new PropertyValueFactory<EmployeeKPI, BigDecimal>("kpi_score"));
+        tblEditorKPIs.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                    showFormEditorKPI(true);
+                    //openEmployeeKPIEditor((EmployeeScore) tblDetailEmployeeScores.getSelectionModel().getSelectedItem());
+                }
+            }
+        });
+
+        navMetricHome();
     }
 
     private void focusState(Boolean b) {
@@ -429,6 +486,7 @@ public class VCMetricController implements Initializable {
     private void navMetricHome(){
         paneFormNewMetric.setVisible(false);
         paneEmployeeKPI.setVisible(false);
+        showFormEditorKPI(false);
         fillPaneMetricDetail(new Metric());
         showPaneMetricDetail(false);
     }
@@ -491,6 +549,7 @@ public class VCMetricController implements Initializable {
         lblDetailMetricYearWarn.setVisible(false);
         lblDetailMetricPeriodWarn.setVisible(false);
         paneEmployeeKPI.setVisible(false);
+        showFormEditorKPI(false);
 
         btnMetricSave.setVisible(show);
         btnMetricHome.setVisible(show);
@@ -776,11 +835,41 @@ public class VCMetricController implements Initializable {
 
     private void closeEmployeeKPIEdit() {
         paneEmployeeKPI.setVisible(false);
+        showFormEditorKPI(false);
     }
 
     private void openEmployeeKPIEditor(EmployeeScore score) {
         employeeScore.setEmployeeScore(score);
+        employeeEdit.setEmployee(EmployeeConnector.getEmployee(employeeScore.getEmployee_id()));
+        NumberFormat fm = NumberFormat.getCurrencyInstance();
+
+        txtEditorEmployeeID.setText(employeeEdit.getEmployee_id());
+        txtEditorEmployeeFirstName.setText(employeeEdit.getFirst_name());
+        txtEditorEmployeeLastName.setText(employeeEdit.getLast_name());
+        txtEditorEmployeeShares.setText(employeeScore.getShares().toString());
+        txtEditorEmployeeScore.setText(employeeScore.getScore().toString());
+        txtEditorEmployeeSBonus.setText(fm.format(employeeScore.getBonus().doubleValue()));
+
+        ArrayList<Position> positionList = PositionsConnector.getPositions();
+        for (Position p: positionList) {
+            if (employeeEdit.getPosition().equals(p.getPosition_id())) {
+                txtEditorEmployeePosition.setText(p.getPosition_name());
+            }
+        }
+
+        employeeKPIObservableList = FXCollections.observableArrayList(EmployeeKPIConnector.getEmployeeKPIsByScore(employeeScore.getScore_id()));
+        tblEditorKPIs.getItems().removeAll();
+        tblEditorKPIs.setItems(employeeKPIObservableList);
+
+        showFormEditorKPI(false);
         paneEmployeeKPI.setVisible(true);
+    }
+    private void showFormEditorKPI(Boolean show) {
+        paneFormEditorKPI.setLayoutX(tblEditorKPIs.getLayoutX());
+        paneFormEditorKPI.setLayoutY(tblEditorKPIs.getLayoutY());
+        paneFormEditorKPI.setPrefHeight(tblEditorKPIs.getPrefHeight());
+        paneFormEditorKPI.setPrefWidth(tblEditorKPIs.getPrefWidth());
+        paneFormEditorKPI.setVisible(show);
     }
 
 }
