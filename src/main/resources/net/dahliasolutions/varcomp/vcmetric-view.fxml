@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
 
 <!--    Navigation    -->
    <HBox alignment="CENTER" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
@@ -258,8 +249,8 @@
 
    <ScrollPane fx:id="paneEmployeeKPI" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
       <Pane>
-
-         <VBox fillWidth="false" spacing="8.0">
+      <!-- Employee Editor -->
+         <VBox fx:id="paneFormEditorEmployee" fillWidth="false" spacing="8.0">
             <HBox prefWidth="550">
                <Label text="Employee KPI Editor">
                   <font>
@@ -352,7 +343,7 @@
             </HBox>
 
          <!--  Employee KPIs-->
-            <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="209.0" spacing="8.0">
+            <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="209.0" spacing="8.0" visible="false">
                   <Label prefWidth="150.0" text="KPIs">
                      <font>
                         <Font name="System Bold" size="16.0" />
@@ -377,14 +368,11 @@
             </padding>
          </VBox>
 
-         <VBox fx:id="paneFormEditorKPI" visible="false" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;">
+      <!-- Employee KPI Editor -->
+         <VBox fx:id="paneFormEditorKPI" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
             <HBox spacing="4.0">
-               <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="KPI:">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label prefWidth="105.0" text="AGE">
+               <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="KPI:" />
+               <Label fx:id="lblKPIEditorCode" prefWidth="105.0" text="AGE">
                   <font>
                      <Font size="14.0" />
                   </font>
@@ -392,13 +380,13 @@
             </HBox>
             <HBox spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Class:" />
-               <Label prefWidth="105.0" text="Label">
+               <Label fx:id="lblKPIEditorClass" prefWidth="105.0" text="Label">
                   <font>
                      <Font size="14.0" />
                   </font>
                </Label>
                <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Weight:" />
-               <Label prefWidth="105.0" text="Label">
+               <Label fx:id="lblKPIEditorWeight" prefWidth="105.0" text="Label">
                   <font>
                      <Font size="14.0" />
                   </font>
@@ -406,36 +394,36 @@
             </HBox>
             <HBox prefHeight="55.0" prefWidth="548.0" spacing="4.0">
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
-                        <Label text="F1_Name" VBox.vgrow="ALWAYS">
+                        <Label fx:id="lblKPIEditorF1Name" text="F1_Name" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets left="8.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtKPIEditorF1Data" VBox.vgrow="ALWAYS" />
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
-                        <Label text="F2_Name">
+                        <Label fx:id="lblKPIEditorF2Name" text="F2_Name">
                            <VBox.margin>
                               <Insets left="8.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField />
+                        <TextField fx:id="txtKPIEditorF2Data" />
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
-                        <Label text="F3_Name">
+                        <Label fx:id="lblKPIEditorF3Name" text="F3_Name">
                            <VBox.margin>
                               <Insets left="8.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField />
+                        <TextField fx:id="txtKPIEditorF3Data" />
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
-                        <Label text="F4_Name">
+                        <Label fx:id="lblKPIEditorF4Name" text="F4_Name">
                            <VBox.margin>
                               <Insets left="8.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField />
+                        <TextField fx:id="txtKPIEditorF4Data" />
                   </VBox>
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -443,24 +431,25 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Calculation:" />
-                  <TextField HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtKPIEditorCalc" HBox.hgrow="ALWAYS" />
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Grade:" />
-                  <TextField />
+                  <TextField fx:id="txtKPIEditorGrade" />
                   <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="47.0" prefWidth="105.0" text="Score:" />
-                  <TextField layoutX="115.0" layoutY="43.0" />
+                  <TextField fx:id="txtKPIEditorScore" layoutX="115.0" layoutY="43.0" />
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
-                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" prefWidth="95.0" text="Cancel" />
-                  <Button mnemonicParsing="false" prefWidth="95.0" text="Save" />
+                  <HBox prefHeight="100.0" prefWidth="172.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lblKPIEditorID" visible="false" prefWidth="25" />
+                  <Button fx:id="btnKPIEditorCancel" mnemonicParsing="false" prefWidth="95.0" text="Cancel" />
+                  <Button fx:id="btnKPIEditorSave" mnemonicParsing="false" prefWidth="95.0" text="Save" />
                <padding>
                   <Insets bottom="4.0" left="4.0" right="16.0" top="4.0" />
                </padding>

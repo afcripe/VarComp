@@ -197,6 +197,42 @@ public class VCMetricController implements Initializable {
     @FXML
     private TableColumn<EmployeeKPI, BigDecimal> tbcEditorKPIScore;
 
+
+    @FXML
+    private Label lblKPIEditorCode;
+    @FXML
+    private Label lblKPIEditorClass;
+    @FXML
+    private Label lblKPIEditorWeight;
+    @FXML
+    private Label lblKPIEditorF1Name;
+    @FXML
+    private TextField txtKPIEditorF1Data;
+    @FXML
+    private Label lblKPIEditorF2Name;
+    @FXML
+    private TextField txtKPIEditorF2Data;
+    @FXML
+    private Label lblKPIEditorF3Name;
+    @FXML
+    private TextField txtKPIEditorF3Data;
+    @FXML
+    private Label lblKPIEditorF4Name;
+    @FXML
+    private TextField txtKPIEditorF4Data;
+    @FXML
+    private TextField txtKPIEditorCalc;
+    @FXML
+    private TextField txtKPIEditorGrade;
+    @FXML
+    private TextField txtKPIEditorScore;
+    @FXML
+    private Button btnKPIEditorCancel;
+    @FXML
+    private Button btnKPIEditorSave;
+    @FXML
+    private Label lblKPIEditorID;
+
     @FXML
     private VBox paneFormEditorKPI;
     @FXML
@@ -413,6 +449,9 @@ public class VCMetricController implements Initializable {
             }
         });
 
+        btnKPIEditorCancel.setOnAction(event -> cancelKPIEditor());
+        btnKPIEditorSave.setOnAction(event -> saveKPIEditor());
+
         navMetricHome();
     }
 
@@ -473,7 +512,7 @@ public class VCMetricController implements Initializable {
         metric.setMetric_label(txtFormNewLabel.getText());
         metric.setMetric_year(Integer.parseInt(txtFormNewYear.getText()));
         metric.setMetric_period(Integer.parseInt(txtFormNewPeriod.getText()));
-        metric.setMetric_shares(VarComp.getCurrentCompany().getShares_issued_amount());
+        metric.setMetric_shares(VarComp.getCurrentCompany().getShares_outstanding());
         metric.setCompany_id(VarComp.getCurrentCompany().getCompany_id());
         metric.insertMetric();
 
@@ -733,7 +772,7 @@ public class VCMetricController implements Initializable {
     }
 
     private void updateShares() {
-        metricDetail.setMetric_shares(VarComp.getCurrentCompany().getShares_issued_amount());
+        metricDetail.setMetric_shares(VarComp.getCurrentCompany().getShares_outstanding());
         txtDetailMetricShares.setText(metricDetail.getMetric_shares().toString());
         if(metricDetail.getMetric_funding().doubleValue() > 0) {
             double eps = metricDetail.getMetric_funding().doubleValue() / metricDetail.getMetric_shares();
@@ -865,11 +904,104 @@ public class VCMetricController implements Initializable {
         paneEmployeeKPI.setVisible(true);
     }
     private void showFormEditorKPI(Boolean show) {
+        if(show) {
+            fillFormEditorKPI();
+        }
+        paneFormEditorKPI.setVisible(show);
+    }
+
+    private void fillFormEditorKPI() {
+        EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
         paneFormEditorKPI.setLayoutX(tblEditorKPIs.getLayoutX());
         paneFormEditorKPI.setLayoutY(tblEditorKPIs.getLayoutY());
         paneFormEditorKPI.setPrefHeight(tblEditorKPIs.getPrefHeight());
         paneFormEditorKPI.setPrefWidth(tblEditorKPIs.getPrefWidth());
-        paneFormEditorKPI.setVisible(show);
+
+        lblKPIEditorCode.setText(eKPI.getKpi_code());
+        lblKPIEditorClass.setText(KPIClassConnector.getKPIClass(eKPI.getKpi_class()).toString());
+        lblKPIEditorWeight.setText(eKPI.getWeight().toString());
+        lblKPIEditorF1Name.setText(eKPI.getF1_name());
+        txtKPIEditorF1Data.setText(eKPI.getF1_data().toString());
+        lblKPIEditorF2Name.setText(eKPI.getF2_name());
+        txtKPIEditorF2Data.setText(eKPI.getF2_data().toString());
+        lblKPIEditorF3Name.setText(eKPI.getF3_name());
+        txtKPIEditorF3Data.setText(eKPI.getF3_data().toString());
+        lblKPIEditorF4Name.setText(eKPI.getF4_name());
+        txtKPIEditorF4Data.setText(eKPI.getF4_data().toString());
+        txtKPIEditorCalc.setText(eKPI.getCalc_instructions());
+        txtKPIEditorGrade.setText(eKPI.getKpi_grade().toString());
+        txtKPIEditorScore.setText(eKPI.getKpi_score().toString());
+    }
+
+    private void cancelKPIEditor() {
+        paneFormEditorKPI.setVisible(false);
+    }
+    private void saveKPIEditor() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        String pattern = "#0.0#";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+
+        BigDecimal kpiF1 = BigDecimal.valueOf(0.00);
+        BigDecimal kpiF2 = BigDecimal.valueOf(0.00);
+        BigDecimal kpiF3 = BigDecimal.valueOf(0.00);
+        BigDecimal kpiF4 = BigDecimal.valueOf(0.00);
+        BigDecimal kpiGrade = BigDecimal.valueOf(0.00);
+        BigDecimal kpiScore = BigDecimal.valueOf(0.00);
+
+        EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
+
+        try{
+            kpiF1 = ((BigDecimal) decimalFormat.parse(txtKPIEditorF1Data.getText()));
+        } catch (ParseException e) {
+            System.out.println("not a number!");
+            return;
+        }
+        try{
+            kpiF2 = ((BigDecimal) decimalFormat.parse(txtKPIEditorF2Data.getText()));
+        } catch (ParseException e) {
+            System.out.println("not a number!");
+            return;
+        }
+        try{
+            kpiF3 = ((BigDecimal) decimalFormat.parse(txtKPIEditorF3Data.getText()));
+        } catch (ParseException e) {
+            System.out.println("not a number!");
+            return;
+        }
+        try{
+            kpiF4 = ((BigDecimal) decimalFormat.parse(txtKPIEditorF4Data.getText()));
+        } catch (ParseException e) {
+            System.out.println("not a number!");
+            return;
+        }
+        try{
+            kpiGrade = ((BigDecimal) decimalFormat.parse(txtKPIEditorGrade.getText()));
+        } catch (ParseException e) {
+            System.out.println("not a number!");
+            return;
+        }
+        try{
+            kpiScore = ((BigDecimal) decimalFormat.parse(txtKPIEditorScore.getText()));
+        } catch (ParseException e) {
+            System.out.println("not a number!");
+            return;
+        }
+
+        eKPI.setF1_data(kpiF1);
+        eKPI.setF2_data(kpiF2);
+        eKPI.setF3_data(kpiF3);
+        eKPI.setF4_data(kpiF4);
+        eKPI.setKpi_grade(kpiGrade);
+        eKPI.setKpi_score(kpiScore);
+
+        EmployeeKPIConnector.updateEmployeeKPI(eKPI);
+        showFormEditorKPI(false);
+
+        employeeKPIObservableList = FXCollections.observableArrayList(EmployeeKPIConnector.getEmployeeKPIsByScore(employeeScore.getScore_id()));
+        tblEditorKPIs.getItems().removeAll();
+        tblEditorKPIs.setItems(employeeKPIObservableList);
     }
 
 }

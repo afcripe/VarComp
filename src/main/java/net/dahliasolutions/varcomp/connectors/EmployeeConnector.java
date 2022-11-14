@@ -1,6 +1,7 @@
 package net.dahliasolutions.varcomp.connectors;
 
 import net.dahliasolutions.varcomp.DBUtils;
+import net.dahliasolutions.varcomp.EmployeeUtils;
 import net.dahliasolutions.varcomp.models.Employee;
 
 import java.sql.*;
@@ -105,6 +106,10 @@ public class EmployeeConnector {
             preparedStatement.setInt(7, employee.getStarting_shares());
             preparedStatement.setInt(8, employee.getShares_assigned());
             preparedStatement.executeUpdate();
+
+            // Update Company Shares
+            EmployeeUtils.setCompanySharesAssigned();
+
             insertSuccess = true;
 
         } catch (SQLException e) {
@@ -209,6 +214,9 @@ public class EmployeeConnector {
             preparedStatement.setString(8, employee.getEmployee_id());
             preparedStatement.executeUpdate();
 
+            // Update Company Shares
+            EmployeeUtils.setCompanySharesAssigned();
+
             updateSuccess = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -227,6 +235,9 @@ public class EmployeeConnector {
             preparedStatement = connection.prepareStatement("DELETE FROM TBLEMPLOYEES WHERE employee_id=?");
             preparedStatement.setString(1, employeeID);
             preparedStatement.executeUpdate();
+
+            // Update Company Shares
+            EmployeeUtils.setCompanySharesAssigned();
 
             deleteSuccess = true;
         } catch (SQLException e) {

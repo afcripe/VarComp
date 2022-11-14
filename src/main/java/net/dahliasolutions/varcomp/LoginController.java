@@ -69,6 +69,7 @@ public class LoginController extends ViewController implements Initializable {
 
                         Company c = CompanyConnector.getCompany(1);
                         VarComp.setCurrentCompany(c);
+                        EmployeeUtils.updateAllEmployeeShares();
 
                         NavigationUtils.changeScene(event, "varcomp-view.fxml", "VarComp", false);
                     } else {

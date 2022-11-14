@@ -25,9 +25,9 @@ public class PositionsConnector {
             } else {
                 while (resultSet.next()) {
                     Integer recPositionId = resultSet.getInt("position_id");
-                    String recPositionName = resultSet.getString("name");
+                    String recPositionName = resultSet.getString("position");
                     String recPositionDescription = resultSet.getString("description");
-                    Integer recPositionShares = resultSet.getInt("shores");
+                    Integer recPositionShares = resultSet.getInt("shares");
 
                     position = new Position(recPositionId, recPositionName, recPositionDescription, recPositionShares);
                 }

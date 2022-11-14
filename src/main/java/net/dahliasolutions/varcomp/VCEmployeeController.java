@@ -82,6 +82,8 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private DatePicker pkrEmployeeStartDate;
     @FXML
+    private Label lblEmployeeShares;
+    @FXML
     private Button btnEditEmployee_save;
 
     private final Employee selectedEmployee = new Employee();
@@ -142,6 +144,15 @@ public class VCEmployeeController implements Initializable {
             showPaneFormEmployee(false);
         });
         btnFormEmployee_save.setOnAction(event -> saveEmployee());
+        txtFormEmployeeStartingShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            employeeFormFocusState(newValue);
+        });
+        pkrStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            employeeFormFocusState(newValue);
+        });
+        cmbFormEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            employeeFormFocusState(newValue);
+        });
 
     /* Employee Detail */
         btnEditEmployee_save.setOnAction(event -> updateEmployee());
@@ -151,6 +162,15 @@ public class VCEmployeeController implements Initializable {
             public void handle(KeyEvent event) {
                 if(txtEmployeeID.getText().length() > 5) txtEmployeeID.setText(txtEmployeeID.getText().substring(0,5));
             }
+        });
+        txtEmployeeShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            employeeDetailFocusState(newValue);
+        });
+        pkrEmployeeStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            employeeDetailFocusState(newValue);
+        });
+        cmbEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            employeeDetailFocusState(newValue);
         });
 
         showPaneEmployeeList();
@@ -203,6 +223,17 @@ public class VCEmployeeController implements Initializable {
         chkFormEmployeeActive.setSelected(false);
     }
 
+    private void employeeFormFocusState(Boolean b) {
+        if(!b) {
+            if(pkrStartDate.getValue() != null) {
+                String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
+                Integer newSharesAssigned = EmployeeUtils.getEmployeeShares(pkrStartDate.getValue(),
+                        Integer.parseInt(txtFormEmployeeStartingShares.getText()), Integer.parseInt(split[0]));
+                txtFormEmployeeShares.setText(newSharesAssigned.toString());
+            }
+        }
+    }
+
     private void saveEmployee() {
         String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
 
@@ -230,7 +261,8 @@ public class VCEmployeeController implements Initializable {
         txtEmployeeID.setText(selectedEmployee.getEmployee_id());
         txtEmployeeFirstName.setText(selectedEmployee.getFirst_name());
         txtEmployeeLastName.setText(selectedEmployee.getLast_name());
-        txtEmployeeShares.setText(selectedEmployee.getShares_assigned().toString());
+        txtEmployeeShares.setText(selectedEmployee.getStarting_shares().toString());
+        lblEmployeeShares.setText(selectedEmployee.getShares_assigned().toString());
         chkEmployeeActive.setSelected(selectedEmployee.getIs_active());
         pkrEmployeeStartDate.setValue(selectedEmployee.getStart_date());
 
@@ -248,13 +280,22 @@ public class VCEmployeeController implements Initializable {
         showPaneEmployeeDetail(true);
     }
 
+    private void employeeDetailFocusState(Boolean b) {
+        if(!b) {
+            String split[] = cmbEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
+            Integer newSharesAssigned = EmployeeUtils.getEmployeeShares(pkrEmployeeStartDate.getValue(),
+                    Integer.parseInt(txtEmployeeShares.getText()), Integer.parseInt(split[0]));
+
+            lblEmployeeShares.setText(newSharesAssigned.toString());
+        }
+    }
 
     private void updateEmployee() {
         String split[] = cmbEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
 
         Employee employee = new Employee(selectedEmployee.getEmployee_id(), Integer.parseInt(split[0]), txtEmployeeFirstName.getText(),
                 txtEmployeeLastName.getText(), pkrEmployeeStartDate.getValue(), chkEmployeeActive.isSelected(),
-                Integer.parseInt(txtFormEmployeeStartingShares.getText()), Integer.parseInt(txtEmployeeShares.getText()));
+                Integer.parseInt(txtEmployeeShares.getText()), Integer.parseInt(lblEmployeeShares.getText()));
 
         employee.updateEmployee();
         fillPaneEmployeeDetail(employee);

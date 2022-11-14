@@ -14,7 +14,6 @@ public class Employee {
     private String last_name;
     private LocalDate start_date;
     private Boolean is_active;
-
     private Integer starting_shares;
     private Integer shares_assigned;
 
@@ -48,7 +47,7 @@ public class Employee {
         this.last_name = employee.getLast_name();
         this.start_date = employee.getStart_date();
         this.is_active = employee.getIs_active();
-        this.starting_shares = employee.getShares_assigned();
+        this.starting_shares = employee.getStarting_shares();
         this.shares_assigned = employee.getShares_assigned();
     }
 
