@@ -22,7 +22,6 @@
       </HBox>
    </HBox>
 
-
    <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
          <Pane>
 
@@ -34,10 +33,10 @@
             <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
             <TableView fx:id="tblMetrics" prefHeight="220.0" prefWidth="550.0">
                <columns>
-                  <TableColumn fx:id="tbcMetricLabel" editable="false" prefWidth="150" text="Metric" />
-                  <TableColumn fx:id="tbcMetricEarnings" editable="false" prefWidth="100" text="Earnings" />
-                  <TableColumn fx:id="tbcMetricPayout" editable="false" prefWidth="100" text="Payout" />
-                  <TableColumn fx:id="tbcMetricStatus" editable="false" minWidth="75" prefWidth="81.5" text="Status" />
+                  <TableColumn fx:id="tbcMetricLabel" editable="false" text="Metric" />
+                  <TableColumn fx:id="tbcMetricEarnings" editable="false" text="Earnings" />
+                  <TableColumn fx:id="tbcMetricPayout" editable="false" text="Payout" />
+                  <TableColumn fx:id="tbcMetricStatus" editable="false" text="Status" />
                </columns>
             </TableView>
             <padding>
@@ -106,10 +105,10 @@
             <HBox fx:id="boxMetricDetailTable" spacing="4.0">
                <TableView fx:id="tblDetailMetricPeriods" prefHeight="115.0" prefWidth="433.0">
                   <columns>
-                     <TableColumn fx:id="tbcDetailPeriod" prefWidth="45.0" text="Period" />
-                     <TableColumn fx:id="tbcDetailBudget" prefWidth="128.0" text="Budget" />
-                     <TableColumn fx:id="tbcDetailActual" prefWidth="128.0" text="Actual" />
-                     <TableColumn fx:id="tbcDetailEarnings" prefWidth="128.0" text="Earnings" />
+                     <TableColumn fx:id="tbcDetailPeriod" text="Period" />
+                     <TableColumn fx:id="tbcDetailBudget" text="Budget" />
+                     <TableColumn fx:id="tbcDetailActual" text="Actual" />
+                     <TableColumn fx:id="tbcDetailEarnings" text="Earnings" />
                   </columns>
                </TableView>
                <VBox spacing="4.0">
@@ -136,7 +135,11 @@
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
                      <Label alignment="CENTER_RIGHT" prefWidth="97.0" text="Shares:" />
                      <TextField fx:id="txtDetailMetricShares" editable="false" prefWidth="95.0" />
-                     <Button fx:id="btnSharesRefresh" prefWidth="25" text="update shares" />
+                     <Button fx:id="btnSharesRefresh" prefWidth="81" text="update shares">
+                        <font>
+                           <Font size="10.0" />
+                        </font>
+                     </Button>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
                      <Label alignment="CENTER_RIGHT" prefWidth="97.0" text="EPS:" />
@@ -164,9 +167,9 @@
             </HBox>
             <TableView fx:id="tblDetailCompanyKPI" prefHeight="100.0" prefWidth="517.0">
                <columns>
-                  <TableColumn fx:id="tbcCompanyKPICode" prefWidth="95.0" text="KPI" />
-                  <TableColumn fx:id="tbcCompanyKPIGrade" prefWidth="138.0" text="Grade" />
-                  <TableColumn fx:id="tbcCompanyKPIScore" prefWidth="138.0" text="Score" />
+                  <TableColumn fx:id="tbcCompanyKPICode" text="KPI" />
+                  <TableColumn fx:id="tbcCompanyKPIGrade" text="Grade" />
+                  <TableColumn fx:id="tbcCompanyKPIScore" text="Score" />
                </columns>
             </TableView>
 
@@ -189,10 +192,10 @@
             </HBox>
             <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" prefWidth="517.0">
                <columns>
-                  <TableColumn fx:id="tbcEmployeeName" prefWidth="95.0" text="Name" />
-                  <TableColumn fx:id="tbcEmployeeShares" prefWidth="125.0" text="Shares" />
-                  <TableColumn fx:id="tbcEmployeeScore" prefWidth="125.0" text="Score" />
-                  <TableColumn fx:id="tbcEmployeeBonus" prefWidth="125.0" text="Bonus" />
+                  <TableColumn fx:id="tbcEmployeeName" text="Employee ID" />
+                  <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
+                  <TableColumn fx:id="tbcEmployeeScore" text="Score" />
+                  <TableColumn fx:id="tbcEmployeeBonus" text="Bonus" />
                </columns>
             </TableView>
             <opaqueInsets>
@@ -445,11 +448,11 @@
             </HBox>
             <TableView fx:id="tblEditorKPIs" prefHeight="200.0" prefWidth="550">
               <columns>
-                <TableColumn fx:id="tbcEditorKPICode" prefWidth="75.0" text="KPI" />
-                <TableColumn fx:id="tbcEditorKPIWeight" prefWidth="75.0" text="Weight" />
-                <TableColumn fx:id="tbcEditorKPIClass" prefWidth="75.0" text="Class" />
-                <TableColumn fx:id="tbcEditorKPIGrade" prefWidth="75.0" text="Grade" />
-                <TableColumn fx:id="tbcEditorKPIScore" prefWidth="75.0" text="Score" />
+                <TableColumn fx:id="tbcEditorKPICode" text="KPI" />
+                <TableColumn fx:id="tbcEditorKPIWeight" text="Weight" />
+                <TableColumn fx:id="tbcEditorKPIClass" text="Class" />
+                <TableColumn fx:id="tbcEditorKPIGrade" text="Grade" />
+                <TableColumn fx:id="tbcEditorKPIScore" text="Score" />
               </columns>
             </TableView>
             <padding>

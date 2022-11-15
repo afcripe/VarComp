@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DBUtils {
 
-    private static String varCompDB = "jdbc:h2:~/varcompdb";
+    private static String varCompDB = "jdbc:h2:~/varcomp/varcompdb";
 //    private static String varCompDB = "jdbc:h2:tcp://localhost/Users/afcripe/Desktop/varcompdb";
 
     public static String getDBLocation() {

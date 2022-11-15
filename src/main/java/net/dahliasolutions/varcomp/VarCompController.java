@@ -37,12 +37,12 @@ public class VarCompController extends ViewController implements Initializable {
         menuLogout.setOnAction(actionEvent -> NavigationUtils.changeScene(actionEvent, "login-view.fxml", "Please, Login", false));
         menuExit.setOnAction(actionEvent -> VarComp.closeApp());
 
-        btnNavHome.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
+//        btnNavHome.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavEmployees.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavSettings.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
 
-        btnNavHome.setOnAction(event -> setCenterView("vchome-view"));
+//        btnNavHome.setOnAction(event -> setCenterView("vchome-view"));
         btnNavMetrics.setOnAction(event -> setCenterView("vcmetric-view"));
         btnNavEmployees.setOnAction(event -> setCenterView("vcemployee-view"));
         btnNavSettings.setOnAction(event -> setCenterView("settings-view"));
@@ -53,7 +53,7 @@ public class VarCompController extends ViewController implements Initializable {
         }
 
 
-        setCenterView("vchome-view");
+        setCenterView("vcmetric-view");
     }
 
     @Override

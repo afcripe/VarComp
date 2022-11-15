@@ -297,6 +297,7 @@ public class VCMetricController implements Initializable {
 
     /* Metric Table */
         tbcMetricLabel.setCellValueFactory(new PropertyValueFactory<Metric, String>("metric_label"));
+        tbcMetricLabel.setPrefWidth((tblMetrics.getPrefWidth()-104)/3);
         tbcMetricEarnings.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Metric, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Metric, String> param) {
@@ -304,6 +305,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getMetric_earnings()));
             }
         });
+        tbcMetricEarnings.setPrefWidth((tblMetrics.getPrefWidth()-104)/3);
         tbcMetricPayout.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Metric, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Metric, String> param) {
@@ -311,6 +313,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getMetric_payout()));
             }
         });
+        tbcMetricPayout.setPrefWidth((tblMetrics.getPrefWidth()-104)/3);
         tbcMetricStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Metric, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Metric, String> param) {
@@ -321,6 +324,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(cellValue);
             }
         });
+        tbcMetricStatus.setPrefWidth(100);
         tbcMetricStatus.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -369,6 +373,7 @@ public class VCMetricController implements Initializable {
         });
 
         tbcDetailPeriod.setCellValueFactory(new PropertyValueFactory<MetricDetail, Integer>("detail_period"));
+        tbcDetailPeriod.setPrefWidth(50);
         tbcDetailBudget.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MetricDetail, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<MetricDetail, String> param) {
@@ -376,6 +381,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getDetail_budget()));
             }
         });
+        tbcDetailBudget.setPrefWidth((tblDetailMetricPeriods.getPrefWidth()-54)/3);
         tbcDetailActual.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MetricDetail, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<MetricDetail, String> param) {
@@ -383,6 +389,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getDetail_actual()));
             }
         });
+        tbcDetailActual.setPrefWidth((tblDetailMetricPeriods.getPrefWidth()-54)/3);
         tbcDetailEarnings.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MetricDetail, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<MetricDetail, String> param) {
@@ -390,11 +397,14 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getDetail_earnings()));
             }
         });
+        tbcDetailEarnings.setPrefWidth((tblDetailMetricPeriods.getPrefWidth()-54)/3);
         tblDetailMetricPeriods.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    showFormDP((MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem());
+                    if(!metricDetail.getLocked()) {
+                        showFormDP((MetricDetail) tblDetailMetricPeriods.getSelectionModel().getSelectedItem());
+                    }
                 }
             }
         });
@@ -413,6 +423,7 @@ public class VCMetricController implements Initializable {
         btnAddCompanyKPI.setOnAction(event -> addMissingCompanyKPIs());
         btnRemoveCompanyKPI.setOnAction(event -> removeCompanyKPI());
         tbcCompanyKPICode.setCellValueFactory(new PropertyValueFactory<CompanyKPI, String>("kpi_code"));
+        tbcCompanyKPICode.setPrefWidth(100);
         tbcCompanyKPIGrade.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CompanyKPI, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<CompanyKPI, String> param) {
@@ -420,6 +431,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getKpi_grade()));
             }
         });
+        tbcCompanyKPIGrade.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-104)/3);
         tbcCompanyKPIScore.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CompanyKPI, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<CompanyKPI, String> param) {
@@ -427,11 +439,14 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getKpi_score()));
             }
         });
+        tbcCompanyKPIScore.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-104)/3);
         tblDetailCompanyKPI.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    showCompKIPEditor(true);
+                    if(!metricDetail.getLocked()) {
+                        showCompKIPEditor(true);
+                    }
                 }
             }
         });
@@ -442,6 +457,7 @@ public class VCMetricController implements Initializable {
         btnAddEmployee.setOnAction(event -> addMissingEmployees());
         btnRemoveEmployee.setOnAction(event -> removeMissingEmployees());
         tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<EmployeeScore, String>("employee_id"));
+        tbcEmployeeName.setPrefWidth((tblDetailEmployeeScores.getPrefWidth()-4)/4);
         tbcEmployeeShares.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeScore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeScore, String> param) {
@@ -449,6 +465,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getShares()));
             }
         });
+        tbcEmployeeShares.setPrefWidth((tblDetailEmployeeScores.getPrefWidth()-4)/4);
         tbcEmployeeScore.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeScore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeScore, String> param) {
@@ -456,6 +473,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getScore()));
             }
         });
+        tbcEmployeeScore.setPrefWidth((tblDetailEmployeeScores.getPrefWidth()-4)/4);
         tbcEmployeeBonus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeScore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeScore, String> param) {
@@ -463,6 +481,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getBonus()));
             }
         });
+        tbcEmployeeBonus.setPrefWidth((tblDetailEmployeeScores.getPrefWidth()-4)/4);
         tblDetailEmployeeScores.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -475,13 +494,16 @@ public class VCMetricController implements Initializable {
     /* Employee KPI Editor */
         btnEmployeeKPIBack.setOnAction(event -> closeEmployeeKPIEdit());
         tbcEditorKPICode.setCellValueFactory(new PropertyValueFactory<EmployeeKPI, String>("kpi_code"));
+        tbcEditorKPICode.setPrefWidth(100);
         tbcEditorKPIWeight.setCellValueFactory(new PropertyValueFactory<EmployeeKPI, BigDecimal>("weight"));
+        tbcEditorKPIWeight.setPrefWidth((tblEditorKPIs.getPrefWidth()-105)/4);
         tbcEditorKPIClass.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeKPI, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeKPI, String> param) {
                 return new SimpleObjectProperty<String>(KPIClassConnector.getKPIClass(param.getValue().getKpi_class()).getName());
             }
         });
+        tbcEditorKPIClass.setPrefWidth((tblEditorKPIs.getPrefWidth()-105)/4);
         tbcEditorKPIGrade.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeKPI, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeKPI, String> param) {
@@ -489,6 +511,7 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getKpi_grade()));
             }
         });
+        tbcEditorKPIGrade.setPrefWidth((tblEditorKPIs.getPrefWidth()-105)/4);
         tbcEditorKPIScore.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeKPI, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeKPI, String> param) {
@@ -496,11 +519,14 @@ public class VCMetricController implements Initializable {
                 return new SimpleObjectProperty<String>(fm.format(param.getValue().getKpi_score()));
             }
         });
+        tbcEditorKPIScore.setPrefWidth((tblEditorKPIs.getPrefWidth()-105)/4);
         tblEditorKPIs.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    showFormEditorKPI(true);
+                    if(!metricDetail.getLocked()) {
+                        showFormEditorKPI(true);
+                    }
                     //openEmployeeKPIEditor((EmployeeScore) tblDetailEmployeeScores.getSelectionModel().getSelectedItem());
                 }
             }
@@ -593,15 +619,16 @@ public class VCMetricController implements Initializable {
     }
 
     private void fillPaneMetricDetail(Metric metric) {
+        NumberFormat fmDollar = NumberFormat.getCurrencyInstance();
         txtDetailMetricLabel.setText(metric.getMetric_label());
         txtDetailMetricYear.setText(metric.getMetric_year().toString());
         txtDetailMetricPeriod.setText(metric.getMetric_period().toString());
         chkDetailMetricLocked.setSelected(metric.getLocked());
-        txtDetailMetricEarning.setText(metric.getMetric_earnings().toString());
-        txtDetailMetricFunding.setText(metric.getMetric_funding().toString());
-        txtDetailMetricPayout.setText(metric.getMetric_payout().toString());
+        txtDetailMetricEarning.setText(fmDollar.format(metric.getMetric_earnings()));
+        txtDetailMetricFunding.setText(fmDollar.format(metric.getMetric_funding()));
+        txtDetailMetricPayout.setText(fmDollar.format(metric.getMetric_payout()));
         txtDetailMetricShares.setText(metric.getMetric_shares().toString());
-        txtDetailMetricEPS.setText(metric.getMetric_eps().toString());
+        txtDetailMetricEPS.setText(fmDollar.format(metric.getMetric_eps()));
         setLockStyle();
 
         if ( !metric.getMetric_id().equals(0) ) {
@@ -616,9 +643,23 @@ public class VCMetricController implements Initializable {
         if(metricDetail.getLocked()) {
             boxMetricDetailStatus.setStyle("-fx-background-color: DARKRED;");
             btnMetricSave.setDisable(true);
+            btnDetailAddMetricDetail.setDisable(true);
+            btnDetailRemoveMetricDetail.setDisable(true);
+            btnAddCompanyKPI.setDisable(true);
+            btnAddEmployee.setDisable(true);
+            btnRemoveCompanyKPI.setDisable(true);
+            btnRemoveEmployee.setDisable(true);
+            btnSharesRefresh.setDisable(true);
         } else {
             boxMetricDetailStatus.setStyle("-fx-background-color: DARKGREEN;");
             btnMetricSave.setDisable(false);
+            btnDetailAddMetricDetail.setDisable(false);
+            btnDetailRemoveMetricDetail.setDisable(false);
+            btnAddCompanyKPI.setDisable(false);
+            btnAddEmployee.setDisable(false);
+            btnRemoveCompanyKPI.setDisable(false);
+            btnRemoveEmployee.setDisable(false);
+            btnSharesRefresh.setDisable(false);
         }
     }
     private void setMetricLock(Boolean locked) {
@@ -681,7 +722,7 @@ public class VCMetricController implements Initializable {
      private void saveMetricDetail() {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator('.');
-        String pattern = "#0.0#";
+        String pattern = "$#0.0#";
         DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
         decimalFormat.setParseBigDecimal(true);
 
@@ -833,6 +874,7 @@ public class VCMetricController implements Initializable {
     }
 
     private void updateShares() {
+        NumberFormat fmDollar = NumberFormat.getCurrencyInstance();
         metricDetail.setMetric_shares(VarComp.getCurrentCompany().getShares_outstanding());
         txtDetailMetricShares.setText(metricDetail.getMetric_shares().toString());
         if(metricDetail.getMetric_funding().doubleValue() > 0) {
@@ -840,12 +882,13 @@ public class VCMetricController implements Initializable {
             BigDecimal metricEPS = new BigDecimal(eps);
             metricEPS = metricEPS.setScale(2, RoundingMode.HALF_UP);
             metricDetail.setMetric_eps(metricEPS);
-            txtDetailMetricEPS.setText(metricEPS.toString());
+            txtDetailMetricEPS.setText(fmDollar.format(metricEPS));
         }
         updateEmployeeScores();
     }
 
     private void calcMetric() {
+        NumberFormat fmDollar = NumberFormat.getCurrencyInstance();
         BigDecimal metricEarnings = BigDecimal.valueOf(0.00);
         BigDecimal metricFunding = BigDecimal.valueOf(0.00);
         BigDecimal metricEPS = BigDecimal.valueOf(0.00);
@@ -875,10 +918,10 @@ public class VCMetricController implements Initializable {
         metricDetail.setMetric_eps(metricEPS);
         metricDetail.setMetric_payout(metricPayout);
 
-        txtDetailMetricEarning.setText(metricEarnings.toString());
-        txtDetailMetricFunding.setText(metricFunding.toString());
-        txtDetailMetricEPS.setText(metricEPS.toString());
-        txtDetailMetricPayout.setText(metricPayout.toString());
+        txtDetailMetricEarning.setText(fmDollar.format(metricEarnings));
+        txtDetailMetricFunding.setText(fmDollar.format(metricFunding));
+        txtDetailMetricEPS.setText(fmDollar.format(metricEPS));
+        txtDetailMetricPayout.setText(fmDollar.format(metricPayout));
     }
 
     private BigDecimal calcMetricPayout() {
@@ -1042,16 +1085,17 @@ public class VCMetricController implements Initializable {
     }
 
     private void openEmployeeKPIEditor(EmployeeScore score) {
+        NumberFormat fmPercent = NumberFormat.getPercentInstance();
         employeeScore.setEmployeeScore(score);
         employeeEdit.setEmployee(EmployeeConnector.getEmployee(employeeScore.getEmployee_id()));
-        NumberFormat fm = NumberFormat.getCurrencyInstance();
+        NumberFormat fmDollar = NumberFormat.getCurrencyInstance();
 
         txtEditorEmployeeID.setText(employeeEdit.getEmployee_id());
         txtEditorEmployeeFirstName.setText(employeeEdit.getFirst_name());
         txtEditorEmployeeLastName.setText(employeeEdit.getLast_name());
         txtEditorEmployeeShares.setText(employeeScore.getShares().toString());
-        txtEditorEmployeeScore.setText(employeeScore.getScore().toString());
-        txtEditorEmployeeSBonus.setText(fm.format(employeeScore.getBonus().doubleValue()));
+        txtEditorEmployeeScore.setText(fmPercent.format(employeeScore.getScore().doubleValue()));
+        txtEditorEmployeeSBonus.setText(fmDollar.format(employeeScore.getBonus().doubleValue()));
 
         ArrayList<Position> positionList = PositionsConnector.getPositions();
         for (Position p: positionList) {
@@ -1085,13 +1129,46 @@ public class VCMetricController implements Initializable {
         lblKPIEditorClass.setText(KPIClassConnector.getKPIClass(eKPI.getKpi_class()).toString());
         lblKPIEditorWeight.setText(eKPI.getWeight().toString());
         lblKPIEditorF1Name.setText(eKPI.getF1_name());
+
         txtKPIEditorF1Data.setText(eKPI.getF1_data().toString());
+        if(eKPI.getF1_name().length() > 1){
+            lblKPIEditorF1Name.setVisible(true);
+            txtKPIEditorF1Data.setVisible(true);
+        }else{
+            lblKPIEditorF1Name.setVisible(false);
+            txtKPIEditorF1Data.setVisible(false);
+        }
+
         lblKPIEditorF2Name.setText(eKPI.getF2_name());
         txtKPIEditorF2Data.setText(eKPI.getF2_data().toString());
+        if(eKPI.getF1_name().length() > 1){
+            lblKPIEditorF2Name.setVisible(true);
+            txtKPIEditorF2Data.setVisible(true);
+        }else{
+            lblKPIEditorF2Name.setVisible(false);
+            txtKPIEditorF2Data.setVisible(false);
+        }
+
         lblKPIEditorF3Name.setText(eKPI.getF3_name());
         txtKPIEditorF3Data.setText(eKPI.getF3_data().toString());
+        if(eKPI.getF1_name().length() > 1){
+            lblKPIEditorF3Name.setVisible(true);
+            txtKPIEditorF3Data.setVisible(true);
+        }else{
+            lblKPIEditorF3Name.setVisible(false);
+            txtKPIEditorF3Data.setVisible(false);
+        }
+
         lblKPIEditorF4Name.setText(eKPI.getF4_name());
         txtKPIEditorF4Data.setText(eKPI.getF4_data().toString());
+        if(eKPI.getF1_name().length() > 1){
+            lblKPIEditorF4Name.setVisible(true);
+            txtKPIEditorF4Data.setVisible(true);
+        }else{
+            lblKPIEditorF4Name.setVisible(false);
+            txtKPIEditorF4Data.setVisible(false);
+        }
+
         txtKPIEditorCalc.setText(eKPI.getCalc_instructions());
         txtKPIEditorGrade.setText(eKPI.getKpi_grade().toString());
         txtKPIEditorScore.setText(eKPI.getKpi_score().toString());
@@ -1104,6 +1181,12 @@ public class VCMetricController implements Initializable {
         paneFormEditorKPI.setVisible(false);
     }
     private void saveKPIEditor() {
+        EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
+        if(eKPI.getKpi_class().equals(1)) {
+            cancelKPIEditor();
+            return;
+        }
+
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator('.');
         String pattern = "#0.0#";
@@ -1116,8 +1199,6 @@ public class VCMetricController implements Initializable {
         BigDecimal kpiF4 = BigDecimal.valueOf(0.00);
         BigDecimal kpiGrade = BigDecimal.valueOf(0.00);
         BigDecimal kpiScore = BigDecimal.valueOf(0.00);
-
-        EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
 
         try{
             kpiF1 = ((BigDecimal) decimalFormat.parse(txtKPIEditorF1Data.getText()));
@@ -1172,6 +1253,7 @@ public class VCMetricController implements Initializable {
 
 /* Update Employee Scores and Metric Payout */
     private void updateEmployeeScores() {
+        NumberFormat fmDollar = NumberFormat.getCurrencyInstance();
         BigDecimal metricPayout = new BigDecimal(0.00);
 
         ArrayList<EmployeeKPI> employeeKPIList;
@@ -1218,7 +1300,7 @@ public class VCMetricController implements Initializable {
 
         // update metric payout
         metricDetail.setMetric_payout(metricPayout);
-        txtDetailMetricPayout.setText(metricPayout.toString());
+        txtDetailMetricPayout.setText(fmDollar.format(metricPayout));
 
         fillEmployees();
         saveMetricDetail();
