@@ -286,7 +286,7 @@ public class EmployeeKPIConnector {
             preparedStatement = connection.prepareStatement("UPDATE TBLEMPLOYEEKPIS " +
                     "SET KPI_CODE=?, SCORE_ID=?, KPI_MASTER_ID=?, WEIGHT=?, METRIC_ID=?, KPI_CLASS=?, COMPANY_KPI_ID=?, " +
                     "F1_NAME=?, F2_NAME=?, F3_NAME=?, F4_NAME=?, F1_DATA=?, F2_DATA=?, F3_DATA=?, F4_DATA=?, " +
-                    "CALC_INSTRUCTIONS=?, KPI_GRADE=?, KPI_SCORE=? WHERE COMPANY_KPI_ID=?");
+                    "CALC_INSTRUCTIONS=?, KPI_GRADE=?, KPI_SCORE=? WHERE EMPLOYEE_KPI_ID=?");
             preparedStatement.setString(1, employeeKPI.getKpi_code());
             preparedStatement.setInt(2, employeeKPI.getScore_id());
             preparedStatement.setInt(3, employeeKPI.getKpi_master_id());

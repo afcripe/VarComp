@@ -157,6 +157,31 @@ public class Employee {
         }
     }
 
+    public void updateCompanyKPIs(Integer metricID) {
+        // get employeeScore for metric
+        EmployeeScore employeeScore = EmployeeScoreConnector.getEmployeeScoreByMetric(metricID, getEmployee_id());
+        // get list of Employee KPIs
+        ArrayList<EmployeeKPI> kpiList = EmployeeKPIConnector.getEmployeeKPIsByScore(employeeScore.getScore_id());
+
+        // loop over kpis and update only companyKPIs for metric
+        for ( EmployeeKPI employeeKPI : kpiList ) {
+            if ( employeeKPI.getKpi_class().equals(1) ) {
+                CompanyKPI companyKPI = CompanyKPIConnector.getCompanyKPIByMaster(metricID, employeeKPI.getKpi_master_id());
+                if (!companyKPI.getCompany_kpi_id().equals(0)) {
+                    employeeKPI.setWeight(companyKPI.getWeight());
+                    employeeKPI.setF1_data(companyKPI.getF1_data());
+                    employeeKPI.setF2_data(companyKPI.getF2_data());
+                    employeeKPI.setF3_data(companyKPI.getF3_data());
+                    employeeKPI.setF4_data(companyKPI.getF4_data());
+                    employeeKPI.setCalc_instructions(companyKPI.getCalc_instructions());
+                    employeeKPI.setKpi_grade(companyKPI.getKpi_grade());
+                    employeeKPI.setKpi_score(companyKPI.getKpi_score());
+                    EmployeeKPIConnector.updateEmployeeKPI(employeeKPI);
+                }
+            }
+        }
+    }
+
     private BigDecimal getPositionKPIWeight(Integer masterID) {
         return PositionKPIConnector.getPositionKPIByMasterAndPosition(masterID, getPosition()).getWeight();
     }

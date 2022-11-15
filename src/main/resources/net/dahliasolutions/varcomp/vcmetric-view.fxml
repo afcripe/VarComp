@@ -134,12 +134,12 @@
                </VBox>
                <VBox spacing="8.0">
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
-                     <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Shares:" />
+                     <Label alignment="CENTER_RIGHT" prefWidth="97.0" text="Shares:" />
                      <TextField fx:id="txtDetailMetricShares" editable="false" prefWidth="95.0" />
-                     <Button fx:id="btnSharesRefresh" prefWidth="25" text="r" />
+                     <Button fx:id="btnSharesRefresh" prefWidth="25" text="update shares" />
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
-                     <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="EPS:" />
+                     <Label alignment="CENTER_RIGHT" prefWidth="97.0" text="EPS:" />
                      <TextField fx:id="txtDetailMetricEPS" editable="false" prefWidth="95.0" />
                   </HBox>
                </VBox>
@@ -161,7 +161,6 @@
                <HBox prefWidth="200.0" />
                <Button fx:id="btnAddCompanyKPI" mnemonicParsing="false" text="Add KPIs" />
                <Button fx:id="btnRemoveCompanyKPI" mnemonicParsing="false" text="Remove Selected" />
-               <Button fx:id="btnRefreshCompanyKPI" mnemonicParsing="false" prefWidth="25.0" text="r" />
             </HBox>
             <TableView fx:id="tblDetailCompanyKPI" prefHeight="100.0" prefWidth="517.0">
                <columns>
@@ -187,7 +186,6 @@
                <HBox prefWidth="200.0" />
                <Button fx:id="btnAddEmployee" mnemonicParsing="false" text="Add Employees" />
                <Button fx:id="btnRemoveEmployee" mnemonicParsing="false" text="Remove Selected" />
-               <Button fx:id="btnRefreshEmployee" mnemonicParsing="false" prefWidth="25.0" text="r" />
             </HBox>
             <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" prefWidth="517.0">
                <columns>
@@ -244,10 +242,101 @@
             </padding>
          </VBox>
 
+         <!-- Company KPI Editor -->
+         <VBox fx:id="paneDetailEditorCompanyKPI" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+               <HBox spacing="4.0">
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="KPI:" />
+                  <Label fx:id="lblCompKPIEditorCode" prefWidth="105.0" text="AGE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </HBox>
+               <HBox spacing="4.0">
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Class:" />
+                  <Label fx:id="lblCompKPIEditorClass" prefWidth="105.0" text="Label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Weight:" />
+                  <Label fx:id="lblCompKPIEditorWeight" prefWidth="105.0" text="Label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </HBox>
+               <HBox prefHeight="55.0" prefWidth="548.0" spacing="4.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="lblCompKPIEditorF1Name" text="F1_Name" VBox.vgrow="ALWAYS">
+                        <VBox.margin>
+                           <Insets left="8.0" />
+                        </VBox.margin>
+                     </Label>
+                     <TextField fx:id="txtCompKPIEditorF1Data" VBox.vgrow="ALWAYS" />
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="lblCompKPIEditorF2Name" text="F2_Name">
+                        <VBox.margin>
+                           <Insets left="8.0" />
+                        </VBox.margin>
+                     </Label>
+                     <TextField fx:id="txtCompKPIEditorF2Data" />
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="lblCompKPIEditorF3Name" text="F3_Name">
+                        <VBox.margin>
+                           <Insets left="8.0" />
+                        </VBox.margin>
+                     </Label>
+                     <TextField fx:id="txtCompKPIEditorF3Data" />
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="lblCompKPIEditorF4Name" text="F4_Name">
+                        <VBox.margin>
+                           <Insets left="8.0" />
+                        </VBox.margin>
+                     </Label>
+                     <TextField fx:id="txtCompKPIEditorF4Data" />
+                  </VBox>
+                  <padding>
+                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                  </padding>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0" spacing="4.0">
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Calculation:" />
+                  <TextField fx:id="txtCompKPIEditorCalc" HBox.hgrow="ALWAYS" />
+                  <padding>
+                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                  </padding>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="4.0">
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Grade:" />
+                  <TextField fx:id="txtCompKPIEditorGrade" />
+                  <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="47.0" prefWidth="105.0" text="Score:" />
+                  <TextField fx:id="txtCompKPIEditorScore" layoutX="115.0" layoutY="43.0" />
+                  <padding>
+                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                  </padding>
+               </HBox>
+               <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                  <HBox prefHeight="100.0" prefWidth="172.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lblCompKPIEditorID" prefWidth="25" visible="false" />
+                  <Button fx:id="btnCompKPIEditorCancel" mnemonicParsing="false" prefWidth="95.0" text="Cancel" />
+                  <Button fx:id="btnCompKPIEditorSave" mnemonicParsing="false" prefWidth="95.0" text="Save" />
+                  <padding>
+                     <Insets bottom="4.0" left="4.0" right="16.0" top="4.0" />
+                  </padding>
+               </HBox>
+               <padding>
+                  <Insets bottom="8.0" top="8.0" />
+               </padding>
+            </VBox>
+
          </Pane>
    </ScrollPane>
 
-   <ScrollPane fx:id="paneEmployeeKPI" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+   <ScrollPane fx:id="paneEmployeeKPI" fitToWidth="true" visible="false" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
       <Pane>
       <!-- Employee Editor -->
          <VBox fx:id="paneFormEditorEmployee" fillWidth="false" spacing="8.0">
@@ -377,6 +466,12 @@
                      <Font size="14.0" />
                   </font>
                </Label>
+               <Label fx:id="lblKPIEditorCompany" prefHeight="23.0" prefWidth="325.0"
+                      text="Please Edit this KPI under the Company KPI!" textFill="#ab0000" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
             </HBox>
             <HBox spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Class:" />
@@ -447,7 +542,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
                   <HBox prefHeight="100.0" prefWidth="172.0" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="lblKPIEditorID" visible="false" prefWidth="25" />
+                  <Label fx:id="lblKPIEditorID" prefWidth="25" visible="false" />
                   <Button fx:id="btnKPIEditorCancel" mnemonicParsing="false" prefWidth="95.0" text="Cancel" />
                   <Button fx:id="btnKPIEditorSave" mnemonicParsing="false" prefWidth="95.0" text="Save" />
                <padding>
@@ -460,4 +555,5 @@
          </VBox>
       </Pane>
    </ScrollPane>
+
 </AnchorPane>
