@@ -5,11 +5,13 @@ import java.sql.*;
 public class DBUtils {
 
     private static String varCompDB = "jdbc:h2:~/varcomp/varcompdb";
-//    private static String varCompDB = "jdbc:h2:tcp://localhost/Users/afcripe/Desktop/varcompdb";
 
     public static String getDBLocation() {
         return varCompDB;
-//        return "jdbc:h2:tcp://localhost/Users/afcripe/Desktop/varcompdb";
+    }
+
+    public static String getAppVersion() {
+        return "1.2.1";
     }
 
     public static Boolean updateDBTable(double w, double h) {

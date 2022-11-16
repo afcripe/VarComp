@@ -6,6 +6,7 @@ import net.dahliasolutions.varcomp.connectors.PositionsConnector;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.Employee;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -60,5 +61,14 @@ public class EmployeeUtils {
         VarComp.getCurrentCompany().setShares_outstanding(sharesAssigned);
         CompanyConnector.updateCompany(VarComp.getCurrentCompany());
     }
+
+    public static BigDecimal getScore() {
+        return new BigDecimal(0.00);
+    }
+
+    public static BigDecimal getWeight() {
+        return new BigDecimal(0.00);
+    }
+
 
 }

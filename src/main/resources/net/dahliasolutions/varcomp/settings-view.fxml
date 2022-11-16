@@ -118,12 +118,12 @@
                     <Insets bottom="4.0" left="16.0" right="4.0" top="4.0" />
                  </padding>
             </HBox>
-            <TableView fx:id="tblKPIClasses" prefHeight="120.0" prefWidth="350.0">
+            <TableView fx:id="tblKPIClasses" prefHeight="120.0" prefWidth="550.0">
                 <columns>
                     <TableColumn fx:id="tbcClassID" prefWidth="40.5" text="ID" />
                     <TableColumn fx:id="tbcClassName" prefWidth="123.0" text="Name" />
                     <TableColumn fx:id="tbcClassDescription" prefWidth="191.0" text="Description" />
-                    <TableColumn fx:id="tbcClassAutoFill" minWidth="0.0" prefWidth="100.5" text="Auto Fill" />
+                    <TableColumn fx:id="tbcClassAutoFill" prefWidth="100.5" text="Auto Fill" />
                 </columns>
             </TableView>
 
@@ -140,12 +140,12 @@
                     <Insets bottom="4.0" left="16.0" right="4.0" top="4.0" />
                  </padding>
             </HBox>
-            <TableView fx:id="tblMasterKPIs" prefHeight="280" prefWidth="550.0">
+            <TableView fx:id="tblMasterKPIs" prefHeight="350" prefWidth="550.0">
                 <columns>
                    <TableColumn fx:id="tbcKPIid" prefWidth="57.5" text="ID" />
-                   <TableColumn fx:id="tbcKPICode" prefWidth="92.5" text="KPI Code" />
+                   <TableColumn fx:id="tbcKPICode" prefWidth="100" text="KPI Code" />
                    <TableColumn fx:id="tbcKPIDescription" prefWidth="234.5" text="Description" />
-                   <TableColumn fx:id="tbcKPIClass" prefWidth="70.5" text="Class" />
+                   <TableColumn fx:id="tbcKPIClass" prefWidth="100" text="Class" />
                 </columns>
             </TableView>
         </VBox>
@@ -155,7 +155,7 @@
                 <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="ID:" />
                 <TextField fx:id="txtFormClassKPI_id" editable="false" prefWidth="55.0" />
                 <Label alignment="CENTER_RIGHT" prefWidth="125.0" text="Name:" />
-                <TextField fx:id="txtFormClassKPI_name" prefWidth="90.0" />
+                <TextField fx:id="txtFormClassKPI_name" prefWidth="180.0" />
             </HBox>
             <HBox spacing="4">
                 <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Description:" />
@@ -191,35 +191,52 @@
                 <Label alignment="CENTER_RIGHT" prefWidth="62.0" text="KPI Class:" />
                 <ComboBox fx:id="cmbFormMastKPI_class" prefWidth="142.0" />
                 <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Calculation:" />
-                <TextField fx:id="txtFormMastKPI_calc" prefWidth="237.0" />
+                <ComboBox fx:id="cmbFormMastKPI_calc" prefWidth="142.0" />
             </HBox>
             <VBox spacing="4">
-                <Label prefHeight="17.0" prefWidth="150.0" text="Score Ratings:" />
+                <HBox>
+                    <Label prefHeight="17.0" prefWidth="150.0" text="Score Evaluations:" >
+                        <font>
+                            <Font name="Arial Bold" />
+                        </font>
+                    </Label>
+                    <CheckBox fx:id="chkEvalReverseOrder" />
+                </HBox>
                 <HBox spacing="4" VBox.vgrow="ALWAYS">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Extraordinary:" />
+                        <Label text="5:" />
                         <TextField fx:id="txtFormMasterKPI_extraordinary" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Great:" />
+                        <Label text="4:" />
                         <TextField fx:id="txtFormMasterKPI_great" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Well:" />
+                        <Label text="3:" />
                         <TextField fx:id="txtFormMasterKPI_well" VBox.vgrow="ALWAYS" />
                     </VBox>
+                </HBox>
+                <HBox spacing="4" VBox.vgrow="ALWAYS">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Needs Improvement:" />
+                        <Label text="2:" />
                         <TextField fx:id="txtFormMasterKPI_needs_improvement" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Not Acceptable:" />
+                        <Label text="1:" />
+                        <TextField fx:id="txtFormMasterKPI_poor" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="0:" />
                         <TextField fx:id="txtFormMasterKPI_not_acceptable" VBox.vgrow="ALWAYS" />
                     </VBox>
                 </HBox>
             </VBox>
-
             <VBox spacing="4">
+                <Label prefHeight="17.0" prefWidth="150.0" text=" KPI Column Names:" >
+                    <font>
+                        <Font name="Arial Bold" />
+                    </font>
+                </Label>
                 <HBox spacing="4">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
                         <Label text="Field 1 Name:" />

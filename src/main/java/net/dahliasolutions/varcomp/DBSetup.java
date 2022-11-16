@@ -72,7 +72,7 @@ public class DBSetup {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblcompany " +
                     "(company_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
                     "company_name VARCHAR(45), shares_total INT, shares_outstanding INT, " +
-                    "funding_percentage NUMERIC(7,4), shares_issued_years INT, " +
+                    "funding_percentage NUMERIC(5,4), shares_issued_years INT, " +
                     "shares_issued_amount INT, company_logo_show BOOLEAN)");
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -183,10 +183,11 @@ public class DBSetup {
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblkpimaster " +
                     "(kpi_master_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                    "kpi_code VARCHAR(25), description VARCHAR(255), kpi_class BIGINT, calc_instructions VARCHAR(255), " +
-                    "score_extraordinary NUMERIC(7,4), score_great NUMERIC(7,4), score_well NUMERIC(7,4), " +
-                    "score_needs_improvement NUMERIC(7,4), score_not_acceptable NUMERIC(7,4)," +
-                    "f1_name VARCHAR(45), f2_name VARCHAR(45), f3_name VARCHAR(45), f4_name VARCHAR(45))");
+                    "kpi_code VARCHAR(25), description VARCHAR(255), kpi_class BIGINT, calc_instructions BIGINT, " +
+                    "score_extraordinary NUMERIC(10,2), score_great NUMERIC(10,2), score_well NUMERIC(10,2), " +
+                    "score_needs_improvement NUMERIC(10,2), score_poor NUMERIC(10,2), " +
+                    "score_not_acceptable NUMERIC(10,2), f1_name VARCHAR(45), f2_name VARCHAR(45), " +
+                    "f3_name VARCHAR(45), f4_name VARCHAR(45), reverse_scores BOOLEAN)");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -245,7 +246,7 @@ public class DBSetup {
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblpositionkpis " +
                     "(item_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                    "position_id BIGINT, kpi_master_id BIGINT, kpi_class_id BIGINT, weight NUMERIC(7,4))");
+                    "position_id BIGINT, kpi_master_id BIGINT, kpi_class_id BIGINT, weight NUMERIC(10,2))");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -260,10 +261,10 @@ public class DBSetup {
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblcompanykpis " +
                     "(company_kpi_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, kpi_code VARCHAR(25), " +
-                    "kpi_master_id BIGINT, weight NUMERIC(7,4), metric_id BIGINT, kpi_class BIGINT, " +
+                    "kpi_master_id BIGINT, weight NUMERIC(10,2), metric_id BIGINT, kpi_class BIGINT, " +
                     "f1_name VARCHAR(45), f2_name VARCHAR(45), f3_name VARCHAR(45), f4_name VARCHAR(45), " +
                     "f1_data NUMERIC(18,2), f2_data NUMERIC(18,2), f3_data NUMERIC(18,2), f4_data NUMERIC(18,2), " +
-                    "calc_instructions VARCHAR(255), kpi_grade NUMERIC(7,4), kpi_score NUMERIC(7,4))");
+                    "calc_instructions BIGINT, kpi_grade NUMERIC(10,2), kpi_score NUMERIC(10,2))");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -278,10 +279,10 @@ public class DBSetup {
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployeekpis " +
                     "(employee_kpi_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, score_id BIGINT, kpi_code VARCHAR(25), " +
-                    "kpi_master_id BIGINT, weight NUMERIC(7,4), metric_id BIGINT, kpi_class BIGINT, company_kpi_id BIGINT, " +
+                    "kpi_master_id BIGINT, weight NUMERIC(10,2), metric_id BIGINT, kpi_class BIGINT, company_kpi_id BIGINT, " +
                     "f1_name VARCHAR(45), f2_name VARCHAR(45), f3_name VARCHAR(45), f4_name VARCHAR(45), " +
                     "f1_data NUMERIC(18,2), f2_data NUMERIC(18,2), f3_data NUMERIC(18,2), f4_data NUMERIC(18,2), " +
-                    "calc_instructions VARCHAR(255), kpi_grade NUMERIC(7,4), kpi_score NUMERIC(7,4))");
+                    "calc_instructions BIGINT, kpi_grade NUMERIC(10,2), kpi_score NUMERIC(10,2))");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -297,7 +298,7 @@ public class DBSetup {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployeescores " +
                     "(score_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY," +
                     "employee_id VARCHAR(5), metric_id BIGINT, " +
-                    "shares INT, score NUMERIC(7,4), bonus NUMERIC(7,4))");
+                    "shares INT, grade NUMERIC(10,2), bonus NUMERIC(10,2))");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -335,13 +336,57 @@ public class DBSetup {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            cleanupConnection();
+            initializeCalculationOptions();
         }
     }
 
+    public static void initializeCalculationOptions() {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblcalculationoptions " +
+                    "(calculation_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                    "calculation_name VARCHAR(150), calculation_description VARCHAR(255), " +
+                    "calculation_instructions VARCHAR(255))");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            initializeCalculationOptionsDefault();
+        }
+    }
+
+    public static void initializeCalculationOptionsDefault() {
+        PreparedStatement getDefaultData = null;
+        PreparedStatement setDefaultData = null;
+        ResultSet resultSet = null;
+
+        try {
+            getDefaultData = connection.prepareStatement("SELECT * FROM tblcalculationoptions");
+            resultSet = getDefaultData.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                setDefaultData = connection.prepareStatement("INSERT INTO tblcalculationoptions " +
+                        "set calculation_name='AGE', calculation_description='Calculate Aged Receivables', " +
+                        "calculation_instructions='ColA*0.1+ColB*0.3+ColC*0.3+ColD*0.3'");
+                setDefaultData.execute();
+                setDefaultData = connection.prepareStatement("INSERT INTO tblcalculationoptions " +
+                        "set calculation_name='DSO', calculation_description='Calculate Days of Sales Outstanding', " +
+                        "calculation_instructions='ColA/ColB*365'");
+                setDefaultData.execute();
+                setDefaultData = connection.prepareStatement("INSERT INTO tblcalculationoptions " +
+                        "set calculation_name='OLE', calculation_description='Calculate Overall Labor Effectiveness', " +
+                        "calculation_instructions='ColA/ColB*100'");
+                setDefaultData.execute();
+            }
 
 
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanupConnection();
+        }
+    }
 
     public static void cleanupConnection() {
         try {

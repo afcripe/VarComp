@@ -191,7 +191,9 @@ public class SettingsController implements Initializable {
     @FXML
     private ComboBox cmbFormMastKPI_class;
     @FXML
-    private TextField txtFormMastKPI_calc;
+    private ComboBox cmbFormMastKPI_calc;
+    @FXML
+    private CheckBox chkEvalReverseOrder;
     @FXML
     private TextField txtFormMasterKPI_extraordinary;
     @FXML
@@ -202,6 +204,8 @@ public class SettingsController implements Initializable {
     private TextField txtFormMasterKPI_needs_improvement;
     @FXML
     private TextField txtFormMasterKPI_not_acceptable;
+    @FXML
+    private TextField txtFormMasterKPI_poor;
     @FXML
     private TextField txtFormMasterKPI_f1;
     @FXML
@@ -285,6 +289,7 @@ public class SettingsController implements Initializable {
     ObservableList<Position> positionList;
     ObservableList<PositionKPI> positionKPIList;
     ObservableList<User> userList;
+    ObservableList<CalculationOptions> calcList;
 
 
     @Override
@@ -296,6 +301,7 @@ public class SettingsController implements Initializable {
         positionList = FXCollections.observableArrayList(PositionsConnector.getPositions());
         positionKPIList = FXCollections.observableArrayList(PositionKPIConnector.getPositionKPI());
         userList = FXCollections.observableArrayList(UserConnector.getUsers());
+        calcList = FXCollections.observableArrayList(CalculationOptionsConnection.getCalculationOptions());
 
         btnSetCompany.setOnAction(actionEvent -> settingsNave("company"));
         btnSetKPI.setOnAction(actionEvent -> settingsNave("kpi"));
@@ -629,10 +635,12 @@ public class SettingsController implements Initializable {
         chkFormClassKPI_auto.setSelected(kpiClass.getAuto_fill_employees());
     }
     private void showPaneFormClassKPI() {
+        System.out.println(tblKPIClasses.getPrefWidth()+" x "+tblKPIClasses.getPrefHeight());
         paneFormKPIClass.setLayoutX(tblKPIClasses.getLayoutX());
         paneFormKPIClass.setLayoutY(tblKPIClasses.getLayoutY());
         paneFormKPIClass.setPrefWidth(tblKPIClasses.getPrefWidth());
         paneFormKPIClass.setPrefHeight(tblKPIClasses.getPrefHeight());
+        System.out.println(paneFormKPIClass.getPrefWidth()+" x "+paneFormKPIClass.getPrefHeight());
         paneFormKPIClass.setVisible(true);
     }
 
@@ -672,12 +680,13 @@ public class SettingsController implements Initializable {
         txtFormMastKPI_id.setText(kpiMaster.getKpi_master_id().toString());
         txtFormMastKPI_code.setText(kpiMaster.getKpi_code());
         txtFormMastKPI_description.setText(kpiMaster.getDescription());
-        txtFormMastKPI_calc.setText(kpiMaster.getCalc_instructions());
+        chkEvalReverseOrder.setSelected(kpiMaster.getReverse_scores());
         txtFormMasterKPI_extraordinary.setText(kpiMaster.getScore_extraordinary().toString());
         txtFormMasterKPI_great.setText(kpiMaster.getScore_great().toString());
         txtFormMasterKPI_well.setText(kpiMaster.getScore_well().toString());
         txtFormMasterKPI_needs_improvement.setText(kpiMaster.getScore_needs_improvement().toString());
         txtFormMasterKPI_not_acceptable.setText(kpiMaster.getScore_not_acceptable().toString());
+        txtFormMasterKPI_poor.setText(kpiMaster.getScore_poor().toString());
         txtFormMasterKPI_f1.setText(kpiMaster.getF1_name());
         txtFormMasterKPI_f2.setText(kpiMaster.getF2_name());
         txtFormMasterKPI_f3.setText(kpiMaster.getF3_name());
@@ -692,6 +701,16 @@ public class SettingsController implements Initializable {
             }
         }
         cmbFormMastKPI_class.setValue(cb);
+
+        cmbFormMastKPI_calc.getItems().clear();
+        String cbCalc = "";
+        for (CalculationOptions cOption: calcList) {
+            cmbFormMastKPI_calc.getItems().add(cOption.getCalculation_id()+": "+cOption.getCalculation_name());
+            if(cOption.getCalculation_id() == kpiMaster.getCalc_instructions()) {
+                cbCalc = cOption.getCalculation_id()+": "+cOption.getCalculation_name();
+            }
+        }
+        cmbFormMastKPI_calc.setValue(cbCalc);
 
     }
 
@@ -721,12 +740,14 @@ public class SettingsController implements Initializable {
         txtFormMastKPI_code.setText("");
         txtFormMastKPI_description.setText("");
         cmbFormMastKPI_class.setValue("");
-        txtFormMastKPI_calc.setText("");
+        cmbFormMastKPI_calc.setValue("");
+        chkEvalReverseOrder.setSelected(false);
         txtFormMasterKPI_extraordinary.setText("");
         txtFormMasterKPI_great.setText("");
         txtFormMasterKPI_well.setText("");
         txtFormMasterKPI_needs_improvement.setText("");
         txtFormMasterKPI_not_acceptable.setText("");
+        txtFormMasterKPI_poor.setText("");
         txtFormMasterKPI_f1.setText("");
         txtFormMasterKPI_f2.setText("");
         txtFormMasterKPI_f3.setText("");
@@ -735,10 +756,12 @@ public class SettingsController implements Initializable {
 
     private void saveKPIMaster() {
         String split[] = cmbFormMastKPI_class.getSelectionModel().getSelectedItem().toString().split(":");
+        String splitCalc[] = cmbFormMastKPI_calc.getSelectionModel().getSelectedItem().toString().split(":");
         BigDecimal decScoreExt;
         BigDecimal decScoreGrt;
         BigDecimal decScoreWell;
         BigDecimal decScoreNI;
+        BigDecimal decScorePoor;
         BigDecimal decScoreNA;
 
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -775,16 +798,23 @@ public class SettingsController implements Initializable {
             decScoreNI = new BigDecimal(100.00);
         }
         try {
-            decScoreNA = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_not_acceptable.getText());
+            decScorePoor = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_not_acceptable.getText());
+            decScorePoor = decScorePoor.setScale(2, RoundingMode.HALF_UP);
+        } catch (ParseException e) {
+            System.out.println("Funding percentage is not a number!");
+            decScorePoor = new BigDecimal(100.00);
+        }
+        try {
+            decScoreNA = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_poor.getText());
             decScoreNA = decScoreNA.setScale(2, RoundingMode.HALF_UP);
         } catch (ParseException e) {
             System.out.println("Funding percentage is not a number!");
             decScoreNA = new BigDecimal(100.00);
         }
         KPIMaster kpiMaster = new KPIMaster(Integer.parseInt(txtFormMastKPI_id.getText()), txtFormMastKPI_code.getText(),
-                txtFormMastKPI_description.getText(), Integer.parseInt(split[0]), txtFormMastKPI_calc.getText(), decScoreExt,
-                decScoreGrt, decScoreWell, decScoreNI, decScoreNA, txtFormMasterKPI_f1.getText(),
-                txtFormMasterKPI_f2.getText(), txtFormMasterKPI_f3.getText(), txtFormMasterKPI_f4.getText());
+                txtFormMastKPI_description.getText(), Integer.parseInt(split[0]), Integer.parseInt(splitCalc[0]), decScoreExt,
+                decScoreGrt, decScoreWell, decScoreNI, decScorePoor, decScoreNA, txtFormMasterKPI_f1.getText(),
+                txtFormMasterKPI_f2.getText(), txtFormMasterKPI_f3.getText(), txtFormMasterKPI_f4.getText(), chkEvalReverseOrder.isSelected());
 
         if ( kpiMaster.getKpi_master_id().equals(0)) {
             Integer i = kpiMaster.insertKPIMaster();

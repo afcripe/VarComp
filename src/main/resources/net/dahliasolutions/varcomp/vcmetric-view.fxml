@@ -168,8 +168,8 @@
             <TableView fx:id="tblDetailCompanyKPI" prefHeight="100.0" prefWidth="517.0">
                <columns>
                   <TableColumn fx:id="tbcCompanyKPICode" text="KPI" />
-                  <TableColumn fx:id="tbcCompanyKPIGrade" text="Grade" />
                   <TableColumn fx:id="tbcCompanyKPIScore" text="Score" />
+                  <TableColumn fx:id="tbcCompanyKPIGrade" text="Grade" />
                </columns>
             </TableView>
 
@@ -194,7 +194,7 @@
                <columns>
                   <TableColumn fx:id="tbcEmployeeName" text="Employee ID" />
                   <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
-                  <TableColumn fx:id="tbcEmployeeScore" text="Score" />
+                  <TableColumn fx:id="tbcEmployeeGrade" text="Grade" />
                   <TableColumn fx:id="tbcEmployeeBonus" text="Bonus" />
                </columns>
             </TableView>
@@ -270,7 +270,7 @@
                   </Label>
                </HBox>
                <HBox prefHeight="55.0" prefWidth="548.0" spacing="4.0">
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxCompKPIF1" prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <Label fx:id="lblCompKPIEditorF1Name" text="F1_Name" VBox.vgrow="ALWAYS">
                         <VBox.margin>
                            <Insets left="8.0" />
@@ -278,7 +278,7 @@
                      </Label>
                      <TextField fx:id="txtCompKPIEditorF1Data" VBox.vgrow="ALWAYS" />
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxCompKPIF2" prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <Label fx:id="lblCompKPIEditorF2Name" text="F2_Name">
                         <VBox.margin>
                            <Insets left="8.0" />
@@ -286,7 +286,7 @@
                      </Label>
                      <TextField fx:id="txtCompKPIEditorF2Data" />
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxCompKPIF3" prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <Label fx:id="lblCompKPIEditorF3Name" text="F3_Name">
                         <VBox.margin>
                            <Insets left="8.0" />
@@ -294,7 +294,7 @@
                      </Label>
                      <TextField fx:id="txtCompKPIEditorF3Data" />
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxCompKPIF4" prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <Label fx:id="lblCompKPIEditorF4Name" text="F4_Name">
                         <VBox.margin>
                            <Insets left="8.0" />
@@ -308,16 +308,16 @@
                </HBox>
                <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Calculation:" />
-                  <TextField fx:id="txtCompKPIEditorCalc" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="cmbCompKPIEditorCalc" HBox.hgrow="ALWAYS" />
                   <padding>
                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                   </padding>
                </HBox>
                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="4.0">
-                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Grade:" />
-                  <TextField fx:id="txtCompKPIEditorGrade" />
                   <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="47.0" prefWidth="105.0" text="Score:" />
-                  <TextField fx:id="txtCompKPIEditorScore" layoutX="115.0" layoutY="43.0" />
+                  <TextField fx:id="txtCompKPIEditorScore" disable="true" layoutX="115.0" layoutY="43.0" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Grade:" />
+                  <TextField fx:id="txtCompKPIEditorGrade" disable="true" />
                   <padding>
                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                   </padding>
@@ -410,8 +410,8 @@
                         </font></Label>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="4">
-                     <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Score:" />
-                     <Label fx:id="txtEditorEmployeeScore" alignment="CENTER_RIGHT" prefWidth="105.0">
+                     <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Grade:" />
+                     <Label fx:id="txtEditorEmployeeGrade" alignment="CENTER_RIGHT" prefWidth="105.0">
                         <font>
                            <Font name="System Bold" size="14.0" />
                         </font></Label>
@@ -451,8 +451,8 @@
                 <TableColumn fx:id="tbcEditorKPICode" text="KPI" />
                 <TableColumn fx:id="tbcEditorKPIWeight" text="Weight" />
                 <TableColumn fx:id="tbcEditorKPIClass" text="Class" />
-                <TableColumn fx:id="tbcEditorKPIGrade" text="Grade" />
                 <TableColumn fx:id="tbcEditorKPIScore" text="Score" />
+                 <TableColumn fx:id="tbcEditorKPIGrade" text="Grade" />
               </columns>
             </TableView>
             <padding>
@@ -491,7 +491,7 @@
                </Label>
             </HBox>
             <HBox prefHeight="55.0" prefWidth="548.0" spacing="4.0">
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxEditorKPIF1" spacing="4.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="lblKPIEditorF1Name" text="F1_Name" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets left="8.0" />
@@ -499,7 +499,7 @@
                         </Label>
                         <TextField fx:id="txtKPIEditorF1Data" VBox.vgrow="ALWAYS" />
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxEditorKPIF2" spacing="4.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="lblKPIEditorF2Name" text="F2_Name">
                            <VBox.margin>
                               <Insets left="8.0" />
@@ -507,7 +507,7 @@
                         </Label>
                         <TextField fx:id="txtKPIEditorF2Data" />
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxEditorKPIF3" spacing="4.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="lblKPIEditorF3Name" text="F3_Name">
                            <VBox.margin>
                               <Insets left="8.0" />
@@ -515,7 +515,7 @@
                         </Label>
                         <TextField fx:id="txtKPIEditorF3Data" />
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="boxEditorKPIF4" spacing="4.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="lblKPIEditorF4Name" text="F4_Name">
                            <VBox.margin>
                               <Insets left="8.0" />
@@ -529,16 +529,16 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Calculation:" />
-                  <TextField fx:id="txtKPIEditorCalc" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="cmbKPIEditorCalc" HBox.hgrow="ALWAYS" />
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="4.0">
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Score:" />
+                  <TextField fx:id="txtKPIEditorScore" disable="true" />
                   <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Grade:" />
-                  <TextField fx:id="txtKPIEditorGrade" />
-                  <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="47.0" prefWidth="105.0" text="Score:" />
-                  <TextField fx:id="txtKPIEditorScore" layoutX="115.0" layoutY="43.0" />
+                  <TextField fx:id="txtKPIEditorGrade" disable="true" />
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>

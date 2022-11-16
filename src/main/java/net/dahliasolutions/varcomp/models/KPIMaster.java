@@ -11,38 +11,43 @@ public class KPIMaster {
     private String kpi_code;
     private String description;
     private Integer kpi_class;
-    private String calc_instructions;
+    private Integer calc_instructions;
     private BigDecimal score_extraordinary;
     private BigDecimal score_great;
     private BigDecimal score_well;
     private BigDecimal score_needs_improvement;
+    private BigDecimal score_poor;
     private BigDecimal score_not_acceptable;
     private String f1_name;
     private String f2_name;
     private String f3_name;
     private String f4_name;
 
+    private Boolean reverse_scores;
+
     public KPIMaster() {
         setKpi_master_id(0);
         setKpi_code("");
         setDescription("");
         setKpi_class(1);
-        setCalc_instructions("");
+        setCalc_instructions(0);
         setScore_extraordinary(BigDecimal.valueOf(0.90));
         setScore_great(BigDecimal.valueOf(0.80));
         setScore_well(BigDecimal.valueOf(0.70));
         setScore_needs_improvement(BigDecimal.valueOf(0.60));
+        setScore_poor(BigDecimal.valueOf(0.70));
         setScore_not_acceptable(BigDecimal.valueOf(0.50));
         setF1_name("");
         setF2_name("");
         setF3_name("");
         setF4_name("");
+        setReverse_scores(false);
     }
 
-    public KPIMaster(Integer id, String code, String description, Integer kpiClass, String calcInstructions,
+    public KPIMaster(Integer id, String code, String description, Integer kpiClass, Integer calcInstructions,
                           BigDecimal scoreExtraordinary, BigDecimal scoreGreat, BigDecimal scoreWell,
-                          BigDecimal scoreNeedsImprovement, BigDecimal scoreNotAcceptable, String f1Name,
-                          String f2Name, String f3Name, String f4Name) {
+                          BigDecimal scoreNeedsImprovement, BigDecimal scorePoor, BigDecimal scoreNotAcceptable,
+                          String f1Name, String f2Name, String f3Name, String f4Name, Boolean reverseScores) {
         setKpi_master_id(id);
         setKpi_code(code);
         setDescription(description);
@@ -52,11 +57,13 @@ public class KPIMaster {
         setScore_great(scoreGreat);
         setScore_well(scoreWell);
         setScore_needs_improvement(scoreNeedsImprovement);
+        setScore_poor(scorePoor);
         setScore_not_acceptable(scoreNotAcceptable);
         setF1_name(f1Name);
         setF2_name(f2Name);
         setF3_name(f3Name);
         setF4_name(f4Name);
+        setReverse_scores(reverseScores);
     }
 
     public void setKPIMaster(KPIMaster kpiMaster) {
@@ -69,11 +76,13 @@ public class KPIMaster {
         this.score_great = kpiMaster.score_great;
         this.score_well = kpiMaster.score_well;
         this.score_needs_improvement = kpiMaster.score_needs_improvement;
+        this.score_poor = kpiMaster.score_poor;
         this.score_not_acceptable = kpiMaster.score_not_acceptable;
         this.f1_name = kpiMaster.f1_name;
         this.f2_name = kpiMaster.f2_name;
         this.f3_name = kpiMaster.f3_name;
         this.f4_name = kpiMaster.f4_name;
+        this.reverse_scores = kpiMaster.reverse_scores;
     }
 
     public KPIMaster getKPIMaster() {
@@ -112,11 +121,11 @@ public class KPIMaster {
         this.kpi_class = kpi_class;
     }
 
-    public String getCalc_instructions() {
+    public Integer getCalc_instructions() {
         return calc_instructions;
     }
 
-    public void setCalc_instructions(String calc_instructions) {
+    public void setCalc_instructions(Integer calc_instructions) {
         this.calc_instructions = calc_instructions;
     }
 
@@ -154,6 +163,15 @@ public class KPIMaster {
     public void setScore_needs_improvement(BigDecimal score_needs_improvement) {
         this.score_needs_improvement = score_needs_improvement;
         this.score_needs_improvement = this.score_needs_improvement.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getScore_poor() {
+        return score_poor;
+    }
+
+    public void setScore_poor(BigDecimal score_poor) {
+        this.score_poor = score_poor;
+        this.score_poor = this.score_poor.setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getScore_not_acceptable() {
@@ -196,6 +214,10 @@ public class KPIMaster {
     public void setF4_name(String f4_name) {
         this.f4_name = f4_name;
     }
+
+    public Boolean getReverse_scores() { return reverse_scores; }
+
+    public void setReverse_scores(Boolean reverse_scores) { this.reverse_scores = reverse_scores; }
 
     public Integer insertKPIMaster(){
         return KPIMasterConnector.insertKPIMaster(this).getKpi_master_id();

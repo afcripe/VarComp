@@ -11,7 +11,7 @@ public class EmployeeScore {
     private String employee_id;
     private Integer metric_id;
     private Integer shares;
-    private BigDecimal score;
+    private BigDecimal grade;
     private BigDecimal bonus;
 
     private String employee_name;
@@ -21,29 +21,29 @@ public class EmployeeScore {
         setEmployee_id("");
         setMetric_id(0);
         setShares(0);
-        setScore(new BigDecimal(0.00));
+        setGrade(new BigDecimal(0.00));
         setBonus(new BigDecimal(0.00));
         setEmployee_name("");
     }
 
     public EmployeeScore(Integer scoreID, String employeeID, Integer metricID,
-                         Integer shares, BigDecimal score, BigDecimal bonus) {
+                         Integer shares, BigDecimal grade, BigDecimal bonus) {
         setScore_id(scoreID);
         setEmployee_id(employeeID);
         setMetric_id(metricID);
         setShares(shares);
-        setScore(score);
+        setGrade(grade);
         setBonus(bonus);
         setEmployee_name(EmployeeConnector.getEmployeeName(getEmployee_id()));
     }
 
     public EmployeeScore(Integer scoreID, String employeeID, Integer metricID,
-                         Integer shares, BigDecimal score, BigDecimal bonus, String employeeName) {
+                         Integer shares, BigDecimal grade, BigDecimal bonus, String employeeName) {
         setScore_id(scoreID);
         setEmployee_id(employeeID);
         setMetric_id(metricID);
         setShares(shares);
-        setScore(score);
+        setGrade(grade);
         setBonus(bonus);
         setEmployee_name(employeeName);
     }
@@ -53,7 +53,7 @@ public class EmployeeScore {
         this.employee_id = employeeScore.getEmployee_id();
         this.metric_id = employeeScore.getMetric_id();
         this.shares = employeeScore.getShares();
-        this.score = employeeScore.getScore();
+        this.grade = employeeScore.getGrade();
         this.bonus = employeeScore.getBonus();
         this.employee_name = employeeScore.getEmployee_name();
     }
@@ -80,11 +80,11 @@ public class EmployeeScore {
 
     public void setShares(Integer shares) { this.shares = shares; }
 
-    public BigDecimal getScore() { return score; }
+    public BigDecimal getGrade() { return grade; }
 
-    public void setScore(BigDecimal score) {
-        this.score = score;
-        this.score = this.score.setScale(2, RoundingMode.HALF_UP);
+    public void setGrade(BigDecimal score) {
+        this.grade = score;
+        this.grade = this.grade.setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getBonus() { return bonus; }

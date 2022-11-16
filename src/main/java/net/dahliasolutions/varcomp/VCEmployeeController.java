@@ -144,6 +144,9 @@ public class VCEmployeeController implements Initializable {
             showPaneFormEmployee(false);
         });
         btnFormEmployee_save.setOnAction(event -> saveEmployee());
+        txtFormEmployeeID.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            employeeFormFocusState(newValue);
+        });
         txtFormEmployeeStartingShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             employeeFormFocusState(newValue);
         });
@@ -224,6 +227,11 @@ public class VCEmployeeController implements Initializable {
     }
 
     private void employeeFormFocusState(Boolean b) {
+        if(txtFormEmployeeID.getText().length() > 5) {
+            System.out.println(txtFormEmployeeID.getText().length());
+            txtFormEmployeeID.setText(txtFormEmployeeID.getText().substring(0,5));
+            System.out.println(txtFormEmployeeID.getText().length());
+        }
         if(!b) {
             if(pkrStartDate.getValue() != null) {
                 String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");

@@ -168,7 +168,7 @@ public class Employee {
             if ( employeeKPI.getKpi_class().equals(1) ) {
                 CompanyKPI companyKPI = CompanyKPIConnector.getCompanyKPIByMaster(metricID, employeeKPI.getKpi_master_id());
                 if (!companyKPI.getCompany_kpi_id().equals(0)) {
-                    employeeKPI.setWeight(companyKPI.getWeight());
+                    employeeKPI.setWeight(getPositionKPIWeight(companyKPI.getKpi_master_id()));
                     employeeKPI.setF1_data(companyKPI.getF1_data());
                     employeeKPI.setF2_data(companyKPI.getF2_data());
                     employeeKPI.setF3_data(companyKPI.getF3_data());

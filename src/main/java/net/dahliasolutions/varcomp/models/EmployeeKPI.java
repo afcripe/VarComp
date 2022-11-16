@@ -1,5 +1,7 @@
 package net.dahliasolutions.varcomp.models;
 
+import net.dahliasolutions.varcomp.connectors.KPIMasterConnector;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -21,7 +23,7 @@ public class EmployeeKPI {
     private BigDecimal f2_data;
     private BigDecimal f3_data;
     private BigDecimal f4_data;
-    private String calc_instructions;
+    private Integer calc_instructions;
     private BigDecimal kpi_grade;
     private BigDecimal kpi_score;
 
@@ -42,7 +44,7 @@ public class EmployeeKPI {
         setF2_data(new BigDecimal(0.00));
         setF3_data(new BigDecimal(0.00));
         setF4_data(new BigDecimal(0.00));
-        setCalc_instructions("");
+        setCalc_instructions(0);
         setKpi_grade(new BigDecimal(0.00));
         setKpi_score(new BigDecimal(0.00));
     }
@@ -50,7 +52,7 @@ public class EmployeeKPI {
     public EmployeeKPI(Integer employeeKPIid, String KPICode, Integer scoreID, Integer masterID, BigDecimal weight, Integer metricID,
                        Integer kpiClass, Integer companyKPIid, String f1Name, String f2Name, String f3Name, String f4Name,
                        BigDecimal f1Data, BigDecimal f2Data, BigDecimal f3Data, BigDecimal f4Data,
-                       String calcInstructions, BigDecimal kpiGrade, BigDecimal kpiScore) {
+                       Integer calcInstructions, BigDecimal kpiGrade, BigDecimal kpiScore) {
         setEmployee_kpi_id(employeeKPIid);
         setKpi_code(KPICode);
         setScore_id(scoreID);
@@ -179,9 +181,9 @@ public class EmployeeKPI {
         this.f4_data = this.f4_data.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public String getCalc_instructions() { return calc_instructions; }
+    public Integer getCalc_instructions() { return calc_instructions; }
 
-    public void setCalc_instructions(String calc_instructions) { this.calc_instructions = calc_instructions; }
+    public void setCalc_instructions(Integer calc_instructions) { this.calc_instructions = calc_instructions; }
 
     public BigDecimal getKpi_grade() { return kpi_grade; }
 
@@ -195,5 +197,76 @@ public class EmployeeKPI {
     public void setKpi_score(BigDecimal kpi_score) {
         this.kpi_score = kpi_score;
         this.kpi_score = this.kpi_score.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal calcScore() {
+        BigDecimal thisScore;
+        switch (getCalc_instructions()) {
+            case 1:
+                thisScore = getF1_data().multiply(new BigDecimal(0.1)).add(getF2_data().multiply(new BigDecimal(0.3)))
+                        .add(getF3_data().multiply(new BigDecimal(0.3))).add(getF4_data().multiply(new BigDecimal(0.3)));
+                break;
+            case 2:
+                try {
+                    thisScore = getF1_data().divide(getF2_data()).multiply(new BigDecimal(365));
+                } catch (ArithmeticException e) {
+                    double f1 = getF1_data().doubleValue();
+                    double f2 = getF2_data().doubleValue();
+                    thisScore = new BigDecimal(f1/f2*365);
+                }
+                break;
+            case 3:
+                try {
+                    thisScore = getF1_data().divide(getF2_data()).multiply(new BigDecimal(365));
+                } catch (ArithmeticException e) {
+                    double f1 = getF1_data().doubleValue();
+                    double f2 = getF2_data().doubleValue();
+                    thisScore = new BigDecimal(f1/f2*100);
+                }
+                break;
+            default:
+                thisScore = new BigDecimal(0.00);
+        }
+        thisScore = thisScore.setScale(2, RoundingMode.HALF_UP);
+        setKpi_score(thisScore);
+        return thisScore;
+    }
+
+    public BigDecimal calcGrade() {
+        BigDecimal thisGrade;
+        KPIMaster kpiMaster = KPIMasterConnector.getKPIMaster(getKpi_master_id());
+        if (kpiMaster.getReverse_scores()) {
+            if(getKpi_score().doubleValue() >= kpiMaster.getScore_needs_improvement().doubleValue()) {
+                thisGrade = new BigDecimal(1.00);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
+                thisGrade = new BigDecimal(0.80);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_well().doubleValue()) {
+                thisGrade = new BigDecimal(0.60);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_great().doubleValue()) {
+                thisGrade = new BigDecimal(0.40);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_extraordinary().doubleValue()) {
+                thisGrade = new BigDecimal(0.20);
+            } else {
+                thisGrade = new BigDecimal(0.00);
+            }
+        } else {
+            if(getKpi_score().doubleValue() >= kpiMaster.getScore_extraordinary().doubleValue()) {
+                thisGrade = new BigDecimal(1.00);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_great().doubleValue()) {
+                thisGrade = new BigDecimal(0.80);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_well().doubleValue()) {
+                thisGrade = new BigDecimal(0.60);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
+                thisGrade = new BigDecimal(0.40);
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_needs_improvement().doubleValue()) {
+                thisGrade = new BigDecimal(0.20);
+            } else {
+                thisGrade = new BigDecimal(0.00);
+            }
+        }
+
+        thisGrade = thisGrade.setScale(2, RoundingMode.HALF_UP);
+        setKpi_grade(thisGrade);
+        return thisGrade;
     }
 }

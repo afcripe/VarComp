@@ -29,6 +29,8 @@ public class LoginController extends ViewController implements Initializable {
     private ChoiceBox<String> choiceCompanies;
     @FXML
     private Label lblDBL;
+    @FXML
+    private Label lblVersion;
 
 
     @Override
@@ -36,6 +38,7 @@ public class LoginController extends ViewController implements Initializable {
 
         btnLogin.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
         lblDBL.setText(DBUtils.getDBLocation());
+        lblVersion.setText("VarComp v: "+DBUtils.getAppVersion());
 
         txtUsername.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override

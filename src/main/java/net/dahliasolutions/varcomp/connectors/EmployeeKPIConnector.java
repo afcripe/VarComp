@@ -41,7 +41,7 @@ public class EmployeeKPIConnector {
                     BigDecimal recF2Data = resultSet.getBigDecimal("f2_data");
                     BigDecimal recF3Data = resultSet.getBigDecimal("f3_data");
                     BigDecimal recF4Data = resultSet.getBigDecimal("f4_data");
-                    String recCalc = resultSet.getString("calc_instructions");
+                    Integer recCalc = resultSet.getInt("calc_instructions");
                     BigDecimal recGrade = resultSet.getBigDecimal("kpi_grade");
                     BigDecimal recScore = resultSet.getBigDecimal("kpi_score");
 
@@ -85,7 +85,7 @@ public class EmployeeKPIConnector {
             preparedStatement.setBigDecimal(13, employeeKPI.getF2_data());
             preparedStatement.setBigDecimal(14, employeeKPI.getF3_data());
             preparedStatement.setBigDecimal(15, employeeKPI.getF4_data());
-            preparedStatement.setString(16, employeeKPI.getCalc_instructions());
+            preparedStatement.setInt(16, employeeKPI.getCalc_instructions());
             preparedStatement.setBigDecimal(17, employeeKPI.getKpi_grade());
             preparedStatement.setBigDecimal(18, employeeKPI.getKpi_score());
             preparedStatement.executeUpdate();
@@ -113,7 +113,7 @@ public class EmployeeKPIConnector {
                     BigDecimal recF2Data = resultSet.getBigDecimal("f2_data");
                     BigDecimal recF3Data = resultSet.getBigDecimal("f3_data");
                     BigDecimal recF4Data = resultSet.getBigDecimal("f4_data");
-                    String recCalc = resultSet.getString("calc_instructions");
+                    Integer recCalc = resultSet.getInt("calc_instructions");
                     BigDecimal recGrade = resultSet.getBigDecimal("kpi_grade");
                     BigDecimal recScore = resultSet.getBigDecimal("kpi_score");
 
@@ -161,7 +161,7 @@ public class EmployeeKPIConnector {
                     BigDecimal recF2Data = resultSet.getBigDecimal("f2_data");
                     BigDecimal recF3Data = resultSet.getBigDecimal("f3_data");
                     BigDecimal recF4Data = resultSet.getBigDecimal("f4_data");
-                    String recCalc = resultSet.getString("calc_instructions");
+                    Integer recCalc = resultSet.getInt("calc_instructions");
                     BigDecimal recGrade = resultSet.getBigDecimal("kpi_grade");
                     BigDecimal recScore = resultSet.getBigDecimal("kpi_score");
 
@@ -210,7 +210,7 @@ public class EmployeeKPIConnector {
                     BigDecimal recF2Data = resultSet.getBigDecimal("f2_data");
                     BigDecimal recF3Data = resultSet.getBigDecimal("f3_data");
                     BigDecimal recF4Data = resultSet.getBigDecimal("f4_data");
-                    String recCalc = resultSet.getString("calc_instructions");
+                    Integer recCalc = resultSet.getInt("calc_instructions");
                     BigDecimal recGrade = resultSet.getBigDecimal("kpi_grade");
                     BigDecimal recScore = resultSet.getBigDecimal("kpi_score");
 
@@ -259,7 +259,7 @@ public class EmployeeKPIConnector {
                     BigDecimal recF2Data = resultSet.getBigDecimal("f2_data");
                     BigDecimal recF3Data = resultSet.getBigDecimal("f3_data");
                     BigDecimal recF4Data = resultSet.getBigDecimal("f4_data");
-                    String recCalc = resultSet.getString("calc_instructions");
+                    Integer recCalc = resultSet.getInt("calc_instructions");
                     BigDecimal recGrade = resultSet.getBigDecimal("kpi_grade");
                     BigDecimal recScore = resultSet.getBigDecimal("kpi_score");
 
@@ -302,7 +302,7 @@ public class EmployeeKPIConnector {
             preparedStatement.setBigDecimal(13, employeeKPI.getF2_data());
             preparedStatement.setBigDecimal(14, employeeKPI.getF3_data());
             preparedStatement.setBigDecimal(15, employeeKPI.getF4_data());
-            preparedStatement.setString(16, employeeKPI.getCalc_instructions());
+            preparedStatement.setInt(16, employeeKPI.getCalc_instructions());
             preparedStatement.setBigDecimal(17, employeeKPI.getKpi_grade());
             preparedStatement.setBigDecimal(18, employeeKPI.getKpi_score());
             preparedStatement.setInt(19, employeeKPI.getEmployee_kpi_id());

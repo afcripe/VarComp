@@ -29,11 +29,11 @@ public class EmployeeScoreConnector {
                     String recEmployeeID = resultSet.getString("employee_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
-                    BigDecimal recScore = resultSet.getBigDecimal("score");
+                    BigDecimal recGrade = resultSet.getBigDecimal("grade");
                     BigDecimal recBonus = resultSet.getBigDecimal("bonus");
 
                     employeeScore = new EmployeeScore(recSCoreID, recEmployeeID,
-                            recMetricID, recShares, recScore, recBonus);
+                            recMetricID, recShares, recGrade, recBonus);
                 }
             }
         } catch (SQLException e) {
@@ -65,12 +65,12 @@ public class EmployeeScoreConnector {
                     Integer recSCoreID = resultSet.getInt("score_id");
                     String recEmployeeID = resultSet.getString("employee_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
-                    Integer recShares = resultSet.getInt("shares");
-                    BigDecimal recScore = resultSet.getBigDecimal("score");
+                    Integer recGrade = resultSet.getInt("grade");
+                    BigDecimal recScore = resultSet.getBigDecimal("grade");
                     BigDecimal recBonus = resultSet.getBigDecimal("bonus");
 
                     employeeScore = new EmployeeScore(recSCoreID, recEmployeeID,
-                            recMetricID, recShares, recScore, recBonus);
+                            recMetricID, recGrade, recScore, recBonus);
                 }
             }
         } catch (SQLException e) {
@@ -91,11 +91,11 @@ public class EmployeeScoreConnector {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO TBLEMPLOYEESCORES " +
                     "SET EMPLOYEE_ID=?, METRIC_ID=?, SHARES=?, " +
-                    "SCORE=?, BONUS=?");
+                    "GRADE=?, BONUS=?");
             preparedStatement.setString(1, employeeScore.getEmployee_id());
             preparedStatement.setInt(2, employeeScore.getMetric_id());
             preparedStatement.setInt(3, employeeScore.getShares());
-            preparedStatement.setBigDecimal(4, employeeScore.getScore());
+            preparedStatement.setBigDecimal(4, employeeScore.getGrade());
             preparedStatement.setBigDecimal(5, employeeScore.getBonus());
             preparedStatement.executeUpdate();
 
@@ -110,11 +110,11 @@ public class EmployeeScoreConnector {
                     String recEmployeeID = resultSet.getString("employee_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
-                    BigDecimal recScore = resultSet.getBigDecimal("score");
+                    BigDecimal recGrade = resultSet.getBigDecimal("grade");
                     BigDecimal recBonus = resultSet.getBigDecimal("bonus");
 
                     newEmployeeScore = new EmployeeScore(recSCoreID, recEmployeeID,
-                            recMetricID, recShares, recScore, recBonus);
+                            recMetricID, recShares, recGrade, recBonus);
                 }
             }
         } catch (SQLException e) {
@@ -144,11 +144,11 @@ public class EmployeeScoreConnector {
                     String recEmployeeID = resultSet.getString("employee_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
-                    BigDecimal recScore = resultSet.getBigDecimal("score");
+                    BigDecimal recGrade = resultSet.getBigDecimal("grade");
                     BigDecimal recBonus = resultSet.getBigDecimal("bonus");
 
                     employeeScoreList.add(new EmployeeScore(recSCoreID, recEmployeeID,
-                            recMetricID, recShares, recScore, recBonus));
+                            recMetricID, recShares, recGrade, recBonus));
                 }
             }
         } catch (SQLException e) {
@@ -179,11 +179,11 @@ public class EmployeeScoreConnector {
                     String recEmployeeID = resultSet.getString("employee_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
                     Integer recShares = resultSet.getInt("shares");
-                    BigDecimal recScore = resultSet.getBigDecimal("score");
+                    BigDecimal recGrade = resultSet.getBigDecimal("grade");
                     BigDecimal recBonus = resultSet.getBigDecimal("bonus");
 
                     employeeScoreList.add(new EmployeeScore(recSCoreID, recEmployeeID,
-                            recMetricID, recShares, recScore, recBonus));
+                            recMetricID, recShares, recGrade, recBonus));
                 }
             }
         } catch (SQLException e) {
@@ -203,11 +203,11 @@ public class EmployeeScoreConnector {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE TBLEMPLOYEESCORES " +
                     "SET EMPLOYEE_ID=?, METRIC_ID=?, SHARES=?, " +
-                    "SCORE=?, BONUS=? WHERE SCORE_ID=?");
+                    "GRADE=?, BONUS=? WHERE SCORE_ID=?");
             preparedStatement.setString(1, employeeScore.getEmployee_id());
             preparedStatement.setInt(2, employeeScore.getMetric_id());
             preparedStatement.setInt(3, employeeScore.getShares());
-            preparedStatement.setBigDecimal(4, employeeScore.getScore());
+            preparedStatement.setBigDecimal(4, employeeScore.getGrade());
             preparedStatement.setBigDecimal(5, employeeScore.getBonus());
             preparedStatement.setInt(6, employeeScore.getScore_id());
             preparedStatement.executeUpdate();

@@ -78,8 +78,10 @@
       </Button>
    </HBox>
    <HBox VBox.vgrow="ALWAYS" />
-   <HBox alignment="BOTTOM_RIGHT">
-      <Label fx:id="lblDBL" text="jdbc:h2:~/varvomp" textFill="#838383" HBox.hgrow="ALWAYS" />
+   <HBox >
+      <Label fx:id="lblVersion" alignment="CENTER_LEFT" text="VarComp 1.2.1" textFill="#838383" HBox.hgrow="ALWAYS" />
+      <VBox HBox.hgrow="ALWAYS" />
+      <Label fx:id="lblDBL" alignment="CENTER_RIGHT" text="jdbc:h2:~/varvomp" textFill="#838383" HBox.hgrow="ALWAYS" />
    </HBox>
 
    <padding>
