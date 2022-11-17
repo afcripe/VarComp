@@ -26,7 +26,7 @@ public class Position {
 
     public void setPosition(Position position) {
         setPosition_id(position.getPosition_id());
-        setPosition(position.getPosition());
+        setPosition_name(position.getPosition_name());
         setPosition_description(position.getPosition_description());
         setPosition_shares(position.getPosition_shares());
     }

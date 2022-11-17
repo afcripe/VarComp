@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class CompanyKPIConnector {
 
     public static CompanyKPI getCompanyKPI(Integer companyKPIid) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         CompanyKPI companyKPI = new CompanyKPI();
 
         try {
@@ -57,9 +57,9 @@ public class CompanyKPIConnector {
     }
 
     public static CompanyKPI getCompanyKPIByMaster(Integer metricID, Integer mastKPIid) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         CompanyKPI companyKPI = new CompanyKPI();
 
         try {
@@ -106,9 +106,9 @@ public class CompanyKPIConnector {
     }
 
     public static CompanyKPI insertCompanyKPI(CompanyKPI companyKPI) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         CompanyKPI newCompanyKPI = new CompanyKPI();
 
         try {
@@ -174,9 +174,9 @@ public class CompanyKPIConnector {
     }
 
     public static ArrayList<CompanyKPI> getCompanyKPIs() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<CompanyKPI> companyKPIList = new ArrayList<>();
 
         try {
@@ -220,9 +220,9 @@ public class CompanyKPIConnector {
     }
 
     public static ArrayList<CompanyKPI> getCompanyKPIs(Integer metricID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<CompanyKPI> companyKPIList = new ArrayList<>();
 
         try {
@@ -267,9 +267,9 @@ public class CompanyKPIConnector {
     }
 
     public static Boolean updateCompanyKPI(CompanyKPI companyKPI) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -305,9 +305,9 @@ public class CompanyKPIConnector {
     }
 
     public static Boolean deleteCompanyKPI(Integer companyKPIid) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

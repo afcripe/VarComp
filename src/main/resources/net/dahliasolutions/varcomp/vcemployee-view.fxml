@@ -10,7 +10,7 @@
 
 <!--   Navigation    -->
       <HBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" AnchorPane.rightAnchor="14.0">
-         <Label fx:id="lblTitle" text="Employees">
+         <Label text="Employees">
             <font>
                <Font name="Arial Bold" size="18.0" />
             </font>
@@ -81,10 +81,8 @@
                      <TextField fx:id="txtFormEmployeeStartingShares" prefWidth="75.0" />
                   </HBox>
                   <HBox layoutX="10.0" layoutY="70.0" spacing="4">
-                     <children>
-                        <Label alignment="CENTER_RIGHT" prefWidth="122.0" text="Shares:" />
-                        <TextField fx:id="txtFormEmployeeShares" disable="true" prefWidth="75.0" />
-                     </children>
+                     <Label alignment="CENTER_RIGHT" prefWidth="122.0" text="Shares:" />
+                     <TextField fx:id="txtFormEmployeeShares" disable="true" prefWidth="75.0" />
                   </HBox>
                </VBox>
             </HBox>

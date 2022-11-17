@@ -3,30 +3,13 @@ package net.dahliasolutions.varcomp;
 import net.dahliasolutions.varcomp.connectors.CompanyConnector;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
 import net.dahliasolutions.varcomp.connectors.PositionsConnector;
-import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.Employee;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class EmployeeUtils {
 
-    public static Integer getUpdateEmployeeShares(Employee employee) {
-        // get vars
-        Integer today = LocalDate.now().getYear();
-        Integer hire = employee.getStart_date().getYear();
-        Integer yearAssign = VarComp.getCurrentCompany().getShares_issued_years();
-        Integer sharesAssign = VarComp.getCurrentCompany().getShares_issued_amount();
-        double shareMultiplier = PositionsConnector.getPosition(employee.getPosition()).getPosition_shares();
-        //run calc
-        Integer additionalShares = (int) (sharesAssign * shareMultiplier);
-        Integer additionAssignments = ((today - hire) / yearAssign);
-        Integer shares = (additionalShares * additionAssignments) + employee.getStarting_shares();
-        employee.setStarting_shares(shares);
-        EmployeeConnector.updateEmployee(employee);
-        return employee.getStarting_shares();
-    }
     public static Integer getEmployeeShares(LocalDate startDate, Integer StartingShares, Integer positionID) {
         // get vars
         Integer today = LocalDate.now().getYear();
@@ -37,9 +20,8 @@ public class EmployeeUtils {
         //run calc
         Integer additionalShares = (int) (sharesAssign * shareMultiplier);
         Integer additionAssignments = ((today - hire) / yearAssign);
-        Integer shares = (additionalShares * additionAssignments) + StartingShares;
 
-        return shares;
+        return (additionalShares * additionAssignments) + StartingShares;
     }
 
     public static void updateAllEmployeeShares() {
@@ -61,14 +43,5 @@ public class EmployeeUtils {
         VarComp.getCurrentCompany().setShares_outstanding(sharesAssigned);
         CompanyConnector.updateCompany(VarComp.getCurrentCompany());
     }
-
-    public static BigDecimal getScore() {
-        return new BigDecimal(0.00);
-    }
-
-    public static BigDecimal getWeight() {
-        return new BigDecimal(0.00);
-    }
-
 
 }

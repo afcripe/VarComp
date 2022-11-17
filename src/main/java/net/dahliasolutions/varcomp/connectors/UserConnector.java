@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class UserConnector {
 
     public static User loginUser(String username, String password) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         User user = new User();
 
         try {
@@ -44,9 +44,9 @@ public class UserConnector {
     }
 
     public static User insertUser(User user) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         User newUser = new User();
 
         try {
@@ -82,9 +82,9 @@ public class UserConnector {
     }
 
     public static ArrayList<User> getUsers() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<User> userList = new ArrayList<>();
 
 
@@ -114,9 +114,9 @@ public class UserConnector {
     }
 
     public static Boolean updateUser(User user) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -137,9 +137,9 @@ public class UserConnector {
     }
 
     public static Boolean deleteUser(Integer userID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         if (userID == 1) {
             System.out.println("Can't delete default user");

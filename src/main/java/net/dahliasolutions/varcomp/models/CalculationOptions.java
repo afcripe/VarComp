@@ -1,7 +1,6 @@
 package net.dahliasolutions.varcomp.models;
 
 import net.dahliasolutions.varcomp.connectors.CalculationOptionsConnection;
-import net.dahliasolutions.varcomp.connectors.KPIMasterConnector;
 
 public class CalculationOptions {
 

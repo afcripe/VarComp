@@ -79,7 +79,7 @@
    </HBox>
    <HBox VBox.vgrow="ALWAYS" />
    <HBox >
-      <Label fx:id="lblVersion" alignment="CENTER_LEFT" text="VarComp 1.2.1" textFill="#838383" HBox.hgrow="ALWAYS" />
+      <Label fx:id="lblVersion" text="VarComp 1.2.1" textFill="#838383" HBox.hgrow="ALWAYS" />
       <VBox HBox.hgrow="ALWAYS" />
       <Label fx:id="lblDBL" alignment="CENTER_RIGHT" text="jdbc:h2:~/varvomp" textFill="#838383" HBox.hgrow="ALWAYS" />
    </HBox>

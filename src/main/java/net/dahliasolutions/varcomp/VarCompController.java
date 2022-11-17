@@ -22,9 +22,9 @@ public class VarCompController extends ViewController implements Initializable {
     @FXML
     private MenuItem menuExit;
     @FXML
-    private VBox vboxNavigation;
+    private MenuItem menuAbout;
     @FXML
-    private Button btnNavHome;
+    private VBox vboxNavigation;
     @FXML
     private Button btnNavMetrics;
     @FXML
@@ -34,42 +34,40 @@ public class VarCompController extends ViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        menuLogout.setOnAction(actionEvent -> NavigationUtils.changeScene(actionEvent, "login-view.fxml", "Please, Login", false));
+        menuLogout.setOnAction(actionEvent -> VarComp.changeScene(actionEvent, "login-view.fxml", "Please, Login", false));
         menuExit.setOnAction(actionEvent -> VarComp.closeApp());
+        menuAbout.setOnAction(event -> showAbout());
 
-//        btnNavHome.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavEmployees.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavSettings.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
 
-//        btnNavHome.setOnAction(event -> setCenterView("vchome-view"));
         btnNavMetrics.setOnAction(event -> setCenterView("vcmetric-view"));
         btnNavEmployees.setOnAction(event -> setCenterView("vcemployee-view"));
         btnNavSettings.setOnAction(event -> setCenterView("settings-view"));
-        if (VarComp.getUser().getUser_type().equals("admin")) {
-            btnNavSettings.setVisible(true);
-        } else {
-            btnNavSettings.setVisible(false);
-        }
-
+        btnNavSettings.setVisible(VarComp.getUser().getUser_type().equals("admin"));
 
         setCenterView("vcmetric-view");
     }
 
     @Override
     public void init() {
-//        System.out.println(VarComp.getCurrentCompany().getCompany_name());
+        System.out.println("Logged in to: "+VarComp.getCurrentCompany().getCompany_name());
     }
 
     public void setCenterView(String fxmlFile) {
         try {
-            FXMLLoader centerLoader = new FXMLLoader(NavigationUtils.class.getResource(fxmlFile + ".fxml"));
+            FXMLLoader centerLoader = new FXMLLoader(VarComp.class.getResource(fxmlFile + ".fxml"));
             Pane viewPane = centerLoader.load();
             viewMain.setCenter(viewPane);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void showAbout() {
+        //ToDo
     }
 
 }

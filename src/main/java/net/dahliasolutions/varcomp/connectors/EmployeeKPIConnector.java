@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class EmployeeKPIConnector {
 
     public static EmployeeKPI getEmployeeKPI(Integer employeeKPIid) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         EmployeeKPI employeeKPI = new EmployeeKPI();
 
         try {
@@ -59,9 +59,9 @@ public class EmployeeKPIConnector {
     }
 
     public static EmployeeKPI insertEmployeeKPI(EmployeeKPI employeeKPI) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         EmployeeKPI newEmployeeKPI = new EmployeeKPI();
 
         try {
@@ -131,9 +131,9 @@ public class EmployeeKPIConnector {
     }
 
     public static ArrayList<EmployeeKPI> getEmployeeKPIs() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<EmployeeKPI> employeeKPIList = new ArrayList<>();
 
         try {
@@ -179,9 +179,9 @@ public class EmployeeKPIConnector {
     }
 
     public static ArrayList<EmployeeKPI> getEmployeeKPIsByMetric(Integer metricID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<EmployeeKPI> employeeKPIList = new ArrayList<>();
 
         try {
@@ -228,9 +228,9 @@ public class EmployeeKPIConnector {
     }
 
     public static ArrayList<EmployeeKPI> getEmployeeKPIsByScore(Integer scoreID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<EmployeeKPI> employeeKPIList = new ArrayList<>();
 
         try {
@@ -277,9 +277,9 @@ public class EmployeeKPIConnector {
     }
 
     public static Boolean updateEmployeeKPI(EmployeeKPI employeeKPI) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -317,9 +317,9 @@ public class EmployeeKPIConnector {
     }
 
     public static Boolean deleteEmployeeKPI(Integer employeeKPIid) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

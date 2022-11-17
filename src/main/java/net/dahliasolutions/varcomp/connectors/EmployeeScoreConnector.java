@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class EmployeeScoreConnector {
 
     public static EmployeeScore getEmployeeScore(Integer scoreID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         EmployeeScore employeeScore = new EmployeeScore();
 
         try {
@@ -45,9 +45,9 @@ public class EmployeeScoreConnector {
     }
 
     public static EmployeeScore getEmployeeScoreByMetric(Integer metricID, String employeeID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         EmployeeScore employeeScore = new EmployeeScore();
 
         try {
@@ -82,9 +82,9 @@ public class EmployeeScoreConnector {
     }
 
     public static EmployeeScore insertEmployeeScore(EmployeeScore employeeScore) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         EmployeeScore newEmployeeScore = new EmployeeScore();
 
         try {
@@ -126,9 +126,9 @@ public class EmployeeScoreConnector {
     }
 
     public static ArrayList<EmployeeScore> getEmployeeScores() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<EmployeeScore> employeeScoreList = new ArrayList<>();
 
         try {
@@ -160,9 +160,9 @@ public class EmployeeScoreConnector {
     }
 
     public static ArrayList<EmployeeScore> getEmployeeScores(Integer metricID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<EmployeeScore> employeeScoreList = new ArrayList<>();
 
         try {
@@ -195,9 +195,9 @@ public class EmployeeScoreConnector {
     }
 
     public static Boolean updateEmployeeScore(EmployeeScore employeeScore) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -221,9 +221,9 @@ public class EmployeeScoreConnector {
     }
 
     public static Boolean deleteEmployeeScore(Integer scoreID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

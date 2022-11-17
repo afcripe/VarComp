@@ -29,20 +29,20 @@ public class CompanyKPI {
         setCompany_kpi_id(0);
         setKpi_code("");
         setKpi_master_id(0);
-        setWeight(new BigDecimal(0.00));
+        setWeight(new BigDecimal("0.00"));
         setMetric_id(0);
         setKpi_class(0);
         setF1_name("");
         setF2_name("");
         setF3_name("");
         setF4_name("");
-        setF1_data(new BigDecimal(0.00));
-        setF2_data(new BigDecimal(0.00));
-        setF3_data(new BigDecimal(0.00));
-        setF4_data(new BigDecimal(0.00));
+        setF1_data(new BigDecimal("0.00"));
+        setF2_data(new BigDecimal("0.00"));
+        setF3_data(new BigDecimal("0.00"));
+        setF4_data(new BigDecimal("0.00"));
         setCalc_instructions(0);
-        setKpi_grade(new BigDecimal(0.00));
-        setKpi_score(new BigDecimal(0.00));
+        setKpi_grade(new BigDecimal("0.00"));
+        setKpi_score(new BigDecimal("0.00"));
     }
 
     public CompanyKPI(Integer companyKPIid, String KPICode, Integer masterID, Integer metricID,
@@ -51,20 +51,20 @@ public class CompanyKPI {
         setCompany_kpi_id(companyKPIid);
         setKpi_code(KPICode);
         setKpi_master_id(masterID);
-        setWeight(new BigDecimal(0.00));
+        setWeight(new BigDecimal("0.00"));
         setMetric_id(metricID);
         setKpi_class(kpiClass);
         setF1_name(f1Name);
         setF2_name(f2Name);
         setF3_name(f3Name);
         setF4_name(f4Name);
-        setF1_data(new BigDecimal(0.00));
-        setF2_data(new BigDecimal(0.00));
-        setF3_data(new BigDecimal(0.00));
-        setF4_data(new BigDecimal(0.00));
+        setF1_data(new BigDecimal("0.00"));
+        setF2_data(new BigDecimal("0.00"));
+        setF3_data(new BigDecimal("0.00"));
+        setF4_data(new BigDecimal("0.00"));
         setCalc_instructions(calcInstructions);
-        setKpi_grade(new BigDecimal(0.00));
-        setKpi_score(new BigDecimal(0.00));
+        setKpi_grade(new BigDecimal("0.00"));
+        setKpi_score(new BigDecimal("0.00"));
     }
 
     public CompanyKPI(Integer companyKPIid, String KPICode, Integer masterID, BigDecimal weight, Integer metricID,
@@ -206,33 +206,13 @@ public class CompanyKPI {
     }
 
     public BigDecimal calcScore() {
-        BigDecimal thisScore;
-        switch (getCalc_instructions()) {
-            case 1:
-                thisScore = getF1_data().multiply(new BigDecimal(0.1)).add(getF2_data().multiply(new BigDecimal(0.3)))
-                        .add(getF3_data().multiply(new BigDecimal(0.3))).add(getF4_data().multiply(new BigDecimal(0.3)));
-                break;
-            case 2:
-                try {
-                    thisScore = getF1_data().divide(getF2_data()).multiply(new BigDecimal(365));
-                } catch (ArithmeticException e) {
-                    double f1 = getF1_data().doubleValue();
-                    double f2 = getF2_data().doubleValue();
-                    thisScore = new BigDecimal(f1/f2*365);
-                }
-                break;
-            case 3:
-                try {
-                    thisScore = getF1_data().divide(getF2_data()).multiply(new BigDecimal(365));
-                } catch (ArithmeticException e) {
-                    double f1 = getF1_data().doubleValue();
-                    double f2 = getF2_data().doubleValue();
-                    thisScore = new BigDecimal(f1/f2*100);
-                }
-                break;
-            default:
-                thisScore = new BigDecimal(0.00);
-        }
+        BigDecimal thisScore = switch (getCalc_instructions()) {
+            case 1 -> getF1_data().multiply(new BigDecimal("0.1")).add(getF2_data().multiply(new BigDecimal("0.3")))
+                    .add(getF3_data().multiply(new BigDecimal("0.3"))).add(getF4_data().multiply(new BigDecimal("0.3")));
+            case 2 -> getF1_data().divide(getF2_data(), RoundingMode.HALF_UP).multiply(new BigDecimal(365));
+            case 3 -> getF1_data().divide(getF2_data(), RoundingMode.HALF_UP).multiply(new BigDecimal(100));
+            default -> new BigDecimal("0.00");
+        };
         thisScore = thisScore.setScale(2, RoundingMode.HALF_UP);
         setKpi_score(thisScore);
         return thisScore;
@@ -243,34 +223,33 @@ public class CompanyKPI {
         KPIMaster kpiMaster = KPIMasterConnector.getKPIMaster(getKpi_master_id());
         if (kpiMaster.getReverse_scores()) {
             if(getKpi_score().doubleValue() >= kpiMaster.getScore_needs_improvement().doubleValue()) {
-                thisGrade = new BigDecimal(1.00);
+                thisGrade = new BigDecimal("1.00");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
-                thisGrade = new BigDecimal(0.80);
+                thisGrade = new BigDecimal("0.80");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_well().doubleValue()) {
-                thisGrade = new BigDecimal(0.60);
+                thisGrade = new BigDecimal("0.60");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_great().doubleValue()) {
-                thisGrade = new BigDecimal(0.40);
+                thisGrade = new BigDecimal("0.40");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_extraordinary().doubleValue()) {
-                thisGrade = new BigDecimal(0.20);
+                thisGrade = new BigDecimal("0.20");
             } else {
-                thisGrade = new BigDecimal(0.00);
+                thisGrade = new BigDecimal("0.00");
             }
         } else {
             if(getKpi_score().doubleValue() >= kpiMaster.getScore_extraordinary().doubleValue()) {
-                thisGrade = new BigDecimal(1.00);
+                thisGrade = new BigDecimal("1.00");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_great().doubleValue()) {
-                thisGrade = new BigDecimal(0.80);
+                thisGrade = new BigDecimal("0.80");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_well().doubleValue()) {
-                thisGrade = new BigDecimal(0.60);
+                thisGrade = new BigDecimal("0.60");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
-                thisGrade = new BigDecimal(0.40);
+                thisGrade = new BigDecimal("0.40");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_needs_improvement().doubleValue()) {
-                thisGrade = new BigDecimal(0.20);
+                thisGrade = new BigDecimal("0.20");
             } else {
-                thisGrade = new BigDecimal(0.00);
+                thisGrade = new BigDecimal("0.00");
             }
         }
-
 
         thisGrade = thisGrade.setScale(2, RoundingMode.HALF_UP);
         setKpi_grade(thisGrade);

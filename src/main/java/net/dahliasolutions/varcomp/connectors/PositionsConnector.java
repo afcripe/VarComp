@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class PositionsConnector {
 
     public static Position getPosition(Integer positionID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         Position position = new Position();
 
         try {
@@ -41,9 +41,9 @@ public class PositionsConnector {
     }
 
     public static Position insertPosition(Position position) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         Position newPosition = new Position();
 
         try {
@@ -79,9 +79,9 @@ public class PositionsConnector {
     }
 
     public static ArrayList<Position> getPositions() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<Position> positionList = new ArrayList<>();
 
 
@@ -111,9 +111,9 @@ public class PositionsConnector {
     }
 
     public static Boolean updatePosition(Position position) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -134,9 +134,9 @@ public class PositionsConnector {
     }
 
     public static Boolean deletePosition(Integer positionID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

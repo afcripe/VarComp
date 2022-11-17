@@ -4,16 +4,15 @@ import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.KPIMaster;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class KPIMasterConnector {
 
     public static KPIMaster getKPIMaster(Integer masterID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         KPIMaster kpiMaster = new KPIMaster();
 
         try {
@@ -57,9 +56,9 @@ public class KPIMasterConnector {
     }
 
     public static ArrayList<KPIMaster> getKPIMasters() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<KPIMaster> kpiMasterList = new ArrayList<>();
 
 
@@ -103,9 +102,9 @@ public class KPIMasterConnector {
     }
 
     public static ArrayList<KPIMaster> getKPIMasters(Integer classID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<KPIMaster> kpiMasterList = new ArrayList<>();
 
 
@@ -150,10 +149,10 @@ public class KPIMasterConnector {
     }
 
     public static KPIMaster insertKPIMaster(KPIMaster kpiMaster) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        PreparedStatement latestAdditionStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        PreparedStatement latestAdditionStatement;
+        ResultSet resultSet;
         KPIMaster newKPIMaster = new KPIMaster();
 
         try {
@@ -218,9 +217,9 @@ public class KPIMasterConnector {
     }
 
     public static Boolean updateKPIMaster(KPIMaster kpiMaster) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -256,9 +255,9 @@ public class KPIMasterConnector {
     }
 
     public static Boolean deleteKPIMaster(Integer masterID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

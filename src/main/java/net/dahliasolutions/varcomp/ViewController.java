@@ -12,7 +12,4 @@ public class ViewController {
         this.user = user;
     }
 
-    public void handleObjectEvent(CustomEvent event) {
-        System.out.println("Received Event");
-    }
 }

@@ -1,7 +1,9 @@
 package net.dahliasolutions.varcomp;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -10,6 +12,7 @@ import net.dahliasolutions.varcomp.models.User;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 public class VarComp extends Application {
 
@@ -24,7 +27,7 @@ public class VarComp extends Application {
         primaryStage = stage;
         primaryStage.setMinWidth(680);
 
-        Image appIcon = new Image(VarComp.class.getResource("VcompIcon.png").openStream());
+        Image appIcon = new Image(Objects.requireNonNull(VarComp.class.getResource("VcompIcon.png")).openStream());
         stage.getIcons().add(appIcon);
 
         //Set icon on the taskbar/dock
@@ -80,6 +83,30 @@ public class VarComp extends Application {
     }
     public static void setCurrentCompany(Company company) { currentCompany.setCompany(company); }
     public static Company getCurrentCompany() { return currentCompany; }
+
+    public static void changeScene(ActionEvent event, String fxmlFile, String title, Boolean newWindow) {
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+        double userWidth;
+        double userHeight;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource(fxmlFile));
+            root = loader.load();
+            ((ViewController)loader.getController()).init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (!newWindow) { stage = VarComp.getPrimaryStage(); }
+
+        userWidth = stage.getScene().getWidth();
+        userHeight = stage.getScene().getHeight();
+        stage.setScene(new Scene(root, userWidth, userHeight));
+        stage.setTitle(title);
+        stage.show();
+    }
 
     public static void main(String[] args) {
         DBSetup.initializeDB();

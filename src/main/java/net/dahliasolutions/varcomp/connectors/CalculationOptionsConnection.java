@@ -2,18 +2,16 @@ package net.dahliasolutions.varcomp.connectors;
 
 import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.CalculationOptions;
-import net.dahliasolutions.varcomp.models.EmployeeScore;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class CalculationOptionsConnection {
 
     public static CalculationOptions getCalculationOption(Integer calculationID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         CalculationOptions calculationOptions = new CalculationOptions();
 
         try {
@@ -43,9 +41,9 @@ public class CalculationOptionsConnection {
     }
 
     public static ArrayList<CalculationOptions> getCalculationOptions() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<CalculationOptions> calcOptions = new ArrayList<>();
 
         try {
@@ -75,9 +73,9 @@ public class CalculationOptionsConnection {
     }
 
     public static CalculationOptions insertCalculationOption(CalculationOptions calcOption) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         CalculationOptions calculationOptions = new CalculationOptions();
 
         try {
@@ -113,9 +111,9 @@ public class CalculationOptionsConnection {
     }
 
     public static Boolean updateCalculationOption(CalculationOptions calcOption) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -137,9 +135,9 @@ public class CalculationOptionsConnection {
     }
 
     public static Boolean deleteCalculationOption(Integer calculationID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

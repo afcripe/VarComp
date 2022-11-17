@@ -21,8 +21,8 @@ public class EmployeeScore {
         setEmployee_id("");
         setMetric_id(0);
         setShares(0);
-        setGrade(new BigDecimal(0.00));
-        setBonus(new BigDecimal(0.00));
+        setGrade(new BigDecimal("0.00"));
+        setBonus(new BigDecimal("0.00"));
         setEmployee_name("");
     }
 

@@ -25,11 +25,11 @@ public class Metric {
         setMetric_id(0);
         setCompany_id(0);
         setMetric_label("");
-        setMetric_earnings(new BigDecimal(0.00));
-        setMetric_funding(new BigDecimal(0.00));
-        setMetric_eps(new BigDecimal(0.00));
+        setMetric_earnings(new BigDecimal("0.00"));
+        setMetric_funding(new BigDecimal("0.00"));
+        setMetric_eps(new BigDecimal("0.00"));
         setMetric_shares(0);
-        setMetric_payout(new BigDecimal(0.00));
+        setMetric_payout(new BigDecimal("0.00"));
         setMetric_year(0);
         setMetric_period(0);
         setLocked(false);

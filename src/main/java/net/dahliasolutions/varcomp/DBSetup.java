@@ -16,7 +16,7 @@ public class DBSetup {
     }
 
     public static void dropAllObjects() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("DROP ALL OBJECTS");
@@ -29,7 +29,7 @@ public class DBSetup {
     }
 
     public static void initializeUsers() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblusers " +
@@ -44,9 +44,9 @@ public class DBSetup {
     }
 
     public static void initializeUsersDefault() {
-        PreparedStatement getDefaultData = null;
-        PreparedStatement setDefaultData = null;
-        ResultSet resultSet = null;
+        PreparedStatement getDefaultData;
+        PreparedStatement setDefaultData;
+        ResultSet resultSet;
 
         try {
             getDefaultData = connection.prepareStatement("SELECT * FROM tblusers WHERE user_name='admin'");
@@ -66,7 +66,7 @@ public class DBSetup {
     }
 
     public static void initializeCompany() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblcompany " +
@@ -83,9 +83,9 @@ public class DBSetup {
     }
 
     public static void initializeCompanyDefault() {
-        PreparedStatement getDefaultData = null;
-        PreparedStatement setDefaultData = null;
-        ResultSet resultSet = null;
+        PreparedStatement getDefaultData;
+        PreparedStatement setDefaultData;
+        ResultSet resultSet;
 
         try {
             getDefaultData = connection.prepareStatement("SELECT * FROM tblcompany WHERE company_id=1");
@@ -107,7 +107,7 @@ public class DBSetup {
     }
 
     public static void initializeDBSettings() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tbldbsettings " +
@@ -124,9 +124,9 @@ public class DBSetup {
     }
 
     public static void initializeDBSettingsDefault() {
-        PreparedStatement getDefaultData = null;
-        PreparedStatement setDefaultData = null;
-        ResultSet resultSet = null;
+        PreparedStatement getDefaultData;
+        PreparedStatement setDefaultData;
+        ResultSet resultSet;
 
         try {
             getDefaultData = connection.prepareStatement("SELECT * FROM tbldbsettings");
@@ -147,7 +147,7 @@ public class DBSetup {
     }
 
     public static void initializeEmployees() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployees " +
@@ -163,7 +163,7 @@ public class DBSetup {
     }
 
     public static void initializePositions() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblpositions " +
@@ -178,7 +178,7 @@ public class DBSetup {
     }
 
     public static void initializeKPIMaster() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblkpimaster " +
@@ -197,7 +197,7 @@ public class DBSetup {
     }
 
     public static void initializeClasses() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblkpiclasses " +
@@ -212,10 +212,10 @@ public class DBSetup {
     }
 
     public static void initializeKPIClassesDefault() {
-        PreparedStatement getDefaultData = null;
-        PreparedStatement setDefaultData1 = null;
-        PreparedStatement setDefaultData2 = null;
-        ResultSet resultSet = null;
+        PreparedStatement getDefaultData;
+        PreparedStatement setDefaultData1;
+        PreparedStatement setDefaultData2;
+        ResultSet resultSet;
 
         try {
             getDefaultData = connection.prepareStatement("SELECT * FROM tblkpiclasses");
@@ -241,7 +241,7 @@ public class DBSetup {
     }
 
     public static void initializePositionKPI() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblpositionkpis " +
@@ -256,7 +256,7 @@ public class DBSetup {
     }
 
     public static void initializeCompanyKPI() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblcompanykpis " +
@@ -274,7 +274,7 @@ public class DBSetup {
     }
 
     public static void initializeEmployeeKPI() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployeekpis " +
@@ -292,7 +292,7 @@ public class DBSetup {
     }
 
     public static void initializeEmployeeScores() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblemployeescores " +
@@ -308,7 +308,7 @@ public class DBSetup {
     }
 
     public static void initializeMetrics() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblmetrics " +
@@ -325,7 +325,7 @@ public class DBSetup {
     }
 
     public static void initializeMetricsDetail() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblmetricdetails " +
@@ -341,7 +341,7 @@ public class DBSetup {
     }
 
     public static void initializeCalculationOptions() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblcalculationoptions " +
@@ -357,9 +357,9 @@ public class DBSetup {
     }
 
     public static void initializeCalculationOptionsDefault() {
-        PreparedStatement getDefaultData = null;
-        PreparedStatement setDefaultData = null;
-        ResultSet resultSet = null;
+        PreparedStatement getDefaultData;
+        PreparedStatement setDefaultData;
+        ResultSet resultSet;
 
         try {
             getDefaultData = connection.prepareStatement("SELECT * FROM tblcalculationoptions");

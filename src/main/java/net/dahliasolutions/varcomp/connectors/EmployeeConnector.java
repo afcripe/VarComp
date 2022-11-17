@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class EmployeeConnector {
 
     public static Employee getEmployee(String employeeID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         Employee employee = new Employee();
 
         try {
@@ -47,9 +47,9 @@ public class EmployeeConnector {
     }
 
     public static String getEmployeeName(String employeeID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         String employee = "";
 
         try {
@@ -77,10 +77,10 @@ public class EmployeeConnector {
     }
 
     public static Boolean insertEmployee(Employee employee) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Boolean insertSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        boolean insertSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -120,9 +120,9 @@ public class EmployeeConnector {
     }
 
     public static ArrayList<Employee> getEmployees() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<Employee> employeeList = new ArrayList<>();
 
 
@@ -157,9 +157,9 @@ public class EmployeeConnector {
     }
 
     public static ArrayList<Employee> getEmployees(Boolean isActive) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<Employee> EmployeeList = new ArrayList<>();
 
 
@@ -195,9 +195,9 @@ public class EmployeeConnector {
     }
 
     public static Boolean updateEmployee(Employee employee) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -226,9 +226,9 @@ public class EmployeeConnector {
     }
 
     public static Boolean deleteEmployee(String employeeID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

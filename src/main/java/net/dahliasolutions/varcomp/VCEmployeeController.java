@@ -4,15 +4,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
 import net.dahliasolutions.varcomp.connectors.PositionsConnector;
 import net.dahliasolutions.varcomp.models.Employee;
@@ -30,7 +26,7 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private Button bntNewEmployee;
     @FXML
-    private TableView tblEmployees;
+    private TableView<Employee> tblEmployees;
     @FXML
     private TableColumn<Employee, String> tbcEmployeeID;
     @FXML
@@ -50,7 +46,7 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private TextField txtFormEmployeeLastName;
     @FXML
-    private ComboBox cmbFormEmployeePosition;
+    private ComboBox<String> cmbFormEmployeePosition;
     @FXML
     private TextField txtFormEmployeeStartingShares;
     @FXML
@@ -74,7 +70,7 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private TextField txtEmployeeLastName;
     @FXML
-    private ComboBox cmbEmployeePosition;
+    private ComboBox<String> cmbEmployeePosition;
     @FXML
     private TextField txtEmployeeShares;
     @FXML
@@ -100,42 +96,30 @@ public class VCEmployeeController implements Initializable {
     /* Employee List */
         bntNewEmployee.setOnAction(event -> setFormEmployee(new Employee()));
 
-        tbcEmployeeID.setCellValueFactory(new PropertyValueFactory<Employee, String>("employee_id"));
-        tbcEmployeeName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Employee, String> param) {
-                String cellValue = param.getValue().getLast_name() + ", " + param.getValue().getFirst_name();
-                return new SimpleObjectProperty<String>(cellValue);
-            }
+        tbcEmployeeID.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
+        tbcEmployeeName.setCellValueFactory(param -> {
+            String cellValue = param.getValue().getLast_name() + ", " + param.getValue().getFirst_name();
+            return new SimpleObjectProperty<>(cellValue);
         });
-        tbcEmployeePosition.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Employee, String> param) {
-                String cellValue = "";
-                for (Position p: positionList) {
-                    if(p.getPosition_id() == param.getValue().getPosition()){
-                        cellValue = p.getPosition_id() + ": " + p.getPosition_name();
-                    }
+        tbcEmployeePosition.setCellValueFactory(param -> {
+            String cellValue = "";
+            for (Position p: positionList) {
+                if(p.getPosition_id() == param.getValue().getPosition()){
+                    cellValue = p.getPosition_id() + ": " + p.getPosition_name();
                 }
-                return new SimpleObjectProperty<String>(cellValue);
             }
+            return new SimpleObjectProperty<>(cellValue);
         });
-        tbcEmployeeShares.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("shares_assigned"));
-        tbcEmployeeActive.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Employee, String> param) {
-                String cellVal = "Inactive";
-                if (param.getValue().getIs_active()) {cellVal = "Active";}
-                return new SimpleObjectProperty<String>(cellVal);
-            }
+        tbcEmployeeShares.setCellValueFactory(new PropertyValueFactory<>("shares_assigned"));
+        tbcEmployeeActive.setCellValueFactory(param -> {
+            String cellVal = "Inactive";
+            if (param.getValue().getIs_active()) {cellVal = "Active";}
+            return new SimpleObjectProperty<>(cellVal);
         });
         tblEmployees.setItems(employeeList);
-        tblEmployees.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    fillPaneEmployeeDetail((Employee) tblEmployees.getSelectionModel().getSelectedItem());
-                }
+        tblEmployees.setOnMousePressed(event -> {
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                fillPaneEmployeeDetail(tblEmployees.getSelectionModel().getSelectedItem());
             }
         });
 
@@ -144,37 +128,20 @@ public class VCEmployeeController implements Initializable {
             showPaneFormEmployee(false);
         });
         btnFormEmployee_save.setOnAction(event -> saveEmployee());
-        txtFormEmployeeID.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            employeeFormFocusState(newValue);
-        });
-        txtFormEmployeeStartingShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            employeeFormFocusState(newValue);
-        });
-        pkrStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            employeeFormFocusState(newValue);
-        });
-        cmbFormEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            employeeFormFocusState(newValue);
-        });
+        txtFormEmployeeID.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeFormFocusState(newValue));
+        txtFormEmployeeStartingShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeFormFocusState(newValue));
+        pkrStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeFormFocusState(newValue));
+        cmbFormEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeFormFocusState(newValue));
 
     /* Employee Detail */
         btnEditEmployee_save.setOnAction(event -> updateEmployee());
 
-        txtEmployeeID.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if(txtEmployeeID.getText().length() > 5) txtEmployeeID.setText(txtEmployeeID.getText().substring(0,5));
-            }
+        txtEmployeeID.setOnKeyPressed(event -> {
+            if(txtEmployeeID.getText().length() > 5) txtEmployeeID.setText(txtEmployeeID.getText().substring(0,5));
         });
-        txtEmployeeShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            employeeDetailFocusState(newValue);
-        });
-        pkrEmployeeStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            employeeDetailFocusState(newValue);
-        });
-        cmbEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            employeeDetailFocusState(newValue);
-        });
+        txtEmployeeShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeDetailFocusState(newValue));
+        pkrEmployeeStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeDetailFocusState(newValue));
+        cmbEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeDetailFocusState(newValue));
 
         showPaneEmployeeList();
     }
@@ -234,7 +201,7 @@ public class VCEmployeeController implements Initializable {
         }
         if(!b) {
             if(pkrStartDate.getValue() != null) {
-                String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
+                String[] split = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().split(":");
                 Integer newSharesAssigned = EmployeeUtils.getEmployeeShares(pkrStartDate.getValue(),
                         Integer.parseInt(txtFormEmployeeStartingShares.getText()), Integer.parseInt(split[0]));
                 txtFormEmployeeShares.setText(newSharesAssigned.toString());
@@ -243,13 +210,13 @@ public class VCEmployeeController implements Initializable {
     }
 
     private void saveEmployee() {
-        String split[] = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
+        String[] split = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().split(":");
 
         Employee employee = new Employee(txtFormEmployeeID.getText(), Integer.parseInt(split[0]), txtFormEmployeeFirstName.getText(),
                 txtFormEmployeeLastName.getText(), pkrStartDate.getValue(), chkFormEmployeeActive.isSelected(),
                 Integer.parseInt(txtFormEmployeeStartingShares.getText()), Integer.parseInt(txtFormEmployeeShares.getText()));
 
-        Boolean employeeInsert = employee.insertEmployee();
+        employee.insertEmployee();
 
         employeeList = FXCollections.observableArrayList(EmployeeConnector.getEmployees());
         tblEmployees.getItems().removeAll();
@@ -290,7 +257,7 @@ public class VCEmployeeController implements Initializable {
 
     private void employeeDetailFocusState(Boolean b) {
         if(!b) {
-            String split[] = cmbEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
+            String[] split = cmbEmployeePosition.getSelectionModel().getSelectedItem().split(":");
             Integer newSharesAssigned = EmployeeUtils.getEmployeeShares(pkrEmployeeStartDate.getValue(),
                     Integer.parseInt(txtEmployeeShares.getText()), Integer.parseInt(split[0]));
 
@@ -299,7 +266,7 @@ public class VCEmployeeController implements Initializable {
     }
 
     private void updateEmployee() {
-        String split[] = cmbEmployeePosition.getSelectionModel().getSelectedItem().toString().split(":");
+        String[] split = cmbEmployeePosition.getSelectionModel().getSelectedItem().split(":");
 
         Employee employee = new Employee(selectedEmployee.getEmployee_id(), Integer.parseInt(split[0]), txtEmployeeFirstName.getText(),
                 txtEmployeeLastName.getText(), pkrEmployeeStartDate.getValue(), chkEmployeeActive.isSelected(),

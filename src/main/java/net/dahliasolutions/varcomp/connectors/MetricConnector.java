@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class MetricConnector {
 
     public static Metric getMetric(Integer metricID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         Metric metric = new Metric();
 
         try {
@@ -52,9 +52,9 @@ public class MetricConnector {
     }
 
     public static Metric insertMetric(Metric metric) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         Metric newMetric = new Metric();
 
         try {
@@ -109,9 +109,9 @@ public class MetricConnector {
     }
 
     public static ArrayList<Metric> getMetrics() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<Metric> metricList = new ArrayList<>();
 
 
@@ -151,9 +151,9 @@ public class MetricConnector {
     }
 
     public static ArrayList<Metric> getMetrics(Boolean locked) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<Metric> metricList = new ArrayList<>();
 
 
@@ -194,9 +194,9 @@ public class MetricConnector {
     }
 
     public static Boolean updateMetric(Metric metric) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -226,9 +226,9 @@ public class MetricConnector {
     }
 
     public static Boolean deleteMetric(Integer metricID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class PositionKPIConnector {
 
     public static PositionKPI getPositionKPI(Integer itemID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         PositionKPI positionKPI = new PositionKPI();
 
         try {
@@ -43,9 +43,9 @@ public class PositionKPIConnector {
     }
 
     public static PositionKPI insertPositionKPI(PositionKPI positionKPI) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         PositionKPI newPositionKPI = new PositionKPI();
 
         try {
@@ -82,9 +82,9 @@ public class PositionKPIConnector {
     }
 
     public static ArrayList<PositionKPI> getPositionKPI() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<PositionKPI> positionKPISList = new ArrayList<>();
 
 
@@ -115,9 +115,9 @@ public class PositionKPIConnector {
     }
 
     public static Boolean updatePositionKPI(PositionKPI positionKPI) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -139,9 +139,9 @@ public class PositionKPIConnector {
     }
 
     public static Boolean deletePositionKPI(Integer itemID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -158,9 +158,9 @@ public class PositionKPIConnector {
     }
 
     public static PositionKPI getPositionKPIByMasterAndPosition(Integer masterID, Integer positionID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         PositionKPI positionKPI = new PositionKPI();
 
         try {
@@ -193,9 +193,9 @@ public class PositionKPIConnector {
     }
 
     public static ArrayList<PositionKPI> getPositionKPIsPosition(Integer positionID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<PositionKPI> positionKPISList = new ArrayList<>();
 
 
@@ -227,9 +227,9 @@ public class PositionKPIConnector {
     }
 
     public static ArrayList<PositionKPI> getPositionKPIsByKPI(Integer kpiMasterID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<PositionKPI> positionKPISList = new ArrayList<>();
 
 

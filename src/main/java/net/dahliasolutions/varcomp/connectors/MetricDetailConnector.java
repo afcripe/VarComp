@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class MetricDetailConnector {
 
     public static MetricDetail getMetricDetail(Integer detailID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         MetricDetail metricDetail = new MetricDetail();
 
         try {
@@ -44,9 +44,9 @@ public class MetricDetailConnector {
     }
 
     public static MetricDetail insertMetric(MetricDetail metricDetail) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         MetricDetail newMetricDetail = new MetricDetail();
 
         try {
@@ -86,9 +86,9 @@ public class MetricDetailConnector {
     }
 
     public static ArrayList<MetricDetail> getMetricDetails() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<MetricDetail> metricDetailList = new ArrayList<>();
 
         try {
@@ -119,9 +119,9 @@ public class MetricDetailConnector {
     }
 
     public static ArrayList<MetricDetail> getMetricDetails(Integer metricID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<MetricDetail> metricDetailList = new ArrayList<>();
 
         try {
@@ -153,9 +153,9 @@ public class MetricDetailConnector {
     }
 
     public static Boolean updateMetricDetail(MetricDetail metricDetail) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
@@ -178,9 +178,9 @@ public class MetricDetailConnector {
     }
 
     public static Boolean deleteMetricDetail(Integer detailID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean deleteSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean deleteSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");

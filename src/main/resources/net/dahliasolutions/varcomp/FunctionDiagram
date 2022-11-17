@@ -7,20 +7,4 @@
 
 
 UI Updates
-    Invert option on scores for Master KPIs
-
-    Edit Form for CompanyKPIs in Metrics
-
-    Edit Form for EmployeeKPIs
-
-    Add missing KPIs for EmployeeScores in Metric
-
-    Update Employee Shares
-        !! Remember Position Shares is a factor
-
-    Calculate Scores, Bonuses, and Payouts in Metric
-    Get Shares for metric on First Open
-
     Metric Payroll Report
-
-    !! Lock first 2 KPI Classes in UI, Already done in Connector Class !!

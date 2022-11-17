@@ -1,23 +1,24 @@
 package net.dahliasolutions.varcomp;
 
+import java.io.File;
 import java.sql.*;
 
 public class DBUtils {
 
-    private static String varCompDB = "jdbc:h2:~/varcomp/varcompdb";
+    private static final String varCompDB = "jdbc:h2:~/varcomp/varcompdb";
 
     public static String getDBLocation() {
         return varCompDB;
     }
 
     public static String getAppVersion() {
-        return "1.2.1";
+        return "2.0.1";
     }
 
     public static Boolean updateDBTable(double w, double h) {
         Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(getDBLocation(), "sa", "password");
@@ -38,13 +39,13 @@ public class DBUtils {
                     e.printStackTrace();
                 }
             }
-            return updateSuccess;
         }
+        return updateSuccess;
     }
     public static double getStageSize(String col) {
         Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         double returnSize = 750;
 
         try {
@@ -68,7 +69,7 @@ public class DBUtils {
                     e.printStackTrace();
                 }
             }
-            return returnSize;
         }
+        return returnSize;
     }
 }

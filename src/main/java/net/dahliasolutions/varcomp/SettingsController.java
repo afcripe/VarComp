@@ -1,11 +1,9 @@
 package net.dahliasolutions.varcomp;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -14,39 +12,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
 
 public class SettingsController implements Initializable {
 
@@ -77,13 +54,7 @@ public class SettingsController implements Initializable {
     @FXML
     private Pane paneUsers;
     @FXML
-    private Label lblEmployeeTitle;
-    @FXML
-    private Label lblUsersTitle;
-    @FXML
     private TextField txtCompanyName;
-    @FXML
-    private CheckBox chkShowCompanyLogo;
     @FXML
     private TextField txtSharesIssued;
     @FXML
@@ -96,14 +67,6 @@ public class SettingsController implements Initializable {
     private TextField txtYearsIssued;
     @FXML
     private Button btnSaveCompany;
-    @FXML
-    private Button btnLoadCompanyLogo;
-    @FXML
-    private Button btnLoadCompanyIcon;
-    @FXML
-    private ImageView imgCompanyLogo;
-    @FXML
-    private ImageView imgCompanyIcon;
     @FXML
     private Button bntNewKPIClass;
     @FXML
@@ -120,8 +83,6 @@ public class SettingsController implements Initializable {
     private Button btnFormClassKPI_cancel;
     @FXML
     private Button btnFormClassKPI_save;
-    @FXML
-    private Label iconCompanySaveSuccess;
     @FXML
     private TableView<KPIClass> tblKPIClasses;
     @FXML
@@ -189,9 +150,9 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtFormMastKPI_description;
     @FXML
-    private ComboBox cmbFormMastKPI_class;
+    private ComboBox<String> cmbFormMastKPI_class;
     @FXML
-    private ComboBox cmbFormMastKPI_calc;
+    private ComboBox<String> cmbFormMastKPI_calc;
     @FXML
     private CheckBox chkEvalReverseOrder;
     @FXML
@@ -228,14 +189,12 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtPassword;
     @FXML
-    private ComboBox cmbUserType;
+    private ComboBox<String> cmbUserType;
     @FXML
     private Button btnUserCancel;
     @FXML
     private Button btnUserSave;
 
-    @FXML
-    private Label lblEmployeeTitlePK;
     @FXML
     private Button bntAddPositionKPI;
     @FXML
@@ -277,12 +236,9 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtFormPK_position;
     @FXML
-    private ComboBox cmbFormPK_kpi;
+    private ComboBox<String> cmbFormPK_kpi;
     @FXML
     private TextField txtFormPK_weight;
-
-    FileChooser fileChooserLogo = new FileChooser();
-    FileChooser fileChooserIcon = new FileChooser();
 
     ObservableList<KPIClass> kpiClassList;
     ObservableList<KPIMaster> kpiMasterList;
@@ -294,7 +250,7 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        lblTitle.setText("Settings");
 
         kpiClassList = FXCollections.observableArrayList(KPIClassConnector.getKPIClasses());
         kpiMasterList = FXCollections.observableArrayList(KPIMasterConnector.getKPIMasters());
@@ -310,69 +266,33 @@ public class SettingsController implements Initializable {
 
 /* Company Tab */
         txtCompanyName.setText(VarComp.getCurrentCompany().getCompany_name());
-//        chkShowCompanyLogo.setSelected(VarComp.getCurrentCompany().getCompany_logo_show());
         txtSharesIssued.setText(VarComp.getCurrentCompany().getShares_total().toString());
         txtSharesPerIssue.setText(VarComp.getCurrentCompany().getShares_issued_amount().toString());
         txtYearsIssued.setText(VarComp.getCurrentCompany().getShares_issued_years().toString());
         txtSharesOutstanding.setText(VarComp.getCurrentCompany().getShares_outstanding().toString());
         txtFundingPercentage.setText(VarComp.getCurrentCompany().getFunding_percentage().toString());
-        btnSaveCompany.setOnAction(actionEvent -> updateCompany(actionEvent));
-//        btnLoadCompanyLogo.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                File file = fileChooserLogo.showOpenDialog(new Stage());
-//                try {
-//                    imgCompanyLogo.setImage(new Image(file.getAbsolutePath()));
-//                } catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//                URI destination = URI.create(String.valueOf(VarComp.class.getResource("companyLogo.png")));
-//                File destFile = new File(destination);
-//                try {
-//                    Files.copy(file.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-//        btnLoadCompanyIcon.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                File file = fileChooserIcon.showOpenDialog(new Stage());
-//                try {
-//                    imgCompanyIcon.setImage(new Image(file.getAbsolutePath()));
-//                } catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        btnSaveCompany.setOnAction(this::updateCompany);
 
 /* KPI Tab */
     /* KPI Class Table and Buttons */
         bntNewKPIClass.setOnAction(event -> setFormClassKPI(new KPIClass()));
         bntDeleteKPIClass.setOnAction(event -> removeKPIClass());
 
-        tbcClassID.setCellValueFactory(new PropertyValueFactory<KPIClass, Integer>("kpi_class_id"));
-        tbcClassName.setCellValueFactory(new PropertyValueFactory<KPIClass, String>("name"));
+        tbcClassID.setCellValueFactory(new PropertyValueFactory<>("kpi_class_id"));
+        tbcClassName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tbcClassName.setCellFactory(TextFieldTableCell.forTableColumn());
-        tbcClassDescription.setCellValueFactory(new PropertyValueFactory<KPIClass, String>("description"));
+        tbcClassDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tbcClassDescription.setCellFactory(TextFieldTableCell.forTableColumn());
-        tbcClassAutoFill.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<KPIClass, CheckBox>, ObservableValue<CheckBox>>() {
-            @Override
-            public ObservableValue<CheckBox> call(TableColumn.CellDataFeatures<KPIClass, CheckBox> param) {
-                CheckBox checkBox = new CheckBox();
-                checkBox.setSelected(param.getValue().getAuto_fill_employees());
-                return new SimpleObjectProperty<CheckBox>(checkBox);
-            }
+        tbcClassAutoFill.setCellValueFactory(param -> {
+            CheckBox checkBox = new CheckBox();
+            checkBox.setSelected(param.getValue().getAuto_fill_employees());
+            return new SimpleObjectProperty<>(checkBox);
         });
         tblKPIClasses.setItems(kpiClassList);
-        tblKPIClasses.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    KPIClass kpiclass = (KPIClass) tblKPIClasses.getSelectionModel().getSelectedItem();
-                    setFormClassKPI(kpiclass);
-                }
+        tblKPIClasses.setOnMousePressed(event -> {
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                KPIClass kpiclass = tblKPIClasses.getSelectionModel().getSelectedItem();
+                setFormClassKPI(kpiclass);
             }
         });
 
@@ -380,37 +300,29 @@ public class SettingsController implements Initializable {
             clearFormClassKPI();
             hidePaneFormClassKPI();
         });
-        btnFormClassKPI_save.setOnAction(event -> {
-            saveKPIClass();
-        });
+        btnFormClassKPI_save.setOnAction(event -> saveKPIClass());
 
     /* KPI Master Table and Buttons */
         btnNewMastKPI.setOnAction(event -> setFormMasterKPI(new KPIMaster()));
         btnDeleteMastKPI.setOnAction(event -> removeKPIMaster());
 
-        tbcKPIid.setCellValueFactory(new PropertyValueFactory<KPIMaster, Integer>("kpi_master_id"));
-        tbcKPICode.setCellValueFactory(new PropertyValueFactory<KPIMaster, String>("kpi_code"));
-        tbcKPIDescription.setCellValueFactory(new PropertyValueFactory<KPIMaster, String>("description"));
-        tbcKPIClass.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<KPIMaster, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<KPIMaster, String> param) {
-                String cellValue = param.getValue().getKpi_class().toString();
-                for (KPIClass kpiClass: kpiClassList) {
-                    if(kpiClass.getKpi_class_id() == param.getValue().getKpi_class()) {
-                        cellValue = kpiClass.getKpi_class_id()+": "+kpiClass.getName();
-                    }
+        tbcKPIid.setCellValueFactory(new PropertyValueFactory<>("kpi_master_id"));
+        tbcKPICode.setCellValueFactory(new PropertyValueFactory<>("kpi_code"));
+        tbcKPIDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        tbcKPIClass.setCellValueFactory(param -> {
+            String cellValue = param.getValue().getKpi_class().toString();
+            for (KPIClass kpiClass : kpiClassList) {
+                if (kpiClass.getKpi_class_id().equals(param.getValue().getKpi_class())) {
+                    cellValue = kpiClass.getKpi_class_id() + ": " + kpiClass.getName();
                 }
-                return new SimpleObjectProperty<String>(cellValue);
             }
+            return new SimpleObjectProperty<>(cellValue);
         });
         tblMasterKPIs.setItems(kpiMasterList);
-        tblMasterKPIs.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    KPIMaster kpiMaster = (KPIMaster) tblMasterKPIs.getSelectionModel().getSelectedItem();
-                    setFormMasterKPI(kpiMaster);
-                }
+        tblMasterKPIs.setOnMousePressed(event -> {
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                KPIMaster kpiMaster = tblMasterKPIs.getSelectionModel().getSelectedItem();
+                setFormMasterKPI(kpiMaster);
             }
         });
 
@@ -419,28 +331,29 @@ public class SettingsController implements Initializable {
             hidePaneFormMasterKPI();
         });
         btnFormMasterKPI_save.setOnAction(event -> {
-            saveKPIMaster();
+            try {
+                saveKPIMaster();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         });
 
 /* Employee Tab */
         bntNewPosition.setOnAction(event -> setFormPosition(new Position()));
         bntDeletePosition.setOnAction(event -> removePosition());
 
-        tbcPositionID.setCellValueFactory(new PropertyValueFactory<Position, Integer>("position_id"));
-        tbcPositionName.setCellValueFactory(new PropertyValueFactory<Position, String>("position_name"));
-        tbcPositionDescription.setCellValueFactory(new PropertyValueFactory<Position, String>("position_description"));
-        tbcPositionShares.setCellValueFactory(new PropertyValueFactory<Position, Integer>("position_shares"));
+        tbcPositionID.setCellValueFactory(new PropertyValueFactory<>("position_id"));
+        tbcPositionName.setCellValueFactory(new PropertyValueFactory<>("position_name"));
+        tbcPositionDescription.setCellValueFactory(new PropertyValueFactory<>("position_description"));
+        tbcPositionShares.setCellValueFactory(new PropertyValueFactory<>("position_shares"));
         tblPositions.setItems(positionList);
 
-        tblPositions.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown()){
-                    showPositionKPIs(tblPositions.getSelectionModel().getSelectedItem().getPosition_id());
-                    if(event.getClickCount() == 2){
-                        Position position = (Position) tblPositions.getSelectionModel().getSelectedItem();
-                        setFormPosition(position);
-                    }
+        tblPositions.setOnMousePressed(event -> {
+            if(event.isPrimaryButtonDown()){
+                showPositionKPIs(tblPositions.getSelectionModel().getSelectedItem().getPosition_id());
+                if(event.getClickCount() == 2){
+                    Position position = tblPositions.getSelectionModel().getSelectedItem();
+                    setFormPosition(position);
                 }
             }
         });
@@ -454,28 +367,22 @@ public class SettingsController implements Initializable {
         bntAddPositionKPI.setOnAction(event -> setFormPositionKPI(new PositionKPI()));
         bntRemovePositionKPI.setOnAction(event -> removePositionKPI());
 
-        tbcPKMasterKPI.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PositionKPI, String>, ObservableValue<String>>() {
-               @Override
-               public ObservableValue<String> call(TableColumn.CellDataFeatures<PositionKPI, String> param) {
-                   String cellValue = "";
-                   for (KPIMaster kpi: kpiMasterList){
-                       if (kpi.getKpi_master_id() == param.getValue().getKpi_master_id()){
-                           cellValue = kpi.getKpi_master_id() + ": " + kpi.getKpi_code();
-                       }
-                   }
-                   return new SimpleObjectProperty<String>(cellValue);
-               }
-           });
-        tbcPKWeight.setCellValueFactory(new PropertyValueFactory<PositionKPI, BigDecimal>("weight"));
+        tbcPKMasterKPI.setCellValueFactory(param -> {
+            String cellValue = "";
+            for (KPIMaster kpi: kpiMasterList){
+                if (kpi.getKpi_master_id().equals(param.getValue().getKpi_master_id())){
+                    cellValue = kpi.getKpi_master_id() + ": " + kpi.getKpi_code();
+                }
+            }
+            return new SimpleObjectProperty<>(cellValue);
+        });
+        tbcPKWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
         tblPositionKPI.setItems(positionKPIList);
 
-        tblPositionKPI.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    PositionKPI positionKPI = (PositionKPI) tblPositionKPI.getSelectionModel().getSelectedItem();
-                    setFormPositionKPI(positionKPI);
-                }
+        tblPositionKPI.setOnMousePressed(event -> {
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                PositionKPI positionKPI = tblPositionKPI.getSelectionModel().getSelectedItem();
+                setFormPositionKPI(positionKPI);
             }
         });
 
@@ -490,17 +397,14 @@ public class SettingsController implements Initializable {
         bntNewUsers.setOnAction(event -> setFormUser(new User()));
         bntDeleteUsers.setOnAction(event -> removeUser());
 
-        tbcUserID.setCellValueFactory(new PropertyValueFactory<User, Integer>("user_id"));
-        tbcUserName.setCellValueFactory(new PropertyValueFactory<User, String>("user_name"));
+        tbcUserID.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+        tbcUserName.setCellValueFactory(new PropertyValueFactory<>("user_name"));
         tblUsers.setItems(userList);
 
-        tblUsers.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    User user = (User) tblUsers.getSelectionModel().getSelectedItem();
-                    setFormUser(user);
-                }
+        tblUsers.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                User user = tblUsers.getSelectionModel().getSelectedItem();
+                setFormUser(user);
             }
         });
 
@@ -538,35 +442,42 @@ public class SettingsController implements Initializable {
         paneUserForm.setVisible(false);
 
         paneCompany.setVisible(false);
+        paneCompany.setManaged(false);
         paneKPI.setVisible(false);
+        paneKPI.setManaged(false);
         paneEmployee.setVisible(false);
+        paneEmployee.setManaged(false);
         paneUsers.setVisible(false);
+        paneUsers.setManaged(false);
 
         boxIndicatorCompany.setVisible(false);
         boxIndicatorKPI.setVisible(false);
         boxIndicatorEmployee.setVisible(false);
         boxIndicatorUser.setVisible(false);
 
-        switch (location){
-            case "company":
+        switch (location) {
+            case "company" -> {
                 paneCompany.setVisible(true);
+                paneCompany.setManaged(true);
                 boxIndicatorCompany.setVisible(true);
-                break;
-            case "kpi":
+            }
+            case "kpi" -> {
                 paneKPI.setVisible(true);
+                paneKPI.setManaged(true);
                 boxIndicatorKPI.setVisible(true);
-                break;
-            case "employee":
+            }
+            case "employee" -> {
                 paneEmployee.setVisible(true);
+                paneEmployee.setManaged(true);
                 boxPositionKPIs.setVisible(false);
                 tblPositionKPI.setVisible(false);
                 boxIndicatorEmployee.setVisible(true);
-                break;
-            case "user":
+            }
+            case "user" -> {
                 paneUsers.setVisible(true);
+                paneUsers.setManaged(true);
                 boxIndicatorUser.setVisible(true);
-                break;
-
+            }
         }
     }
 
@@ -607,7 +518,6 @@ public class SettingsController implements Initializable {
         } catch (ParseException e) {
             System.out.println("Funding percentage is not a number!");
         }
-//        VarComp.getCurrentCompany().setCompany_logo_show(chkShowCompanyLogo.isSelected());
 
         Boolean success = CompanyConnector.updateCompany(VarComp.getCurrentCompany());
         System.out.println(success);
@@ -661,7 +571,7 @@ public class SettingsController implements Initializable {
                 txtFormClassKPI_description.getText(), chkFormClassKPI_auto.isSelected());
 
         if ( kpiClass.getKpi_class_id().equals(0)) {
-            Integer i = kpiClass.insertKPIClass();
+            kpiClass.insertKPIClass();
         } else {
             kpiClass.updateKPIClass();
         }
@@ -693,24 +603,20 @@ public class SettingsController implements Initializable {
         txtFormMasterKPI_f4.setText(kpiMaster.getF4_name());
         // create combobox items
         cmbFormMastKPI_class.getItems().clear();
-        String cb = "";
         for (KPIClass kpiClass: kpiClassList) {
             cmbFormMastKPI_class.getItems().add(kpiClass.getKpi_class_id()+": "+kpiClass.getName());
-            if(kpiClass.getKpi_class_id() == kpiMaster.getKpi_class()) {
-                cb = kpiClass.getKpi_class_id()+": "+kpiClass.getName();
+            if(kpiClass.getKpi_class_id().equals(kpiMaster.getKpi_class())) {
+                cmbFormMastKPI_class.setValue(kpiClass.getKpi_class_id()+": "+kpiClass.getName());
             }
         }
-        cmbFormMastKPI_class.setValue(cb);
 
         cmbFormMastKPI_calc.getItems().clear();
-        String cbCalc = "";
         for (CalculationOptions cOption: calcList) {
             cmbFormMastKPI_calc.getItems().add(cOption.getCalculation_id()+": "+cOption.getCalculation_name());
-            if(cOption.getCalculation_id() == kpiMaster.getCalc_instructions()) {
-                cbCalc = cOption.getCalculation_id()+": "+cOption.getCalculation_name();
+            if(cOption.getCalculation_id().equals(kpiMaster.getCalc_instructions())) {
+                cmbFormMastKPI_calc.setValue(cOption.getCalculation_id()+": "+cOption.getCalculation_name());
             }
         }
-        cmbFormMastKPI_calc.setValue(cbCalc);
 
     }
 
@@ -754,9 +660,9 @@ public class SettingsController implements Initializable {
         txtFormMasterKPI_f4.setText("");
     }
 
-    private void saveKPIMaster() {
-        String split[] = cmbFormMastKPI_class.getSelectionModel().getSelectedItem().toString().split(":");
-        String splitCalc[] = cmbFormMastKPI_calc.getSelectionModel().getSelectedItem().toString().split(":");
+    private void saveKPIMaster() throws ParseException {
+        String[] split = cmbFormMastKPI_class.getSelectionModel().getSelectedItem().split(":");
+        String[] splitCalc = cmbFormMastKPI_calc.getSelectionModel().getSelectedItem().split(":");
         BigDecimal decScoreExt;
         BigDecimal decScoreGrt;
         BigDecimal decScoreWell;
@@ -769,55 +675,27 @@ public class SettingsController implements Initializable {
         String pattern = "#0.0#";
         DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
         decimalFormat.setParseBigDecimal(true);
-        try {
-            decScoreExt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_extraordinary.getText());
-            decScoreExt = decScoreExt.setScale(2, RoundingMode.HALF_UP);
-        } catch (ParseException e) {
-            System.out.println("Funding percentage is not a number!");
-            decScoreExt = new BigDecimal(100.00);
-        }
-        try {
-            decScoreGrt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_great.getText());
-            decScoreGrt = decScoreGrt.setScale(2, RoundingMode.HALF_UP);
-        } catch (ParseException e) {
-            System.out.println("Funding percentage is not a number!");
-            decScoreGrt = new BigDecimal(100.00);
-        }
-        try {
-            decScoreWell = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_well.getText());
-            decScoreWell = decScoreWell.setScale(2, RoundingMode.HALF_UP);
-        } catch (ParseException e) {
-            System.out.println("Funding percentage is not a number!");
-            decScoreWell = new BigDecimal(100.00);
-        }
-        try {
-            decScoreNI = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_needs_improvement.getText());
-            decScoreNI = decScoreNI.setScale(2, RoundingMode.HALF_UP);
-        } catch (ParseException e) {
-            System.out.println("Funding percentage is not a number!");
-            decScoreNI = new BigDecimal(100.00);
-        }
-        try {
-            decScorePoor = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_not_acceptable.getText());
-            decScorePoor = decScorePoor.setScale(2, RoundingMode.HALF_UP);
-        } catch (ParseException e) {
-            System.out.println("Funding percentage is not a number!");
-            decScorePoor = new BigDecimal(100.00);
-        }
-        try {
-            decScoreNA = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_poor.getText());
-            decScoreNA = decScoreNA.setScale(2, RoundingMode.HALF_UP);
-        } catch (ParseException e) {
-            System.out.println("Funding percentage is not a number!");
-            decScoreNA = new BigDecimal(100.00);
-        }
+
+        decScoreExt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_extraordinary.getText());
+        decScoreExt = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        decScoreGrt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_great.getText());
+        decScoreGrt = decScoreGrt.setScale(2, RoundingMode.HALF_UP);
+        decScoreWell = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_well.getText());
+        decScoreWell = decScoreWell.setScale(2, RoundingMode.HALF_UP);
+        decScoreNI = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_needs_improvement.getText());
+        decScoreNI = decScoreNI.setScale(2, RoundingMode.HALF_UP);
+        decScorePoor = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_not_acceptable.getText());
+        decScorePoor = decScorePoor.setScale(2, RoundingMode.HALF_UP);
+        decScoreNA = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_poor.getText());
+        decScoreNA = decScoreNA.setScale(2, RoundingMode.HALF_UP);
+
         KPIMaster kpiMaster = new KPIMaster(Integer.parseInt(txtFormMastKPI_id.getText()), txtFormMastKPI_code.getText(),
                 txtFormMastKPI_description.getText(), Integer.parseInt(split[0]), Integer.parseInt(splitCalc[0]), decScoreExt,
                 decScoreGrt, decScoreWell, decScoreNI, decScorePoor, decScoreNA, txtFormMasterKPI_f1.getText(),
                 txtFormMasterKPI_f2.getText(), txtFormMasterKPI_f3.getText(), txtFormMasterKPI_f4.getText(), chkEvalReverseOrder.isSelected());
 
         if ( kpiMaster.getKpi_master_id().equals(0)) {
-            Integer i = kpiMaster.insertKPIMaster();
+            kpiMaster.insertKPIMaster();
         } else {
             kpiMaster.updateKPIMaster();
         }
@@ -855,7 +733,7 @@ public class SettingsController implements Initializable {
     private void saveUserForm() {
         User user = new User(Integer.parseInt(txtUserID.getText()),
                 txtUsername.getText(), txtPassword.getText(),
-                cmbUserType.getSelectionModel().getSelectedItem().toString());
+                cmbUserType.getSelectionModel().getSelectedItem());
         if (user.getUser_id() == 0) {
             user.insertUser();
         } else {
@@ -961,22 +839,20 @@ public class SettingsController implements Initializable {
         txtFormPKItem_id.setText(positionKPI.getItem_id().toString());
         txtFormPK_position.setText(pName);
         txtFormPK_weight.setText(positionKPI.getWeight().toString());
+
         // create combobox items for KPIs
         cmbFormPK_kpi.getItems().clear();
-        String select = "";
         for (KPIMaster kpiMaster: kpiMasterList) {
             cmbFormPK_kpi.getItems().add(kpiMaster.getKpi_master_id() + ": " + kpiMaster.getKpi_code());
-
-            if(kpiMaster.getKpi_master_id() == positionKPI.getKpi_master_id()) {
-                select = kpiMaster.getKpi_master_id() + ": " + kpiMaster.getKpi_code();
-                cmbFormPK_kpi.setValue(select);
+            if(kpiMaster.getKpi_master_id().equals(positionKPI.getKpi_master_id())) {
+                cmbFormPK_kpi.setValue(kpiMaster.getKpi_master_id() + ": " + kpiMaster.getKpi_code());
             }
         }
     }
 
     private void savePositionKPI() {
-        String split[] = cmbFormPK_kpi.getSelectionModel().getSelectedItem().toString().split(":");
-        String splitName[] = txtFormPK_position.getText().split(":");
+        String[] split = cmbFormPK_kpi.getSelectionModel().getSelectedItem().split(":");
+        String[] splitName = txtFormPK_position.getText().split(":");
         BigDecimal decWeight;
 
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -989,7 +865,7 @@ public class SettingsController implements Initializable {
             decWeight = decWeight.setScale(2, RoundingMode.HALF_UP);
         } catch (ParseException e) {
             System.out.println("Weight is not a number!");
-            decWeight = new BigDecimal(100.00);
+            decWeight = new BigDecimal("100.00");
         }
 
         Integer classID = KPIMasterConnector.getKPIMaster(Integer.parseInt(split[0])).getKpi_class();
@@ -998,7 +874,7 @@ public class SettingsController implements Initializable {
                 Integer.parseInt(splitName[0]), Integer.parseInt(split[0]), classID, decWeight);
 
         if ( positionKPI.getItem_id().equals(0)) {
-            Integer i = positionKPI.insertPositionKPI();
+            positionKPI.insertPositionKPI();
         } else {
             positionKPI.updatePositionKPI();
         }

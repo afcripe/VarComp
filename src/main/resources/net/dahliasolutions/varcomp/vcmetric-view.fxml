@@ -342,7 +342,7 @@
    <ScrollPane fx:id="paneEmployeeKPI" fitToWidth="true" visible="false" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
       <Pane>
       <!-- Employee Editor -->
-         <VBox fx:id="paneFormEditorEmployee" fillWidth="false" spacing="8.0">
+         <VBox fillWidth="false" spacing="8.0">
             <HBox prefWidth="550">
                <Label text="Employee KPI Editor">
                   <font>

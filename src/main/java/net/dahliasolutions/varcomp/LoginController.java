@@ -1,12 +1,9 @@
 package net.dahliasolutions.varcomp;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import net.dahliasolutions.varcomp.connectors.CompanyConnector;
 import net.dahliasolutions.varcomp.connectors.UserConnector;
 import net.dahliasolutions.varcomp.models.Company;
@@ -40,45 +37,36 @@ public class LoginController extends ViewController implements Initializable {
         lblDBL.setText(DBUtils.getDBLocation());
         lblVersion.setText("VarComp v: "+DBUtils.getAppVersion());
 
-        txtUsername.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                    btnLogin.fire();
-                }
+        txtUsername.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                btnLogin.fire();
             }
         });
-        pwdPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                    btnLogin.fire();
-                }
+        pwdPassword.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                btnLogin.fire();
             }
         });
 
-        btnLogin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        btnLogin.setOnAction(event -> {
 
-                if ( txtUsername.getText().isEmpty() && pwdPassword.getText().isEmpty() ) {
-                    lblWarning.setText("Please provide a username and password.");
-                    lblWarning.setVisible(true);
+            if ( txtUsername.getText().isEmpty() && pwdPassword.getText().isEmpty() ) {
+                lblWarning.setText("Please provide a username and password.");
+                lblWarning.setVisible(true);
+            } else {
+                User u = UserConnector.loginUser(txtUsername.getText(), pwdPassword.getText());
+                if (!u.getUser_id().equals(0)) {
+                    lblWarning.setVisible(false);
+                    VarComp.setUser(u);
+
+                    Company c = CompanyConnector.getCompany(1);
+                    VarComp.setCurrentCompany(c);
+                    EmployeeUtils.updateAllEmployeeShares();
+
+                    VarComp.changeScene(event, "varcomp-view.fxml", "VarComp", false);
                 } else {
-                    User u = UserConnector.loginUser(txtUsername.getText(), pwdPassword.getText());
-                    if (!u.getUser_id().equals(0)) {
-                        lblWarning.setVisible(false);
-                        VarComp.setUser(u);
-
-                        Company c = CompanyConnector.getCompany(1);
-                        VarComp.setCurrentCompany(c);
-                        EmployeeUtils.updateAllEmployeeShares();
-
-                        NavigationUtils.changeScene(event, "varcomp-view.fxml", "VarComp", false);
-                    } else {
-                        lblWarning.setText("Unsuccessful Login Attempt!");
-                        lblWarning.setVisible(true);
-                    }
+                    lblWarning.setText("Unsuccessful Login Attempt!");
+                    lblWarning.setVisible(true);
                 }
             }
         });

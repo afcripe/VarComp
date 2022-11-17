@@ -18,9 +18,9 @@ public class MetricDetail {
         setMetric_detail_id(0);
         setMetric_id(0);
         setDetail_period(0);
-        setDetail_budget(new BigDecimal(0.00));
-        setDetail_actual(new BigDecimal(0.00));
-        setDetail_earnings(new BigDecimal(0.00));
+        setDetail_budget(new BigDecimal("0.00"));
+        setDetail_actual(new BigDecimal("0.00"));
+        setDetail_earnings(new BigDecimal("0.00"));
     }
 
     public MetricDetail(Integer detailID, Integer metricID, Integer detailPeriod,

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class CompanyConnector {
 
     public static Company getCompany(Integer companyID) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         Company company = new Company();
 
         try {
@@ -47,9 +47,9 @@ public class CompanyConnector {
     }
 
     public static ArrayList<Company> getCompanies() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
         ArrayList<Company> companies = new ArrayList<>();
 
         try {
@@ -84,9 +84,9 @@ public class CompanyConnector {
     }
 
     public static Boolean updateCompany(Company company) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Boolean updateSuccess = false;
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
