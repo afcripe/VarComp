@@ -3,9 +3,15 @@ package net.dahliasolutions.varcomp;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;
@@ -84,7 +90,7 @@ public class VarComp extends Application {
     public static void setCurrentCompany(Company company) { currentCompany.setCompany(company); }
     public static Company getCurrentCompany() { return currentCompany; }
 
-    public static void changeScene(ActionEvent event, String fxmlFile, String title, Boolean newWindow) {
+    public static void changeScene(String fxmlFile, String title, Boolean newWindow) {
         Stage stage = new Stage();
         Parent root = null;
         FXMLLoader loader;
@@ -112,4 +118,5 @@ public class VarComp extends Application {
         DBSetup.initializeDB();
         launch();
     }
+
 }

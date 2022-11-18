@@ -6,8 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -95,6 +99,10 @@ public class VCMetricController implements Initializable {
     private Button btnDetailRemoveMetricDetail;
     @FXML
     private Button btnMetricSave;
+    @FXML
+    private Button btnMetricPrint;
+    @FXML
+    private Label lblPrintJobStatus;
     @FXML
     private Button btnSharesRefresh;
     @FXML
@@ -355,6 +363,7 @@ public class VCMetricController implements Initializable {
 
     /* Metric Detail */
         btnMetricSave.setOnAction(event -> saveMetricDetail());
+        btnMetricPrint.setOnAction(event -> printMetricDetail(paneMetricDetail));
         btnDetailAddMetricDetail.setOnAction(event -> addMetricPeriodDetail());
         btnDetailRemoveMetricDetail.setOnAction(event -> removeMetricPeriodDetail());
         btnSharesRefresh.setOnAction(event -> updateShares());
@@ -647,6 +656,9 @@ public class VCMetricController implements Initializable {
 
         btnMetricSave.setVisible(show);
         btnMetricHome.setVisible(show);
+        btnMetricPrint.setVisible(show);
+        lblPrintJobStatus.setVisible(show);
+        lblPrintJobStatus.setText("");
 
         paneMetricTable.setVisible(!show);
         paneMetricDetail.setVisible(show);
@@ -1195,6 +1207,43 @@ public class VCMetricController implements Initializable {
         fillCompanyKPIs();
         fillEmployees();
         saveMetricDetail();
+    }
+
+/* Printing */
+    private void printMetricDetail(Node node) {
+        // ToDo
+        // Define the Job Status Message
+        lblPrintJobStatus.textProperty().unbind();
+        lblPrintJobStatus.setText("Creating a printer job...");
+
+        // Create a printer job for the default printer
+        PrinterJob job = PrinterJob.createPrinterJob();
+
+        if (job != null)
+        {
+            // Show the printer job status
+            lblPrintJobStatus.textProperty().bind(job.jobStatusProperty().asString());
+
+            // Print the node
+            boolean printed = job.printPage(node);
+
+            if (printed)
+            {
+                // End the printer job
+                job.endJob();
+            }
+            else
+            {
+                // Write Error Message
+                lblPrintJobStatus.textProperty().unbind();
+                lblPrintJobStatus.setText("Printing failed.");
+            }
+        }
+        else
+        {
+            // Write Error Message
+            lblPrintJobStatus.setText("Could not create a printer job.");
+        }
     }
 
 }

@@ -63,7 +63,7 @@ public class LoginController extends ViewController implements Initializable {
                     VarComp.setCurrentCompany(c);
                     EmployeeUtils.updateAllEmployeeShares();
 
-                    VarComp.changeScene(event, "varcomp-view.fxml", "VarComp", false);
+                    VarComp.changeScene("varcomp-view.fxml", "VarComp", false);
                 } else {
                     lblWarning.setText("Unsuccessful Login Attempt!");
                     lblWarning.setVisible(true);

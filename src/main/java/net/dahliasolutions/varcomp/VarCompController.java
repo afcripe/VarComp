@@ -34,7 +34,7 @@ public class VarCompController extends ViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        menuLogout.setOnAction(actionEvent -> VarComp.changeScene(actionEvent, "login-view.fxml", "Please, Login", false));
+        menuLogout.setOnAction(actionEvent -> VarComp.changeScene("login-view.fxml", "Please, Login", false));
         menuExit.setOnAction(actionEvent -> VarComp.closeApp());
         menuAbout.setOnAction(event -> showAbout());
 
