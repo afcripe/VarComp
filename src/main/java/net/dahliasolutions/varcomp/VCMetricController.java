@@ -5,21 +5,29 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -29,6 +37,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -1211,13 +1220,19 @@ public class VCMetricController implements Initializable {
 
 /* Printing */
     private void printMetricDetail(Node node) {
+        //ToDo create and load new FXML that is print friendly
+
+        printPreview(node, "Print Preview");
+
+        /*
         // ToDo
+        Printer printer = getPrinter();
         // Define the Job Status Message
         lblPrintJobStatus.textProperty().unbind();
         lblPrintJobStatus.setText("Creating a printer job...");
 
         // Create a printer job for the default printer
-        PrinterJob job = PrinterJob.createPrinterJob();
+        PrinterJob job = PrinterJob.createPrinterJob(printer);
 
         if (job != null)
         {
@@ -1225,12 +1240,13 @@ public class VCMetricController implements Initializable {
             lblPrintJobStatus.textProperty().bind(job.jobStatusProperty().asString());
 
             // Print the node
-            boolean printed = job.printPage(node);
+            boolean printed = job.printPage(printNode());
 
             if (printed)
             {
                 // End the printer job
                 job.endJob();
+                lblPrintJobStatus.setText("");
             }
             else
             {
@@ -1244,6 +1260,51 @@ public class VCMetricController implements Initializable {
             // Write Error Message
             lblPrintJobStatus.setText("Could not create a printer job.");
         }
+
+         */
+    }
+
+    private Printer getPrinter() {
+        ChoiceDialog dialog = new ChoiceDialog(Printer.getDefaultPrinter(), Printer.getAllPrinters());
+        dialog.setHeaderText("Choose Printer");
+        dialog.setContentText("Choose a printer from the available printers.");
+        dialog.setTitle("Printer Choice");
+        Optional<Printer> opt = dialog.showAndWait();
+        if (opt.isPresent()) {
+            Printer printer = opt.get();
+            String nameOfPrinter = printer.getName();
+            return printer;
+        }
+        return Printer.getDefaultPrinter();
+    }
+
+    private Node printNode() {
+        VBox printBoxDetail = new VBox();
+        Label labelMNameLbl = new Label("Metric:");
+        labelMNameLbl.setPrefWidth(100);
+        labelMNameLbl.setStyle("-fx-font: 16 arial; -fx-alignment: right");
+        Label labelMNameTxt = new Label(metricDetail.getMetric_label());
+        HBox boxMetricName = new HBox(4);
+        boxMetricName.getChildren().add(labelMNameLbl);
+        boxMetricName.getChildren().add(labelMNameTxt);
+        printBoxDetail.getChildren().add(boxMetricName);
+
+        ObservableList list = printBoxDetail.getChildren();
+
+
+
+        return printBoxDetail;
+    }
+
+    public void printPreview(Node node, String title) {
+        Stage stage = new Stage();
+        Pane pane = new Pane(node);
+        Parent root = pane;
+
+
+        stage.setScene(new Scene(root, 800, 600));
+        stage.setTitle(title);
+        stage.show();
     }
 
 }
