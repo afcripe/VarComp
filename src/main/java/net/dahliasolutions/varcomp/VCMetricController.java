@@ -1222,7 +1222,8 @@ public class VCMetricController implements Initializable {
     private void printMetricDetail(Node node) {
         //ToDo create and load new FXML that is print friendly
 
-        printPreview(node, "Print Preview");
+        //printPreview(node, "Print Preview");
+        printPreview2("vcmetric-print.fxml", "Print Metric");
 
         /*
         // ToDo
@@ -1303,6 +1304,24 @@ public class VCMetricController implements Initializable {
 
 
         stage.setScene(new Scene(root, 800, 600));
+        stage.setTitle(title);
+        stage.show();
+    }
+
+    public void printPreview2(String fxmlFile, String title) {
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource(fxmlFile));
+            root = loader.load();
+            ((MetricPrintController)loader.getController()).init(metricDetail.getMetric_id());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(new Scene(root, 550, 600));
         stage.setTitle(title);
         stage.show();
     }

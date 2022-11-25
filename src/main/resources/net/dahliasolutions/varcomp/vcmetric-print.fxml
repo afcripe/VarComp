@@ -10,7 +10,7 @@
    <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
          <Pane>
 
-         <VBox fillWidth="false" spacing="8.0" visible="false">
+         <VBox fillWidth="false" spacing="8.0">
             <HBox alignment="CENTER_LEFT" spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />
                <Label fx:id="lblLabel" prefWidth="273.0" />
@@ -109,6 +109,9 @@
             </padding>
          </VBox>
 
+            <padding>
+               <Insets bottom="4.0" left="16.0" right="4.0" top="4.0" />
+            </padding>
          </Pane>
    </ScrollPane>
 </AnchorPane>

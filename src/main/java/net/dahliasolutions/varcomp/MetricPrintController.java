@@ -89,7 +89,7 @@ public class MetricPrintController implements Initializable {
     ObservableList<MetricDetail> metricDetailList;
     ObservableList<CompanyKPI> companyKPIObservableList;
     ObservableList<EmployeeScore> employeeScoresObservableList;
-    private final Metric metricDetail = new Metric();
+    private Metric metricDetail = new Metric();
     private final EmployeeScore employeeScore = new EmployeeScore();
     private final Employee employeeEdit = new Employee();
 
@@ -148,53 +148,34 @@ public class MetricPrintController implements Initializable {
         });
         tbcEmployeeBonus.setPrefWidth((tblDetailEmployeeScores.getPrefWidth()-4)/4);
 
-
-        navMetricHome();
     }
 
-    private void focusState(Boolean b) {
-      if(!b) {
-          metricDetailUpdateLabel();
-      }
-    }
-    private void dpFocusState(Boolean b) {
-        if(!b) {
-            dpFormCalcEarnings();
-        }
+    public void init(Integer metricID) {
+        metricDetail = MetricConnector.getMetric(metricID);
+        fillMetricDetail();
+        fillDetailMetricPeriods();
+        fillCompanyKPIs();
+        fillEmployees();
     }
 
-
-    private void navMetricHome(){
-
-        showFormEditorKPI(false);
-        fillPaneMetricDetail(new Metric());
-        showPaneMetricDetail(false);
-    }
-    private void navMetricDetail(Metric metric){
-        metricDetail.setMetric(metric);
-        fillPaneMetricDetail(metricDetail);
-        showPaneMetricDetail(true);
-    }
-
-    private void fillPaneMetricDetail(Metric metric) {
+    private void fillMetricDetail() {
         NumberFormat fmDollar = NumberFormat.getCurrencyInstance();
-        txtDetailMetricLabel.setText(metric.getMetric_label());
-        txtDetailMetricYear.setText(metric.getMetric_year().toString());
-        txtDetailMetricPeriod.setText(metric.getMetric_period().toString());
-        chkDetailMetricLocked.setSelected(metric.getLocked());
-        txtDetailMetricEarning.setText(fmDollar.format(metric.getMetric_earnings()));
-        txtDetailMetricFunding.setText(fmDollar.format(metric.getMetric_funding()));
-        txtDetailMetricPayout.setText(fmDollar.format(metric.getMetric_payout()));
-        txtDetailMetricShares.setText(metric.getMetric_shares().toString());
-        txtDetailMetricEPS.setText(fmDollar.format(metric.getMetric_eps()));
-        setLockStyle();
-
-        if ( !metric.getMetric_id().equals(0) ) {
-            fillDetailMetricPeriods();
-            fillCompanyKPIs();
-            // Update calculations and fill employee scores
-            updateEmployeeScores();
+        lblLabel.setText(metricDetail.getMetric_label());
+        lblYear.setText(metricDetail.getMetric_year().toString());
+        lblPeriod.setText(metricDetail.getMetric_period().toString());
+        if(metricDetail.getLocked()){
+            lblClosed.setText("Closed");
+            lblClosedDate.setText(metricDetail.getLock_date().toString());
+        } else {
+            lblClosed.setText("Open");
+            lblClosedDate.setText("");
         }
+        lblEarning.setText(fmDollar.format(metricDetail.getMetric_earnings()));
+        lblFunding.setText(fmDollar.format(metricDetail.getMetric_funding()));
+        lblPayout.setText(fmDollar.format(metricDetail.getMetric_payout()));
+        lblShares.setText(metricDetail.getMetric_shares().toString());
+        lblEPS.setText(fmDollar.format(metricDetail.getMetric_eps()));
+
     }
 
     private void fillDetailMetricPeriods() {
