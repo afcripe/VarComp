@@ -1238,7 +1238,7 @@ public class VCMetricController implements Initializable {
             e.printStackTrace();
         }
 
-        stage.setScene(new Scene(root, 515, 600));
+        stage.setScene(new Scene(root, 395, 450));
         stage.setTitle(title);
         stage.show();
     }

@@ -110,12 +110,15 @@ public class VCEmployeeController implements Initializable {
             }
             return new SimpleObjectProperty<>(cellValue);
         });
+        tbcEmployeePosition.setPrefWidth((tblEmployees.getPrefWidth()-305)/3);
         tbcEmployeeShares.setCellValueFactory(new PropertyValueFactory<>("shares_assigned"));
+        tbcEmployeeShares.setPrefWidth((tblEmployees.getPrefWidth()-305)/3);
         tbcEmployeeActive.setCellValueFactory(param -> {
             String cellVal = "Inactive";
             if (param.getValue().getIs_active()) {cellVal = "Active";}
             return new SimpleObjectProperty<>(cellVal);
         });
+        tbcEmployeeActive.setPrefWidth((tblEmployees.getPrefWidth()-305)/3);
         tblEmployees.setItems(employeeList);
         tblEmployees.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown() && event.getClickCount() == 2){

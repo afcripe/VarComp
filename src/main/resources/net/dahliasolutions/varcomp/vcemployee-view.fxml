@@ -35,11 +35,11 @@
             <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
             <TableView fx:id="tblEmployees" prefHeight="220.0" prefWidth="550.0">
                <columns>
-                  <TableColumn fx:id="tbcEmployeeID" editable="false" prefWidth="42.5" text="ID" />
-                  <TableColumn fx:id="tbcEmployeeName" editable="false" prefWidth="250.5" text="Name" />
-                  <TableColumn fx:id="tbcEmployeePosition" editable="false" prefWidth="90.5" text="Position" />
-                  <TableColumn fx:id="tbcEmployeeShares" editable="false" minWidth="0.0" prefWidth="81.5" text="Shares" />
-                  <TableColumn fx:id="tbcEmployeeActive" editable="false" minWidth="0.0" prefWidth="90.5" text="Active" />
+                  <TableColumn fx:id="tbcEmployeeID" prefWidth="50" text="ID" />
+                  <TableColumn fx:id="tbcEmployeeName" prefWidth="250" text="Name" />
+                  <TableColumn fx:id="tbcEmployeePosition" text="Position" />
+                  <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
+                  <TableColumn fx:id="tbcEmployeeActive" text="Active" />
                </columns>
             </TableView>
             <padding>

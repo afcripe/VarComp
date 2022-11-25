@@ -41,6 +41,8 @@ public class MetricPrintController implements Initializable {
     @FXML
     private AnchorPane PrintPane;
     @FXML
+    private ScrollPane scrollPane;
+    @FXML
     private Label lblCompany;
     @FXML
     private Label lblTitle;
@@ -162,6 +164,9 @@ public class MetricPrintController implements Initializable {
         fillDetailMetricPeriods();
         fillCompanyKPIs();
         fillEmployees();
+
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         lblCompany.setText(VarComp.getCurrentCompany().getCompany_name());
         lblTitle.setText("- Metric Report -");
