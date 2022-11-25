@@ -18,6 +18,7 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER_RIGHT" spacing="8">
          <Label fx:id="lblPrintJobStatus" visible="false" />
+         <CheckBox fx:id="chkPrintPreview" text="Preview" selected="false"  visible="false"/>
          <Button fx:id="btnMetricPrint" prefWidth="75" text="Print" visible="false" />
          <Button fx:id="btnMetricSave" prefWidth="75" text="Save" visible="false" />
          <Button fx:id="btnMetricHome" prefWidth="75" text="Back" visible="false" />

@@ -45,7 +45,8 @@ public class VCMetricController implements Initializable {
 
     @FXML
     private Button btnMetricHome;
-
+    @FXML
+    private CheckBox chkPrintPreview;
     @FXML
     private Pane paneMetricTable;
     @FXML
@@ -666,6 +667,7 @@ public class VCMetricController implements Initializable {
         btnMetricSave.setVisible(show);
         btnMetricHome.setVisible(show);
         btnMetricPrint.setVisible(show);
+        chkPrintPreview.setVisible(show);
         lblPrintJobStatus.setVisible(show);
         lblPrintJobStatus.setText("");
 
@@ -1220,95 +1222,10 @@ public class VCMetricController implements Initializable {
 
 /* Printing */
     private void printMetricDetail(Node node) {
-        //ToDo create and load new FXML that is print friendly
-
-        //printPreview(node, "Print Preview");
-        printPreview2("vcmetric-print.fxml", "Print Metric");
-
-        /*
-        // ToDo
-        Printer printer = getPrinter();
-        // Define the Job Status Message
-        lblPrintJobStatus.textProperty().unbind();
-        lblPrintJobStatus.setText("Creating a printer job...");
-
-        // Create a printer job for the default printer
-        PrinterJob job = PrinterJob.createPrinterJob(printer);
-
-        if (job != null)
-        {
-            // Show the printer job status
-            lblPrintJobStatus.textProperty().bind(job.jobStatusProperty().asString());
-
-            // Print the node
-            boolean printed = job.printPage(printNode());
-
-            if (printed)
-            {
-                // End the printer job
-                job.endJob();
-                lblPrintJobStatus.setText("");
-            }
-            else
-            {
-                // Write Error Message
-                lblPrintJobStatus.textProperty().unbind();
-                lblPrintJobStatus.setText("Printing failed.");
-            }
-        }
-        else
-        {
-            // Write Error Message
-            lblPrintJobStatus.setText("Could not create a printer job.");
-        }
-
-         */
+        printPreview("vcmetric-print.fxml", "Print Metric");
     }
 
-    private Printer getPrinter() {
-        ChoiceDialog dialog = new ChoiceDialog(Printer.getDefaultPrinter(), Printer.getAllPrinters());
-        dialog.setHeaderText("Choose Printer");
-        dialog.setContentText("Choose a printer from the available printers.");
-        dialog.setTitle("Printer Choice");
-        Optional<Printer> opt = dialog.showAndWait();
-        if (opt.isPresent()) {
-            Printer printer = opt.get();
-            String nameOfPrinter = printer.getName();
-            return printer;
-        }
-        return Printer.getDefaultPrinter();
-    }
-
-    private Node printNode() {
-        VBox printBoxDetail = new VBox();
-        Label labelMNameLbl = new Label("Metric:");
-        labelMNameLbl.setPrefWidth(100);
-        labelMNameLbl.setStyle("-fx-font: 16 arial; -fx-alignment: right");
-        Label labelMNameTxt = new Label(metricDetail.getMetric_label());
-        HBox boxMetricName = new HBox(4);
-        boxMetricName.getChildren().add(labelMNameLbl);
-        boxMetricName.getChildren().add(labelMNameTxt);
-        printBoxDetail.getChildren().add(boxMetricName);
-
-        ObservableList list = printBoxDetail.getChildren();
-
-
-
-        return printBoxDetail;
-    }
-
-    public void printPreview(Node node, String title) {
-        Stage stage = new Stage();
-        Pane pane = new Pane(node);
-        Parent root = pane;
-
-
-        stage.setScene(new Scene(root, 800, 600));
-        stage.setTitle(title);
-        stage.show();
-    }
-
-    public void printPreview2(String fxmlFile, String title) {
+    public void printPreview(String fxmlFile, String title) {
         Stage stage = new Stage();
         Parent root = null;
         FXMLLoader loader;
@@ -1316,12 +1233,12 @@ public class VCMetricController implements Initializable {
         try {
             loader = new FXMLLoader(VarComp.class.getResource(fxmlFile));
             root = loader.load();
-            ((MetricPrintController)loader.getController()).init(metricDetail.getMetric_id());
+            ((MetricPrintController)loader.getController()).init(metricDetail.getMetric_id(), chkPrintPreview.isSelected());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        stage.setScene(new Scene(root, 550, 600));
+        stage.setScene(new Scene(root, 515, 600));
         stage.setTitle(title);
         stage.show();
     }

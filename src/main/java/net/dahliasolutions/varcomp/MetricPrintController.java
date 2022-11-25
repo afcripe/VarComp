@@ -7,12 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -36,6 +38,12 @@ import java.util.stream.Collectors;
 
 public class MetricPrintController implements Initializable {
 
+    @FXML
+    private AnchorPane PrintPane;
+    @FXML
+    private Label lblCompany;
+    @FXML
+    private Label lblTitle;
     @FXML
     private Label lblLabel;
     @FXML
@@ -90,8 +98,6 @@ public class MetricPrintController implements Initializable {
     ObservableList<CompanyKPI> companyKPIObservableList;
     ObservableList<EmployeeScore> employeeScoresObservableList;
     private Metric metricDetail = new Metric();
-    private final EmployeeScore employeeScore = new EmployeeScore();
-    private final Employee employeeEdit = new Employee();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -150,12 +156,16 @@ public class MetricPrintController implements Initializable {
 
     }
 
-    public void init(Integer metricID) {
+    public void init(Integer metricID, boolean preview) {
         metricDetail = MetricConnector.getMetric(metricID);
         fillMetricDetail();
         fillDetailMetricPeriods();
         fillCompanyKPIs();
         fillEmployees();
+
+        lblCompany.setText(VarComp.getCurrentCompany().getCompany_name());
+        lblTitle.setText("- Metric Report -");
+        if(!preview) printSpool();
     }
 
     private void fillMetricDetail() {
@@ -198,49 +208,36 @@ public class MetricPrintController implements Initializable {
 
 
 /* Printing */
-    private void printMetricDetail(Node node) {
-        //ToDo create and load new FXML that is print friendly
+    private void printSpool() {
 
-        printPreview(node, "Print Preview");
-
-        /*
         // ToDo
         Printer printer = getPrinter();
-        // Define the Job Status Message
-        lblPrintJobStatus.textProperty().unbind();
-        lblPrintJobStatus.setText("Creating a printer job...");
 
         // Create a printer job for the default printer
         PrinterJob job = PrinterJob.createPrinterJob(printer);
 
         if (job != null)
         {
-            // Show the printer job status
-            lblPrintJobStatus.textProperty().bind(job.jobStatusProperty().asString());
-
             // Print the node
-            boolean printed = job.printPage(printNode());
+            boolean printed = job.printPage(PrintPane);
 
             if (printed)
             {
                 // End the printer job
                 job.endJob();
-                lblPrintJobStatus.setText("");
             }
             else
             {
                 // Write Error Message
-                lblPrintJobStatus.textProperty().unbind();
-                lblPrintJobStatus.setText("Printing failed.");
+                System.out.println("Print job failed");
             }
         }
         else
         {
             // Write Error Message
-            lblPrintJobStatus.setText("Could not create a printer job.");
+            System.out.println("Could not create a printer job.");
         }
 
-         */
     }
 
     private Printer getPrinter() {
@@ -256,34 +253,4 @@ public class MetricPrintController implements Initializable {
         }
         return Printer.getDefaultPrinter();
     }
-
-    private Node printNode() {
-        VBox printBoxDetail = new VBox();
-        Label labelMNameLbl = new Label("Metric:");
-        labelMNameLbl.setPrefWidth(100);
-        labelMNameLbl.setStyle("-fx-font: 16 arial; -fx-alignment: right");
-        Label labelMNameTxt = new Label(metricDetail.getMetric_label());
-        HBox boxMetricName = new HBox(4);
-        boxMetricName.getChildren().add(labelMNameLbl);
-        boxMetricName.getChildren().add(labelMNameTxt);
-        printBoxDetail.getChildren().add(boxMetricName);
-
-        ObservableList list = printBoxDetail.getChildren();
-
-
-
-        return printBoxDetail;
-    }
-
-    public void printPreview(Node node, String title) {
-        Stage stage = new Stage();
-        Pane pane = new Pane(node);
-        Parent root = pane;
-
-
-        stage.setScene(new Scene(root, 800, 600));
-        stage.setTitle(title);
-        stage.show();
-    }
-
 }

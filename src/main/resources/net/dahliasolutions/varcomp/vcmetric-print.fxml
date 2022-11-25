@@ -6,23 +6,63 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.MetricPrintController">
-   <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+<AnchorPane fx:id="PrintPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.MetricPrintController">
+
+   <HBox>
+      <Label fx:id="lblCompany" alignment="BOTTOM_LEFT" minHeight="45.0" prefWidth="250.0" text="Dahlia Solutions">
+         <HBox.margin>
+            <Insets left="12.0" />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="8.0" />
+         </padding>
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Label>
+      <Label fx:id="lblTitle" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" text="- Metric Report -">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="8.0" left="12.0" />
+         </padding>
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+   </HBox>
+
+   <ScrollPane fitToWidth="true" style="-fx-background-color: white;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
          <Pane>
+
+            <Line endX="500.0" startX="5.0" />
 
          <VBox fillWidth="false" spacing="8.0">
             <HBox alignment="CENTER_LEFT" spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />
-               <Label fx:id="lblLabel" prefWidth="273.0" />
-               <HBox prefHeight="25.0" prefWidth="50.0" />
-               <Label fx:id="lblClosed" alignment="CENTER_RIGHT" prefWidth="75.0" text="Closed" />
-               <Label fx:id="lblClosedDate" alignment="CENTER_RIGHT" prefWidth="75.0" text="" />
+               <Label fx:id="lblLabel" prefWidth="100.0">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
+               <Label fx:id="lblClosed" alignment="CENTER_RIGHT" prefWidth="135.0" text="Closed">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
+               <Label fx:id="lblClosedDate" alignment="CENTER_RIGHT" prefWidth="100.0" text="">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Year:" />
-               <Label fx:id="lblYear" prefWidth="95.0" />
-               <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Period:" />
-               <Label fx:id="lblPeriod" prefWidth="80.0" />
+               <Label fx:id="lblYear" prefWidth="100.0" />
+               <Label alignment="CENTER_RIGHT" prefWidth="135.0" text="Period:" />
+               <Label fx:id="lblPeriod" prefWidth="100.0" />
+               <padding>
+                  <Insets bottom="12.0" />
+               </padding>
             </HBox>
             <HBox spacing="4.0">
                <TableView fx:id="tblDetailMetricPeriods" prefHeight="115.0" prefWidth="433.0">
@@ -38,25 +78,25 @@
                <VBox spacing="8.0">
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
                      <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Earnings:" />
-                     <Label fx:id="lblEarning" />
+                     <Label fx:id="lblEarning" prefWidth="100.0" />
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
                      <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Funding:" />
-                     <Label fx:id="lblFunding" />
+                     <Label fx:id="lblFunding" prefWidth="100.0" />
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
                      <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Payout:" />
-                     <Label fx:id="lblPayout" />
+                     <Label fx:id="lblPayout" prefWidth="100.0" />
                   </HBox>
                </VBox>
                <VBox spacing="8.0">
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
-                     <Label alignment="CENTER_RIGHT" prefWidth="97.0" text="Shares:" />
-                     <Label fx:id="lblShares" prefWidth="95.0" />
+                     <Label alignment="CENTER_RIGHT" prefWidth="135.0" text="Shares:" />
+                     <Label fx:id="lblShares" prefWidth="100.0" />
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
-                     <Label alignment="CENTER_RIGHT" prefWidth="97.0" text="EPS:" />
-                     <Label fx:id="lblEPS" prefWidth="95.0" />
+                     <Label alignment="CENTER_RIGHT" prefWidth="135.0" text="EPS:" />
+                     <Label fx:id="lblEPS" prefWidth="100.0" />
                   </HBox>
                </VBox>
             </HBox>
@@ -68,12 +108,12 @@
                      <Font name="System Bold" size="16.0" />
                   </font>
                </Label>
-                  <Line endX="175.0" startX="-175.0" />
+                  <Line endX="150.0" startX="-150.0" />
                   <VBox.margin>
                      <Insets bottom="5.0" top="20.0" />
                   </VBox.margin>
             </HBox>
-            <TableView fx:id="tblDetailCompanyKPI" prefHeight="100.0" prefWidth="517.0">
+            <TableView fx:id="tblDetailCompanyKPI" prefHeight="100.0" prefWidth="495.0">
                <columns>
                   <TableColumn fx:id="tbcCompanyKPICode" text="KPI" />
                   <TableColumn fx:id="tbcCompanyKPIScore" text="Score" />
@@ -88,12 +128,12 @@
                      <Font name="System Bold" size="16.0" />
                   </font>
                </Label>
-               <Line endX="175.0" startX="-175.0" />
+               <Line endX="150.0" startX="-150.0" />
                <VBox.margin>
                   <Insets bottom="5.0" top="20.0" />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" prefWidth="517.0">
+            <TableView fx:id="tblDetailEmployeeScores" prefHeight="160.0" prefWidth="495.0">
                <columns>
                   <TableColumn fx:id="tbcEmployeeName" text="Employee ID" />
                   <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
@@ -104,14 +144,7 @@
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
-            <padding>
-               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-            </padding>
          </VBox>
-
-            <padding>
-               <Insets bottom="4.0" left="16.0" right="4.0" top="4.0" />
-            </padding>
          </Pane>
    </ScrollPane>
 </AnchorPane>
