@@ -10,11 +10,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
+import net.dahliasolutions.varcomp.connectors.EmployeeScoreConnector;
+import net.dahliasolutions.varcomp.connectors.MetricConnector;
 import net.dahliasolutions.varcomp.connectors.PositionsConnector;
 import net.dahliasolutions.varcomp.models.Employee;
+import net.dahliasolutions.varcomp.models.EmployeeScore;
 import net.dahliasolutions.varcomp.models.Position;
 
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 
 public class VCEmployeeController implements Initializable {
@@ -81,10 +85,21 @@ public class VCEmployeeController implements Initializable {
     private Label lblEmployeeShares;
     @FXML
     private Button btnEditEmployee_save;
+    @FXML
+    private TableView<EmployeeScore> tblEmployeeMetrics;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcDetailMetric;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcDetailShares;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcDetailGrade;
+    @FXML
+    private TableColumn<EmployeeScore, String> tbcDetailBonus;
 
     private final Employee selectedEmployee = new Employee();
     ObservableList<Employee> employeeList;
     ObservableList<Position> positionList;
+    ObservableList<EmployeeScore> employeeScores;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -110,15 +125,15 @@ public class VCEmployeeController implements Initializable {
             }
             return new SimpleObjectProperty<>(cellValue);
         });
-        tbcEmployeePosition.setPrefWidth((tblEmployees.getPrefWidth()-305)/3);
+        tbcEmployeePosition.setPrefWidth((tblEmployees.getPrefWidth()-304)/3);
         tbcEmployeeShares.setCellValueFactory(new PropertyValueFactory<>("shares_assigned"));
-        tbcEmployeeShares.setPrefWidth((tblEmployees.getPrefWidth()-305)/3);
+        tbcEmployeeShares.setPrefWidth((tblEmployees.getPrefWidth()-304)/3);
         tbcEmployeeActive.setCellValueFactory(param -> {
             String cellVal = "Inactive";
             if (param.getValue().getIs_active()) {cellVal = "Active";}
             return new SimpleObjectProperty<>(cellVal);
         });
-        tbcEmployeeActive.setPrefWidth((tblEmployees.getPrefWidth()-305)/3);
+        tbcEmployeeActive.setPrefWidth((tblEmployees.getPrefWidth()-304)/3);
         tblEmployees.setItems(employeeList);
         tblEmployees.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
@@ -145,6 +160,25 @@ public class VCEmployeeController implements Initializable {
         txtEmployeeShares.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeDetailFocusState(newValue));
         pkrEmployeeStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeDetailFocusState(newValue));
         cmbEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeDetailFocusState(newValue));
+
+        tbcDetailMetric.setCellValueFactory(param -> new SimpleObjectProperty<>(MetricConnector.getMetric(param.getValue().getMetric_id()).getMetric_label()));
+        tbcDetailMetric.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
+        tbcDetailShares.setCellValueFactory(param -> {
+            NumberFormat fm = NumberFormat.getNumberInstance();
+            return new SimpleObjectProperty<>(fm.format(param.getValue().getShares()));
+        });
+        tbcDetailShares.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
+        tbcDetailGrade.setCellValueFactory(param -> {
+            NumberFormat fm = NumberFormat.getPercentInstance();
+            return new SimpleObjectProperty<>(fm.format(param.getValue().getGrade()));
+        });
+        tbcDetailGrade.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
+        tbcDetailBonus.setCellValueFactory(param -> {
+            NumberFormat fm = NumberFormat.getCurrencyInstance();
+            return new SimpleObjectProperty<>(fm.format(param.getValue().getBonus()));
+        });
+        tbcDetailBonus.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
+
 
         showPaneEmployeeList();
     }
@@ -255,6 +289,9 @@ public class VCEmployeeController implements Initializable {
         }
         cmbEmployeePosition.setValue(cb);
 
+        tblEmployeeMetrics.getItems().removeAll();
+        employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
+        tblEmployeeMetrics.setItems(employeeScores);
         showPaneEmployeeDetail(true);
     }
 

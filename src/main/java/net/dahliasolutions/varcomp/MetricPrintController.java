@@ -1,40 +1,22 @@
 package net.dahliasolutions.varcomp;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class MetricPrintController implements Initializable {
 
@@ -125,8 +107,8 @@ public class MetricPrintController implements Initializable {
 
     /* Company KPIs */
         tbcCompanyKPICode.setCellValueFactory(new PropertyValueFactory<>("kpi_code"));
-        tbcCompanyKPICode.setPrefWidth(100);
-        tbcCompanyKPIGrade.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-104)/3);
+        tbcCompanyKPICode.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-3)/3);
+        tbcCompanyKPIGrade.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-3)/3);
         tbcCompanyKPIScore.setCellValueFactory(param -> {
             NumberFormat fm = NumberFormat.getNumberInstance();
             return new SimpleObjectProperty<>(fm.format(param.getValue().getKpi_score()));
@@ -135,7 +117,7 @@ public class MetricPrintController implements Initializable {
             NumberFormat fm = NumberFormat.getPercentInstance();
             return new SimpleObjectProperty<>(fm.format(param.getValue().getKpi_grade()));
         });
-        tbcCompanyKPIScore.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-104)/3);
+        tbcCompanyKPIScore.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-3)/3);
 
     /* Employee Scores */
         tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
@@ -214,33 +196,17 @@ public class MetricPrintController implements Initializable {
 
 /* Printing */
     private void printSpool() {
-
-        // ToDo
         Printer printer = getPrinter();
 
         // Create a printer job for the default printer
         PrinterJob job = PrinterJob.createPrinterJob(printer);
 
-        if (job != null)
-        {
-            // Print the node
-            boolean printed = job.printPage(PrintPane);
-
-            if (printed)
-            {
-                // End the printer job
-                job.endJob();
-            }
-            else
-            {
-                // Write Error Message
-                System.out.println("Print job failed");
-            }
-        }
-        else
-        {
-            // Write Error Message
-            System.out.println("Could not create a printer job.");
+        // Print the node
+        boolean printed = job.printPage(PrintPane);
+        if (printed) {
+            job.endJob();
+        } else {
+            System.out.println("Print job failed");
         }
 
     }

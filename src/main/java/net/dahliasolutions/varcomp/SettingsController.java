@@ -913,10 +913,6 @@ public class SettingsController implements Initializable {
     }
 
     private void showFormPositionKPI() {
-        paneFormPositionKPI.setLayoutX(tblPositionKPI.getLayoutX());
-        paneFormPositionKPI.setLayoutY(tblPositionKPI.getLayoutY());
-        paneFormPositionKPI.setPrefWidth(tblPositionKPI.getPrefWidth());
-        paneFormPositionKPI.setPrefHeight(tblPositionKPI.getPrefHeight());
         paneFormPositionKPI.setVisible(true);
     }
 

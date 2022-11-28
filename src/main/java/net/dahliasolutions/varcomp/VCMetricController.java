@@ -7,22 +7,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
@@ -373,7 +366,7 @@ public class VCMetricController implements Initializable {
 
     /* Metric Detail */
         btnMetricSave.setOnAction(event -> saveMetricDetail());
-        btnMetricPrint.setOnAction(event -> printMetricDetail(paneMetricDetail));
+        btnMetricPrint.setOnAction(event -> printMetricDetail());
         btnDetailAddMetricDetail.setOnAction(event -> addMetricPeriodDetail());
         btnDetailRemoveMetricDetail.setOnAction(event -> removeMetricPeriodDetail());
         btnSharesRefresh.setOnAction(event -> updateShares());
@@ -1221,7 +1214,7 @@ public class VCMetricController implements Initializable {
     }
 
 /* Printing */
-    private void printMetricDetail(Node node) {
+    private void printMetricDetail() {
         printPreview("vcmetric-print.fxml", "Print Metric");
     }
 

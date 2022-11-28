@@ -18,7 +18,7 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER_RIGHT" spacing="8">
          <Label fx:id="lblPrintJobStatus" visible="false" />
-         <CheckBox fx:id="chkPrintPreview" text="Preview" selected="false"  visible="false"/>
+         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false"/>
          <Button fx:id="btnMetricPrint" prefWidth="75" text="Print" visible="false" />
          <Button fx:id="btnMetricSave" prefWidth="75" text="Save" visible="false" />
          <Button fx:id="btnMetricHome" prefWidth="75" text="Back" visible="false" />
@@ -82,7 +82,7 @@
 
          <VBox fx:id="paneMetricDetail" fillWidth="false" spacing="8.0" visible="false">
             <HBox minHeight="4" prefHeight="4.0" prefWidth="450.0">
-               <HBox fx:id="boxMetricDetailStatus" minHeight="4" minWidth="500.0" prefHeight="5.0" style="-fx-background-color: DARKGREEN;" />
+               <HBox fx:id="boxMetricDetailStatus" minHeight="4" minWidth="517.0" prefHeight="5.0" style="-fx-background-color: DARKGREEN;" />
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />

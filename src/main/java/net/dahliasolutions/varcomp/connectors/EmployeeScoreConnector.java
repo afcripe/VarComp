@@ -65,12 +65,48 @@ public class EmployeeScoreConnector {
                     Integer recSCoreID = resultSet.getInt("score_id");
                     String recEmployeeID = resultSet.getString("employee_id");
                     Integer recMetricID = resultSet.getInt("metric_id");
-                    Integer recGrade = resultSet.getInt("grade");
-                    BigDecimal recScore = resultSet.getBigDecimal("grade");
+                    Integer recShares = resultSet.getInt("shares");
+                    BigDecimal recGrade = resultSet.getBigDecimal("grade");
                     BigDecimal recBonus = resultSet.getBigDecimal("bonus");
 
                     employeeScore = new EmployeeScore(recSCoreID, recEmployeeID,
-                            recMetricID, recGrade, recScore, recBonus);
+                            recMetricID, recShares, recGrade, recBonus);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            employeeScore = new EmployeeScore();
+        }
+
+        return employeeScore.getEmployeeScore();
+    }
+
+    public static EmployeeScore getEmployeeScoreByEmployee(String employeeID) {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        EmployeeScore employeeScore = new EmployeeScore();
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES " +
+                    "WHERE EMPLOYEE_ID=?");
+            preparedStatement.setString(1, employeeID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("Company KPI not found.");
+            } else {
+                while (resultSet.next()) {
+                    Integer recSCoreID = resultSet.getInt("score_id");
+                    String recEmployeeID = resultSet.getString("employee_id");
+                    Integer recMetricID = resultSet.getInt("metric_id");
+                    Integer recShares = resultSet.getInt("shares");
+                    BigDecimal recGrade = resultSet.getBigDecimal("grade");
+                    BigDecimal recBonus = resultSet.getBigDecimal("bonus");
+
+                    employeeScore = new EmployeeScore(recSCoreID, recEmployeeID,
+                            recMetricID, recShares, recGrade, recBonus);
                 }
             }
         } catch (SQLException e) {
