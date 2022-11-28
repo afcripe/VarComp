@@ -30,7 +30,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -923,7 +922,7 @@ public class VCMetricController implements Initializable {
         paneDetailEditorCompanyKPI.setPrefWidth(tblDetailCompanyKPI.getPrefWidth());
 
         lblCompKPIEditorCode.setText(cKPI.getKpi_code());
-        lblCompKPIEditorClass.setText(KPIClassConnector.getKPIClass(cKPI.getKpi_class()).toString());
+        lblCompKPIEditorClass.setText(KPIClassConnector.getKPIClass(cKPI.getKpi_class()).getName());
         lblCompKPIEditorWeight.setText(cKPI.getWeight().toString());
 
         lblCompKPIEditorF1Name.setText(cKPI.getF1_name());

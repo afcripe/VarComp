@@ -367,6 +367,14 @@ public class DBSetup {
 
             if (!resultSet.isBeforeFirst()) {
                 setDefaultData = connection.prepareStatement("INSERT INTO tblcalculationoptions " +
+                        "set calculation_name='NA', calculation_description='First Column is the Grade', " +
+                        "calculation_instructions='ColA'");
+                setDefaultData.execute();
+                setDefaultData = connection.prepareStatement("INSERT INTO tblcalculationoptions " +
+                        "set calculation_name='AVG', calculation_description='Average All Columns', " +
+                        "calculation_instructions='(ColA+ColB+ColC+ColD)/100'");
+                setDefaultData.execute();
+                setDefaultData = connection.prepareStatement("INSERT INTO tblcalculationoptions " +
                         "set calculation_name='AGE', calculation_description='Calculate Aged Receivables', " +
                         "calculation_instructions='ColA*0.1+ColB*0.3+ColC*0.3+ColD*0.3'");
                 setDefaultData.execute();

@@ -265,8 +265,8 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Weight:" />
-                  <Label fx:id="lblCompKPIEditorWeight" prefWidth="105.0" text="Label">
+                  <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Weight:" visible="false" />
+                  <Label fx:id="lblCompKPIEditorWeight" prefWidth="105.0" text="Label" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>

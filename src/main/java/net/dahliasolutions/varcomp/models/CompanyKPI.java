@@ -206,13 +206,45 @@ public class CompanyKPI {
     }
 
     public BigDecimal calcScore() {
-        BigDecimal thisScore = switch (getCalc_instructions()) {
-            case 1 -> getF1_data().multiply(new BigDecimal("0.1")).add(getF2_data().multiply(new BigDecimal("0.3")))
-                    .add(getF3_data().multiply(new BigDecimal("0.3"))).add(getF4_data().multiply(new BigDecimal("0.3")));
-            case 2 -> getF1_data().divide(getF2_data(), RoundingMode.HALF_UP).multiply(new BigDecimal(365));
-            case 3 -> getF1_data().divide(getF2_data(), RoundingMode.HALF_UP).multiply(new BigDecimal(100));
-            default -> new BigDecimal("0.00");
-        };
+        BigDecimal thisScore = BigDecimal.valueOf(0.00);
+        int divisor = 1;
+        switch (getCalc_instructions()) {
+            case 1 -> thisScore = getF1_data();
+            case 2 -> {
+                thisScore = getF1_data();
+                if (!getF2_name().isEmpty()) {
+                    thisScore = thisScore.add(getF2_data());
+                    divisor++;
+                };
+                if (!getF3_name().isEmpty()) {
+                    thisScore = thisScore.add(getF3_data());
+                    divisor++;
+                };
+                if (!getF4_name().isEmpty()) {
+                    thisScore = thisScore.add(getF4_data());
+                    divisor++;
+                };
+                thisScore = thisScore.divide(BigDecimal.valueOf(divisor));
+            }
+            case 3 ->
+                    thisScore = getF1_data().multiply(new BigDecimal("0.1")).add(getF2_data().multiply(new BigDecimal("0.3")))
+                            .add(getF3_data().multiply(new BigDecimal("0.3"))).add(getF4_data().multiply(new BigDecimal("0.3")));
+            case 4 -> {
+                double p1 = getF1_data().doubleValue();
+                double p2 = getF2_data().doubleValue();
+                double p3 = p1/p2*365;
+                thisScore = new BigDecimal(p3);
+                System.out.println(thisScore);
+            }
+            case 5 -> {
+                double p1 = getF1_data().doubleValue();
+                double p2 = getF2_data().doubleValue();
+                double p3 = p1/p2*100;
+                thisScore = new BigDecimal(p3);
+                System.out.println(thisScore);
+            }
+            default -> thisScore = new BigDecimal("0.00");
+        }
         thisScore = thisScore.setScale(2, RoundingMode.HALF_UP);
         setKpi_score(thisScore);
         return thisScore;
@@ -222,29 +254,29 @@ public class CompanyKPI {
         BigDecimal thisGrade;
         KPIMaster kpiMaster = KPIMasterConnector.getKPIMaster(getKpi_master_id());
         if (kpiMaster.getReverse_scores()) {
-            if(getKpi_score().doubleValue() >= kpiMaster.getScore_needs_improvement().doubleValue()) {
-                thisGrade = new BigDecimal("1.00");
-            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
-                thisGrade = new BigDecimal("0.80");
-            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_well().doubleValue()) {
-                thisGrade = new BigDecimal("0.60");
-            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_great().doubleValue()) {
-                thisGrade = new BigDecimal("0.40");
-            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_extraordinary().doubleValue()) {
-                thisGrade = new BigDecimal("0.20");
-            } else {
-                thisGrade = new BigDecimal("0.00");
-            }
-        } else {
             if(getKpi_score().doubleValue() >= kpiMaster.getScore_extraordinary().doubleValue()) {
                 thisGrade = new BigDecimal("1.00");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_great().doubleValue()) {
                 thisGrade = new BigDecimal("0.80");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_well().doubleValue()) {
                 thisGrade = new BigDecimal("0.60");
-            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
-                thisGrade = new BigDecimal("0.40");
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_needs_improvement().doubleValue()) {
+                thisGrade = new BigDecimal("0.40");
+            } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
+                thisGrade = new BigDecimal("0.20");
+            } else {
+                thisGrade = new BigDecimal("0.00");
+            }
+        } else {
+            if(getKpi_score().doubleValue() <= kpiMaster.getScore_great().doubleValue()) {
+                thisGrade = new BigDecimal("1.00");
+            } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_well().doubleValue()) {
+                thisGrade = new BigDecimal("0.80");
+            } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_needs_improvement().doubleValue()) {
+                thisGrade = new BigDecimal("0.60");
+            } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_poor().doubleValue()) {
+                thisGrade = new BigDecimal("0.40");
+            } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_not_acceptable().doubleValue()) {
                 thisGrade = new BigDecimal("0.20");
             } else {
                 thisGrade = new BigDecimal("0.00");
