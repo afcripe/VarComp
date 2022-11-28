@@ -107,8 +107,8 @@ public class MetricPrintController implements Initializable {
 
     /* Company KPIs */
         tbcCompanyKPICode.setCellValueFactory(new PropertyValueFactory<>("kpi_code"));
-        tbcCompanyKPICode.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-3)/3);
-        tbcCompanyKPIGrade.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-3)/3);
+        tbcCompanyKPICode.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-4)/3);
+        tbcCompanyKPIGrade.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-4)/3);
         tbcCompanyKPIScore.setCellValueFactory(param -> {
             NumberFormat fm = NumberFormat.getNumberInstance();
             return new SimpleObjectProperty<>(fm.format(param.getValue().getKpi_score()));
@@ -117,7 +117,7 @@ public class MetricPrintController implements Initializable {
             NumberFormat fm = NumberFormat.getPercentInstance();
             return new SimpleObjectProperty<>(fm.format(param.getValue().getKpi_grade()));
         });
-        tbcCompanyKPIScore.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-3)/3);
+        tbcCompanyKPIScore.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-4)/3);
 
     /* Employee Scores */
         tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employee_id"));

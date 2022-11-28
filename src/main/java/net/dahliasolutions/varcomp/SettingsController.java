@@ -436,10 +436,15 @@ public class SettingsController implements Initializable {
 
     private void settingsNave(String location) {
         paneFormKPIClass.setVisible(false);
+        paneFormKPIClass.setManaged(false);
         paneMasterKPI.setVisible(false);
+        paneMasterKPI.setManaged(false);
         paneFormPosition.setVisible(false);
+        paneFormPosition.setManaged(false);
         paneFormPositionKPI.setVisible(false);
+        paneFormPositionKPI.setManaged(false);
         paneUserForm.setVisible(false);
+        paneUserForm.setManaged(false);
 
         paneCompany.setVisible(false);
         paneCompany.setManaged(false);
@@ -552,10 +557,12 @@ public class SettingsController implements Initializable {
         paneFormKPIClass.setPrefHeight(tblKPIClasses.getPrefHeight());
         System.out.println(paneFormKPIClass.getPrefWidth()+" x "+paneFormKPIClass.getPrefHeight());
         paneFormKPIClass.setVisible(true);
+        paneFormKPIClass.setManaged(true);
     }
 
     private void hidePaneFormClassKPI() {
         paneFormKPIClass.setVisible(false);
+        paneFormKPIClass.setManaged(false);
     }
 
     private void clearFormClassKPI() {
@@ -636,10 +643,12 @@ public class SettingsController implements Initializable {
         paneMasterKPI.setPrefWidth(tblMasterKPIs.getPrefWidth());
         paneMasterKPI.setPrefHeight(tblMasterKPIs.getPrefHeight());
         paneMasterKPI.setVisible(true);
+        paneMasterKPI.setManaged(true);
     }
 
     private void hidePaneFormMasterKPI() {
         paneMasterKPI.setVisible(false);
+        paneMasterKPI.setManaged(false);
     }
     private void clearFormMasterKPI() {
         txtFormMastKPI_id.setText("");
@@ -719,6 +728,7 @@ public class SettingsController implements Initializable {
 
     private void showFormUser() {
         paneUserForm.setVisible(true);
+        paneUserForm.setManaged(true);
     }
 
     private void clearUserForm() {
@@ -729,6 +739,7 @@ public class SettingsController implements Initializable {
     }
     private void hideUserForm() {
         paneUserForm.setVisible(false);
+        paneUserForm.setManaged(false);
     }
     private void saveUserForm() {
         User user = new User(Integer.parseInt(txtUserID.getText()),
@@ -774,6 +785,7 @@ public class SettingsController implements Initializable {
         paneFormPosition.setPrefWidth(tblPositions.getPrefWidth());
         paneFormPosition.setPrefHeight(tblPositions.getPrefHeight());
         paneFormPosition.setVisible(true);
+        paneFormPosition.setManaged(true);
     }
 
     private void clearPositionForm() {
@@ -784,6 +796,7 @@ public class SettingsController implements Initializable {
     }
     private void hidePositionForm() {
         paneFormPosition.setVisible(false);
+        paneFormPosition.setManaged(false);
     }
     private void savePositionForm() {
         Position position = new Position(Integer.parseInt(txtFormPosition_id.getText()),
@@ -914,10 +927,12 @@ public class SettingsController implements Initializable {
 
     private void showFormPositionKPI() {
         paneFormPositionKPI.setVisible(true);
+        paneFormPositionKPI.setManaged(true);
     }
 
     private void hideFormPositionKPI() {
         paneFormPositionKPI.setVisible(false);
+        paneFormPositionKPI.setManaged(false);
     }
 
 }
