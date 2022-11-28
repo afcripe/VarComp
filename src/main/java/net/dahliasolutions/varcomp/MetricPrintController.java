@@ -10,6 +10,7 @@ import javafx.print.PrinterJob;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
@@ -17,6 +18,8 @@ import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static java.util.Objects.isNull;
 
 public class MetricPrintController implements Initializable {
 
@@ -198,17 +201,18 @@ public class MetricPrintController implements Initializable {
     private void printSpool() {
         Printer printer = getPrinter();
 
-        // Create a printer job for the default printer
-        PrinterJob job = PrinterJob.createPrinterJob(printer);
+        if (!isNull(printer)) {
+            // Create a printer job for the default printer
+            PrinterJob job = PrinterJob.createPrinterJob(printer);
 
-        // Print the node
-        boolean printed = job.printPage(PrintPane);
-        if (printed) {
-            job.endJob();
-        } else {
-            System.out.println("Print job failed");
+            // Print the node
+            boolean printed = job.printPage(PrintPane);
+            if (printed) {
+                job.endJob();
+            } else {
+                System.out.println("Print job failed");
+            }
         }
-
     }
 
     private Printer getPrinter() {
@@ -222,6 +226,6 @@ public class MetricPrintController implements Initializable {
             String nameOfPrinter = printer.getName();
             return printer;
         }
-        return Printer.getDefaultPrinter();
+        return null;
     }
 }

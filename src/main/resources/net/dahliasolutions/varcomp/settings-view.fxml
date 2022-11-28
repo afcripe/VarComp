@@ -283,7 +283,7 @@
               <Button fx:id="bntNewPosition" mnemonicParsing="false" prefWidth="75" text="New" />
               <Button fx:id="bntDeletePosition" mnemonicParsing="false" prefWidth="75" text="Delete" />
           </HBox>
-            <TableView fx:id="tblPositions" prefHeight="300.0" prefWidth="550.0">
+            <TableView fx:id="tblPositions" prefHeight="300.0" prefWidth="552.0">
                 <columns>
                     <TableColumn fx:id="tbcPositionID" prefWidth="55" text="ID" />
                     <TableColumn fx:id="tbcPositionName" prefWidth="125.0" text="Position" />
