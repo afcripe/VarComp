@@ -81,21 +81,20 @@ public class EmployeeScoreConnector {
         return employeeScore.getEmployeeScore();
     }
 
-    public static EmployeeScore getEmployeeScoreByEmployee(String employeeID) {
+    public static ArrayList<EmployeeScore> getEmployeeScoreByEmployee(String employeeID) {
         Connection connection;
         PreparedStatement preparedStatement;
         ResultSet resultSet;
-        EmployeeScore employeeScore = new EmployeeScore();
+        ArrayList<EmployeeScore> employeeScoreList = new ArrayList<>();
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES " +
-                    "WHERE EMPLOYEE_ID=?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE EMPLOYEE_ID=?");
             preparedStatement.setString(1, employeeID);
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {
-                System.out.println("Company KPI not found.");
+                System.out.println("No Metrics found.");
             } else {
                 while (resultSet.next()) {
                     Integer recSCoreID = resultSet.getInt("score_id");
@@ -105,16 +104,16 @@ public class EmployeeScoreConnector {
                     BigDecimal recGrade = resultSet.getBigDecimal("grade");
                     BigDecimal recBonus = resultSet.getBigDecimal("bonus");
 
-                    employeeScore = new EmployeeScore(recSCoreID, recEmployeeID,
-                            recMetricID, recShares, recGrade, recBonus);
+                    employeeScoreList.add(new EmployeeScore(recSCoreID, recEmployeeID,
+                            recMetricID, recShares, recGrade, recBonus));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            employeeScore = new EmployeeScore();
+            employeeScoreList.add(new EmployeeScore());
         }
 
-        return employeeScore.getEmployeeScore();
+        return employeeScoreList;
     }
 
     public static EmployeeScore insertEmployeeScore(EmployeeScore employeeScore) {

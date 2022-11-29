@@ -143,7 +143,7 @@ public class MetricPrintController implements Initializable {
 
     }
 
-    public void init(Integer metricID, boolean preview) {
+    public boolean init(Integer metricID, boolean preview) {
         metricDetail = MetricConnector.getMetric(metricID);
         fillMetricDetail();
         fillDetailMetricPeriods();
@@ -155,7 +155,8 @@ public class MetricPrintController implements Initializable {
 
         lblCompany.setText(VarComp.getCurrentCompany().getCompany_name());
         lblTitle.setText("- Metric Report -");
-        if(!preview) printSpool();
+        if(!preview) return printSpool();
+        return true;
     }
 
     private void fillMetricDetail() {
@@ -198,7 +199,7 @@ public class MetricPrintController implements Initializable {
 
 
 /* Printing */
-    private void printSpool() {
+    private boolean printSpool() {
         Printer printer = getPrinter();
 
         if (!isNull(printer)) {
@@ -212,6 +213,9 @@ public class MetricPrintController implements Initializable {
             } else {
                 System.out.println("Print job failed");
             }
+            return !printed;
+        } else {
+            return false;
         }
     }
 

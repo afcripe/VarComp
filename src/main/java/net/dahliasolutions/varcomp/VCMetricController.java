@@ -1221,18 +1221,21 @@ public class VCMetricController implements Initializable {
         Stage stage = new Stage();
         Parent root = null;
         FXMLLoader loader;
+        boolean showPreview = true;
 
         try {
             loader = new FXMLLoader(VarComp.class.getResource(fxmlFile));
             root = loader.load();
-            ((MetricPrintController)loader.getController()).init(metricDetail.getMetric_id(), chkPrintPreview.isSelected());
+            showPreview = ((MetricPrintController)loader.getController()).init(metricDetail.getMetric_id(), chkPrintPreview.isSelected());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        stage.setScene(new Scene(root, 395, 450));
-        stage.setTitle(title);
-        stage.show();
+        if ( showPreview ) {
+            stage.setScene(new Scene(root, 395, 450));
+            stage.setTitle(title);
+            stage.show();
+        }
     }
 
 }
