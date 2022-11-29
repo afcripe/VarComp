@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -60,15 +61,29 @@
                 <Label prefWidth="125.0" text="Company Name:" />
                 <TextField fx:id="txtCompanyName" prefWidth="381.0" promptText="txtCompanyName" />
             </HBox>
-<!--            <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />-->
-<!--            <Label layoutX="25.0" layoutY="85.0" prefHeight="17.0" prefWidth="100.0" text="Company Logo:" />-->
-<!--            <VBox layoutX="125.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="220.0" style="-fx-background-color: lightgrey;" />-->
-<!--            <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="220.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
-<!--            <Label layoutX="360.0" layoutY="89.0" prefHeight="17.0" prefWidth="108.0" text="Company Icon:" />-->
-<!--            <VBox layoutX="449.0" layoutY="81.0" opacity="0.25" prefHeight="62.0" prefWidth="95.0" style="-fx-background-color: lightgrey;" />-->
-<!--            <ImageView fx:id="imgCompanyIcon" fitHeight="62.0" fitWidth="95.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />-->
-<!--            <Button fx:id="btnLoadCompanyLogo" layoutX="58.0" layoutY="104.0" mnemonicParsing="false" text="Upload" />-->
-<!--            <Button fx:id="btnLoadCompanyIcon" layoutX="388.0" layoutY="108.0" mnemonicParsing="false" text="Upload" />-->
+            <HBox spacing="4.0">
+                <VBox alignment="TOP_RIGHT" spacing="4.0">
+                    <Label layoutX="25.0" layoutY="85.0" prefHeight="17.0" prefWidth="100.0" text="Company Logo:" />
+                    <Button fx:id="btnLoadCompanyLogo" layoutX="58.0" layoutY="104.0" mnemonicParsing="false" text="Upload">
+                     <VBox.margin>
+                        <Insets right="16.0" />
+                     </VBox.margin></Button>
+                </VBox>
+                <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="203.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
+                <VBox alignment="TOP_RIGHT" spacing="4.0">
+                    <Label layoutX="360.0" layoutY="89.0" prefHeight="17.0" prefWidth="108.0" text="Company Icon:" />
+                    <Button fx:id="btnLoadCompanyIcon" layoutX="388.0" layoutY="108.0" mnemonicParsing="false" text="Upload">
+                     <VBox.margin>
+                        <Insets right="16.0" />
+                     </VBox.margin></Button>
+                </VBox>
+                <ImageView fx:id="imgCompanyIcon" fitHeight="62.0" fitWidth="87.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
+               <VBox.margin>
+                  <Insets bottom="10.0" top="5.0" />
+               </VBox.margin>
+
+            </HBox>
+<!--        <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />-->
             <HBox spacing="16.0">
                 <VBox spacing="4.0">
                     <HBox spacing="4">

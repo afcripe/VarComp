@@ -3,20 +3,23 @@ package net.dahliasolutions.varcomp;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -53,6 +56,14 @@ public class SettingsController implements Initializable {
     private Pane paneEmployee;
     @FXML
     private Pane paneUsers;
+    @FXML
+    private Button btnLoadCompanyLogo;
+    @FXML
+    private ImageView imgCompanyLogo;
+    @FXML
+    private Button btnLoadCompanyIcon;
+    @FXML
+    private ImageView imgCompanyIcon;
     @FXML
     private TextField txtCompanyName;
     @FXML
@@ -240,6 +251,8 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtFormPK_weight;
 
+    final FileChooser fcLogo = new FileChooser();
+
     ObservableList<KPIClass> kpiClassList;
     ObservableList<KPIMaster> kpiMasterList;
     ObservableList<Position> positionList;
@@ -272,6 +285,8 @@ public class SettingsController implements Initializable {
         txtSharesOutstanding.setText(VarComp.getCurrentCompany().getShares_outstanding().toString());
         txtFundingPercentage.setText(VarComp.getCurrentCompany().getFunding_percentage().toString());
         btnSaveCompany.setOnAction(this::updateCompany);
+        btnLoadCompanyLogo.setOnAction(event -> browseLogo());
+        btnLoadCompanyIcon.setOnAction(event -> browseIcon());
 
 /* KPI Tab */
     /* KPI Class Table and Buttons */
@@ -465,6 +480,8 @@ public class SettingsController implements Initializable {
                 paneCompany.setVisible(true);
                 paneCompany.setManaged(true);
                 boxIndicatorCompany.setVisible(true);
+                loadCompanyLogo();
+                loadCompanyIcon();
             }
             case "kpi" -> {
                 paneKPI.setVisible(true);
@@ -526,6 +543,97 @@ public class SettingsController implements Initializable {
 
         Boolean success = CompanyConnector.updateCompany(VarComp.getCurrentCompany());
         System.out.println(success);
+    }
+
+    private void loadCompanyLogo() {
+        String userHomeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", userHomeDir);
+        String logoPath = userHomeDir+"/varcomp/companyLogo.png";
+
+        File logoFile = new File(logoPath);
+        if(logoFile.exists()) {
+            try {
+                InputStream stream = new FileInputStream(logoFile);
+                imgCompanyLogo.setImage(new Image(stream));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void loadCompanyIcon() {
+        String userHomeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", userHomeDir);
+        String logoPath = userHomeDir+"/varcomp/companyIcon.png";
+
+        File logoFile = new File(logoPath);
+        if(logoFile.exists()) {
+            try {
+                InputStream stream = new FileInputStream(logoFile);
+                imgCompanyIcon.setImage(new Image(stream));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    private void browseLogo() {
+        Image newLogo;
+        String userHomeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", userHomeDir);
+        String logoPath = userHomeDir+"/varcomp/companyLogo.png";
+
+        fcLogo.setTitle("Select Logo Image");
+        File file = fcLogo.showOpenDialog(null);
+        File logoFile = new File(logoPath);
+        try {
+            InputStream stream = new FileInputStream(file);
+            newLogo = new Image(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            if(!logoFile.exists()) logoFile.createNewFile();
+        }catch (IOException ioE) {
+            System.out.println(ioE);
+        }
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(newLogo, null), "PNG", logoFile);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        imgCompanyLogo.setImage(newLogo);
+    }
+
+    private void browseIcon() {
+        Image newIcon;
+        String userHomeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", userHomeDir);
+        String logoPath = userHomeDir+"/varcomp/companyIcon.png";
+
+        fcLogo.setTitle("Select Icon Image");
+        File file = fcLogo.showOpenDialog(null);
+        File iconFile = new File(logoPath);
+        try {
+            InputStream stream = new FileInputStream(file);
+            newIcon = new Image(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            if(!iconFile.exists()) iconFile.createNewFile();
+        }catch (IOException ioE) {
+            System.out.println(ioE);
+        }
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(newIcon, null), "PNG", iconFile);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        imgCompanyIcon.setImage(newIcon);
     }
 
     private void removeKPIClass() {

@@ -4,12 +4,9 @@ module net.dahliasolutions.varcomp {
     requires java.sql;
     requires java.desktop;
     requires javafx.graphics;
-
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.ikonli.core;
-    requires org.kordamp.ikonli.fontawesome5;
+    requires javafx.swing;
 
     opens net.dahliasolutions.varcomp to javafx.fxml;
     exports net.dahliasolutions.varcomp;

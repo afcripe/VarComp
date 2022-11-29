@@ -40,10 +40,14 @@ public class VarComp extends Application {
         if (Taskbar.isTaskbarSupported()) {
             var taskbar = Taskbar.getTaskbar();
 
-            if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
-                final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-                var dockIcon = defaultToolkit.getImage(getClass().getResource("VcompIcon.png"));
-                taskbar.setIconImage(dockIcon);
+            try {
+                if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+                    final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+                    var dockIcon = defaultToolkit.getImage(getClass().getResource("VcompIcon.png"));
+                    taskbar.setIconImage(dockIcon);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
             }
 
         }

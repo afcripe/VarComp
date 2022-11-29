@@ -8,6 +8,14 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.gluonhq</groupId>
+        <artifactId>client-maven-plugin</artifactId>
+        <version>0.1.31</version>
+        <configuration>
+          <mainClass>net.dahliasolutions.varcomp/net.dahliasolutions.varcomp.Application</mainClass>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.10.1</version>
         <configuration>
