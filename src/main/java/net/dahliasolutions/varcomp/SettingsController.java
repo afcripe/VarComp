@@ -66,6 +66,8 @@ public class SettingsController implements Initializable {
     @FXML
     private Button btnLoadCompanyIcon;
     @FXML
+    private Button btnImportData;
+    @FXML
     private ImageView imgCompanyIcon;
     @FXML
     private CheckBox chkShowCompanyLogo;
@@ -260,7 +262,9 @@ public class SettingsController implements Initializable {
 
     final FileChooser fcLogo = new FileChooser();
     final FileChooser fcExport = new FileChooser();
-
+    final FileChooser fcImport = new FileChooser();
+    String fs;
+    String userHomeDir;
     ObservableList<KPIClass> kpiClassList;
     ObservableList<KPIMaster> kpiMasterList;
     ObservableList<Position> positionList;
@@ -271,6 +275,9 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        fs = System.getProperty("file.separator");
+        userHomeDir = System.getProperty("user.home");
+
         lblTitle.setText("Settings");
 
         kpiClassList = FXCollections.observableArrayList(KPIClassConnector.getKPIClasses());
@@ -295,6 +302,7 @@ public class SettingsController implements Initializable {
         chkShowCompanyLogo.setSelected(VarComp.getCurrentCompany().getCompany_logo_show());
         btnSaveCompany.setOnAction(this::updateCompany);
         btnExportData.setOnAction(event -> exportDB());
+        btnImportData.setOnAction(event -> importDB());
         btnLoadCompanyLogo.setOnAction(event -> browseLogo());
         btnLoadCompanyIcon.setOnAction(event -> browseIcon());
 
@@ -557,8 +565,7 @@ public class SettingsController implements Initializable {
     }
 
     private void loadCompanyLogo() {
-        String userHomeDir = System.getProperty("user.home");
-        String logoPath = userHomeDir+"/varcomp/companyLogo.png";
+        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyLogo.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
@@ -572,8 +579,7 @@ public class SettingsController implements Initializable {
     }
 
     private void loadCompanyIcon() {
-        String userHomeDir = System.getProperty("user.home");
-        String logoPath = userHomeDir+"/varcomp/companyIcon.png";
+        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyIcon.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
@@ -589,8 +595,7 @@ public class SettingsController implements Initializable {
 
     private void browseLogo() {
         Image newLogo;
-        String userHomeDir = System.getProperty("user.home");
-        String logoPath = userHomeDir+"/varcomp/companyLogo.png";
+        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyLogo.png";
 
         fcLogo.setTitle("Select Logo Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
@@ -618,9 +623,8 @@ public class SettingsController implements Initializable {
         imgCompanyLogo.setImage(newLogo);
     }
 
-    public void exportDB() {
-        String userHomeDir = System.getProperty("user.home");
-        String dbPath = userHomeDir+"/varcomp/varcompdb.mv.db";
+    private void exportDB() {
+        String dbPath = userHomeDir+fs+"varcomp"+fs+"varcompdb.mv.db";
 
         fcExport.setTitle("Select Export Location");
         File file = fcExport.showSaveDialog(null);
@@ -637,14 +641,32 @@ public class SettingsController implements Initializable {
                 System.out.println(ioException);
             }
         }
+    }
 
+    private void importDB() {
+        String dbPath = userHomeDir+fs+"varcomp"+fs+"varcompdb.mv.db";
+
+        fcImport.setTitle("Select Export Location");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Database Files", "*.db");
+        fcImport.getExtensionFilters().add(extFilter);
+        File file = fcImport.showOpenDialog(null);
+
+        File dbFile = new File(dbPath);
+        if (dbFile.exists()) dbFile.delete();
+
+        try {
+            copyFile(file.getPath(), dbPath);
+        } catch (IOException cpException) {
+            System.out.println(cpException);
+        }
     }
 
     public static void copyFile(String src, String dest) throws IOException {
-        String userHomeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", userHomeDir);
-        String logoPath = userHomeDir+"/varcomp/varcompdb.mv.db";
-        String logoPath2 = userHomeDir+"/varcomp/varcompdb-export.mv.db";
+        String dirSep = System.getProperty("file.separator");
+        String homeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", homeDir);
+        String logoPath = homeDir+dirSep+"varcomp"+dirSep+"varcompdb.mv.db";
+        String logoPath2 = homeDir+dirSep+"varcomp"+dirSep+"varcompdb-export.mv.db";
         File logoFile = new File(logoPath);
         File logoFile2 = new File(logoPath2);
 
@@ -653,8 +675,7 @@ public class SettingsController implements Initializable {
 
     private void browseIcon() {
         Image newIcon;
-        String userHomeDir = System.getProperty("user.home");
-        String logoPath = userHomeDir+"/varcomp/companyIcon.png";
+        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyIcon.png";
 
         fcLogo.setTitle("Select Icon Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");

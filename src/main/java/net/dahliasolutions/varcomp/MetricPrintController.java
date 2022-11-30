@@ -87,6 +87,8 @@ public class MetricPrintController implements Initializable {
     private TableColumn<EmployeeScore, String> tbcEmployeeGrade;
     @FXML
     private TableColumn<EmployeeScore, String> tbcEmployeeBonus;
+    String fs;
+    String userHomeDir;
 
     ObservableList<MetricDetail> metricDetailList;
     ObservableList<CompanyKPI> companyKPIObservableList;
@@ -95,6 +97,8 @@ public class MetricPrintController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        fs = System.getProperty("file.separator");
+        userHomeDir = System.getProperty("user.home");
 
     /* Metric Detail */
         tbcDetailPeriod.setCellValueFactory(new PropertyValueFactory<>("detail_period"));
@@ -174,9 +178,7 @@ public class MetricPrintController implements Initializable {
     }
 
     private void loadCompanyLogo() {
-        String userHomeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", userHomeDir);
-        String logoPath = userHomeDir+"/varcomp/companyLogo.png";
+        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyLogo.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {

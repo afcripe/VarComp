@@ -118,7 +118,8 @@
                         <TextField fx:id="txtFundingPercentage" prefWidth="108.0" />
                     </HBox>
                     <HBox alignment="CENTER_RIGHT" spacing="4">
-                        <Button fx:id="btnExportData" mnemonicParsing="false" text="Export Data" />
+                        <Button fx:id="btnImportData" mnemonicParsing="false" text="Import Data" visible="false" managed="false" />
+                        <Button fx:id="btnExportData" mnemonicParsing="false" text="Export Data" visible="false" managed="false" />
                         <Button fx:id="btnSaveCompany" mnemonicParsing="false" prefWidth="75.0" text="Save" />
                     </HBox>
                 </VBox>

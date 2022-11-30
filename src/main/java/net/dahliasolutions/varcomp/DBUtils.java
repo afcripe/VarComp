@@ -1,11 +1,12 @@
 package net.dahliasolutions.varcomp;
 
-import java.io.File;
 import java.sql.*;
 
 public class DBUtils {
+    private static final String fs = System.getProperty("file.separator");
+//    private static final String userHomeDir = System.getProperty("user.home");
 
-    private static final String varCompDB = "jdbc:h2:~/varcomp/varcompdb";
+    private static final String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
 
     public static String getDBLocation() {
         return varCompDB;
