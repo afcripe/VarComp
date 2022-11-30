@@ -117,7 +117,7 @@ public class MetricConnector {
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS ORDER BY METRIC_LABEL DESC");
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {
@@ -159,7 +159,7 @@ public class MetricConnector {
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS WHERE LOCKED=?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLMETRICS WHERE LOCKED=? ORDER BY METRIC_LABEL DESC");
             preparedStatement.setBoolean(1, locked);
             resultSet = preparedStatement.executeQuery();
 

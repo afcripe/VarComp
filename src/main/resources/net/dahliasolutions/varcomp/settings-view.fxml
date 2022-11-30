@@ -69,7 +69,7 @@
                         <Insets right="16.0" />
                      </VBox.margin></Button>
                 </VBox>
-                <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="203.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="250.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
                 <VBox alignment="TOP_RIGHT" spacing="4.0">
                     <Label layoutX="360.0" layoutY="89.0" prefHeight="17.0" prefWidth="108.0" text="Company Icon:" />
                     <Button fx:id="btnLoadCompanyIcon" layoutX="388.0" layoutY="108.0" mnemonicParsing="false" text="Upload">
@@ -77,13 +77,22 @@
                         <Insets right="16.0" />
                      </VBox.margin></Button>
                 </VBox>
-                <ImageView fx:id="imgCompanyIcon" fitHeight="62.0" fitWidth="87.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="imgCompanyIcon" fitHeight="40.0" fitWidth="40.0" layoutX="449.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
                <VBox.margin>
                   <Insets bottom="10.0" top="5.0" />
                </VBox.margin>
-
             </HBox>
-<!--        <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />-->
+            
+            <HBox alignment="CENTER_LEFT" spacing="4.0">
+            <CheckBox fx:id="chkShowCompanyLogo" layoutX="132.0" layoutY="54.0" mnemonicParsing="false" text="Show Company Logo" />
+                <VBox.margin>
+                    <Insets bottom="10.0" top="5.0" />
+                </VBox.margin>
+               <padding>
+                  <Insets left="100.0" />
+               </padding>
+            </HBox>
+
             <HBox spacing="16.0">
                 <VBox spacing="4.0">
                     <HBox spacing="4">
@@ -109,6 +118,7 @@
                         <TextField fx:id="txtFundingPercentage" prefWidth="108.0" />
                     </HBox>
                     <HBox alignment="CENTER_RIGHT" spacing="4">
+                        <Button fx:id="btnExportData" mnemonicParsing="false" text="Export Data" />
                         <Button fx:id="btnSaveCompany" mnemonicParsing="false" prefWidth="75.0" text="Save" />
                     </HBox>
                 </VBox>

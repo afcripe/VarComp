@@ -5,13 +5,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane fx:id="PrintPane" prefHeight="604.0" prefWidth="512.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.MetricPrintController">
 
       <Line endX="295.0" startX="5.0" AnchorPane.topAnchor="43.0" />
 
    <HBox scaleX="0.6" scaleY="0.6" translateX="-97.0">
-      <Label fx:id="lblCompany" alignment="BOTTOM_LEFT" minHeight="45.0" prefWidth="250.0" text="Dahlia Solutions">
+      <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="250.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true"
+                     visible="false" managed="false"/>
+      <Label fx:id="lblCompany" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" text="Dahlia Solutions">
          <HBox.margin>
             <Insets left="12.0" />
          </HBox.margin>

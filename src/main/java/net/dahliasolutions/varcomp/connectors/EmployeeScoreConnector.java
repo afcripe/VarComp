@@ -89,7 +89,7 @@ public class EmployeeScoreConnector {
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE EMPLOYEE_ID=?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE EMPLOYEE_ID=? ORDER BY METRIC_ID DESC");
             preparedStatement.setString(1, employeeID);
             resultSet = preparedStatement.executeQuery();
 
@@ -168,7 +168,7 @@ public class EmployeeScoreConnector {
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES ORDER BY EMPLOYEE_ID ASC");
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {
@@ -202,7 +202,7 @@ public class EmployeeScoreConnector {
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE METRIC_ID=?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE METRIC_ID=? ORDER BY EMPLOYEE_ID ASC");
             preparedStatement.setInt(1, metricID);
             resultSet = preparedStatement.executeQuery();
 

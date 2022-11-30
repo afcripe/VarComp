@@ -23,6 +23,9 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -65,6 +68,8 @@ public class SettingsController implements Initializable {
     @FXML
     private ImageView imgCompanyIcon;
     @FXML
+    private CheckBox chkShowCompanyLogo;
+    @FXML
     private TextField txtCompanyName;
     @FXML
     private TextField txtSharesIssued;
@@ -78,6 +83,8 @@ public class SettingsController implements Initializable {
     private TextField txtYearsIssued;
     @FXML
     private Button btnSaveCompany;
+    @FXML
+    private Button btnExportData;
     @FXML
     private Button bntNewKPIClass;
     @FXML
@@ -252,6 +259,7 @@ public class SettingsController implements Initializable {
     private TextField txtFormPK_weight;
 
     final FileChooser fcLogo = new FileChooser();
+    final FileChooser fcExport = new FileChooser();
 
     ObservableList<KPIClass> kpiClassList;
     ObservableList<KPIMaster> kpiMasterList;
@@ -284,7 +292,9 @@ public class SettingsController implements Initializable {
         txtYearsIssued.setText(VarComp.getCurrentCompany().getShares_issued_years().toString());
         txtSharesOutstanding.setText(VarComp.getCurrentCompany().getShares_outstanding().toString());
         txtFundingPercentage.setText(VarComp.getCurrentCompany().getFunding_percentage().toString());
+        chkShowCompanyLogo.setSelected(VarComp.getCurrentCompany().getCompany_logo_show());
         btnSaveCompany.setOnAction(this::updateCompany);
+        btnExportData.setOnAction(event -> exportDB());
         btnLoadCompanyLogo.setOnAction(event -> browseLogo());
         btnLoadCompanyIcon.setOnAction(event -> browseIcon());
 
@@ -540,6 +550,7 @@ public class SettingsController implements Initializable {
         } catch (ParseException e) {
             System.out.println("Funding percentage is not a number!");
         }
+        VarComp.getCurrentCompany().setCompany_logo_show(chkShowCompanyLogo.isSelected());
 
         Boolean success = CompanyConnector.updateCompany(VarComp.getCurrentCompany());
         System.out.println(success);
@@ -547,7 +558,6 @@ public class SettingsController implements Initializable {
 
     private void loadCompanyLogo() {
         String userHomeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", userHomeDir);
         String logoPath = userHomeDir+"/varcomp/companyLogo.png";
 
         File logoFile = new File(logoPath);
@@ -563,7 +573,6 @@ public class SettingsController implements Initializable {
 
     private void loadCompanyIcon() {
         String userHomeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", userHomeDir);
         String logoPath = userHomeDir+"/varcomp/companyIcon.png";
 
         File logoFile = new File(logoPath);
@@ -581,11 +590,13 @@ public class SettingsController implements Initializable {
     private void browseLogo() {
         Image newLogo;
         String userHomeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", userHomeDir);
         String logoPath = userHomeDir+"/varcomp/companyLogo.png";
 
         fcLogo.setTitle("Select Logo Image");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
+        fcLogo.getExtensionFilters().add(extFilter);
         File file = fcLogo.showOpenDialog(null);
+
         File logoFile = new File(logoPath);
         try {
             InputStream stream = new FileInputStream(file);
@@ -607,14 +618,49 @@ public class SettingsController implements Initializable {
         imgCompanyLogo.setImage(newLogo);
     }
 
+    public void exportDB() {
+        String userHomeDir = System.getProperty("user.home");
+        String dbPath = userHomeDir+"/varcomp/varcompdb.mv.db";
+
+        fcExport.setTitle("Select Export Location");
+        File file = fcExport.showSaveDialog(null);
+
+        if(file.exists()) {
+            System.out.println("File Exists");
+        } else {
+            String fileName = file.toString();
+            if (!fileName.endsWith(".mv.db"))
+                fileName += ".mv.db";
+            try {
+                copyFile(dbPath, fileName);
+            } catch (IOException ioException) {
+                System.out.println(ioException);
+            }
+        }
+
+    }
+
+    public static void copyFile(String src, String dest) throws IOException {
+        String userHomeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", userHomeDir);
+        String logoPath = userHomeDir+"/varcomp/varcompdb.mv.db";
+        String logoPath2 = userHomeDir+"/varcomp/varcompdb-export.mv.db";
+        File logoFile = new File(logoPath);
+        File logoFile2 = new File(logoPath2);
+
+        Files.copy(Paths.get(src), Paths.get(dest));
+    }
+
     private void browseIcon() {
         Image newIcon;
         String userHomeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", userHomeDir);
         String logoPath = userHomeDir+"/varcomp/companyIcon.png";
 
         fcLogo.setTitle("Select Icon Image");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
+        fcLogo.getExtensionFilters().add(extFilter);
         File file = fcLogo.showOpenDialog(null);
+
         File iconFile = new File(logoPath);
         try {
             InputStream stream = new FileInputStream(file);

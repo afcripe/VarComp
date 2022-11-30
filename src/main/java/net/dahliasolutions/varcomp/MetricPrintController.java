@@ -9,11 +9,16 @@ import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Optional;
@@ -29,6 +34,8 @@ public class MetricPrintController implements Initializable {
     private ScrollPane scrollPane;
     @FXML
     private Label lblCompany;
+    @FXML
+    private ImageView imgCompanyLogo;
     @FXML
     private Label lblTitle;
     @FXML
@@ -154,9 +161,32 @@ public class MetricPrintController implements Initializable {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         lblCompany.setText(VarComp.getCurrentCompany().getCompany_name());
+        loadCompanyLogo();
+
+        imgCompanyLogo.setVisible(VarComp.getCurrentCompany().getCompany_logo_show());
+        imgCompanyLogo.setManaged(VarComp.getCurrentCompany().getCompany_logo_show());
+        lblCompany.setVisible(!VarComp.getCurrentCompany().getCompany_logo_show());
+        lblCompany.setManaged(!VarComp.getCurrentCompany().getCompany_logo_show());
+
         lblTitle.setText("- Metric Report -");
         if(!preview) return printSpool();
         return true;
+    }
+
+    private void loadCompanyLogo() {
+        String userHomeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", userHomeDir);
+        String logoPath = userHomeDir+"/varcomp/companyLogo.png";
+
+        File logoFile = new File(logoPath);
+        if(logoFile.exists()) {
+            try {
+                InputStream stream = new FileInputStream(logoFile);
+                imgCompanyLogo.setImage(new Image(stream));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void fillMetricDetail() {
