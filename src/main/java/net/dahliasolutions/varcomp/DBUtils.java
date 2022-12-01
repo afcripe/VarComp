@@ -6,37 +6,68 @@ import java.sql.*;
 public class DBUtils {
     private static final String fs = System.getProperty("file.separator");
     private static String installDir = System.getProperty("user.home");
-
+    private static String companyDir = System.getProperty("user.home");
+    private static String AppData = "varcomp";
     private static String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
+    private static String appDB = "jdbc:h2:~"+fs+"varcomp"+fs+"appdb";
 
 
     public static void init() {
-        String homeDir = System.getProperty("user.home");
-        String AppData;
-
         if(System.getProperty("os.name").startsWith("Win")) {
             //Windows Install Dir
             AppData = "AppData"+fs+"Local"+fs+"Programs"+fs+"VarComp";
-        } else {
-            //Unix Install Dir
-            AppData = "varcomp";
         }
 
-        varCompDB = "jdbc:h2:~"+fs+AppData+fs+"varcompdb";
-        installDir = homeDir+fs+AppData;
-        System.out.println(installDir);
+        setAppDBLocation();
+        //setDBLocation("varcompdb");
+        setInstallDir();
+        companyDir = System.getProperty("user.home")+fs+AppData;
+    }
+
+    public static String getAppDBLocation() {
+        return appDB;
+    }
+
+    public static void setAppDBLocation() {
+        appDB = "jdbc:h2:~"+fs+AppData+fs+"appdb";
     }
 
     public static String getDBLocation() {
         return varCompDB;
     }
 
+    public static void setDBLocation(String name) {
+        if (name.isEmpty()) {
+            varCompDB = "jdbc:h2:~" + fs + AppData + fs + name;
+        } else {
+            varCompDB = "jdbc:h2:~" + fs + AppData + fs + name + fs + name;
+        }
+        setCompanyDir(name);
+    }
+
+    public static String getInstallDir() {
+        return installDir;
+    }
+
+    public static void setInstallDir() {
+        installDir = System.getProperty("user.home")+fs+AppData;
+    }
+
+    public static String getCompanyDir() {
+        return companyDir;
+    }
+
+    public static void setCompanyDir(String name) {
+        if (name.isEmpty()) {
+            companyDir = System.getProperty("user.home") + fs + AppData;
+        } else {
+            companyDir = System.getProperty("user.home") + fs + AppData + fs + name;
+        }
+    }
+
     public static String getAppVersion() {
         return "2.0.1";
     }
-     public static String getInstallDir() {
-        return installDir;
-     }
 
     public static Boolean updateDBTable(double w, double h) {
         Connection connection = null;
@@ -44,7 +75,7 @@ public class DBUtils {
         boolean updateSuccess = false;
 
         try {
-            connection = DriverManager.getConnection(getDBLocation(), "sa", "password");
+            connection = DriverManager.getConnection(getAppDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tbldbsettings SET app_width=?, app_height=? WHERE DB_ID=1 ORDER BY DB_ID DESC LIMIT 1");
             preparedStatement.setDouble(1, w);
             preparedStatement.setDouble(2, h);
@@ -72,7 +103,7 @@ public class DBUtils {
         double returnSize = 750;
 
         try {
-            connection = DriverManager.getConnection(getDBLocation(), "sa", "password");
+            connection = DriverManager.getConnection(getAppDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT " + col + " FROM tbldbsettings  WHERE DB_ID=1");
             resultSet = preparedStatement.executeQuery();
 
@@ -99,7 +130,7 @@ public class DBUtils {
     public static String getSQLDump() {
         Connection connection = null;
         PreparedStatement preparedStatement;
-        File file = new File(getInstallDir()+fs+"varcomp_dump.sql");
+        File file = new File(getInstallDir()+fs+"company_dump.sql");
 
         try {
             // remove old dumps

@@ -76,6 +76,11 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Button>
+      <HBox fx:id="boxNewCompany" visible="false" managed="false">
+         <Label fx:id="lblNewCompany" text="Name your company:" />
+         <TextField fx:id="txtNewCompany" />
+         <Button fx:id="btnNewCompany" text="Create" />
+      </HBox>
    </HBox>
    <HBox VBox.vgrow="ALWAYS" />
    <HBox >

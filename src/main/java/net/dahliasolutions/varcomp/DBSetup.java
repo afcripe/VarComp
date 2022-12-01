@@ -4,6 +4,71 @@ import java.sql.*;
 
 public class DBSetup {
     private static Connection connection;
+    private static Connection appConnection;
+
+    public static void initAppDB() {
+        try {
+            appConnection = DriverManager.getConnection(DBUtils.getAppDBLocation(), "sa", "password");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        dropAppObjects();
+//        initializeAppSettings();
+    }
+
+    public static void dropAppObjects() {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = appConnection.prepareStatement("DROP ALL OBJECTS");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            initializeAppSettings();
+//            cleanupAppConnection();
+        }
+    }
+
+    public static void initializeAppSettings() {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = appConnection.prepareStatement("CREATE TABLE IF NOT EXISTS tbldbsettings " +
+                    "(db_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                    "db_version INT, db_version_label VARCHAR(25), " +
+                    "app_version INT, app_version_label VARCHAR(25), " +
+                    "app_width DOUBLE, app_height DOUBLE)");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            initAppCompanies();
+        }
+    }
+
+    public static void initAppCompanies() {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = appConnection.prepareStatement("CREATE TABLE IF NOT EXISTS tblappcompanies " +
+                    "(company_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                    "company_name VARCHAR(45), dir_name VARCHAR(255))");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanupAppConnection();
+        }
+    }
+
+    public static void cleanupAppConnection() {
+        try {
+            appConnection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void initializeDB() {
         try {
@@ -78,11 +143,11 @@ public class DBSetup {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            initializeCompanyDefault();
+            initializeCompanyDefault("New Company");
         }
     }
 
-    public static void initializeCompanyDefault() {
+    public static void initializeCompanyDefault(String name) {
         PreparedStatement getDefaultData;
         PreparedStatement setDefaultData;
         ResultSet resultSet;
@@ -93,9 +158,15 @@ public class DBSetup {
 
             if (!resultSet.isBeforeFirst()) {
                 setDefaultData = connection.prepareStatement("INSERT INTO tblcompany " +
-                        "set company_name='My Company', shares_total=0, shares_outstanding=0, " +
+                        "set company_name=?, shares_total=0, shares_outstanding=0, " +
                         "funding_percentage=0.0000, shares_issued_years=0, shares_issued_amount=0, " +
                         "company_logo_show=false");
+                setDefaultData.setString(1, name);
+                setDefaultData.execute();
+            } else {
+                setDefaultData = connection.prepareStatement("UPDATE tblcompany " +
+                        "set company_name=? WHERE company_id=1");
+                setDefaultData.setString(1, name);
                 setDefaultData.execute();
             }
 
@@ -112,9 +183,7 @@ public class DBSetup {
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tbldbsettings " +
                     "(db_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                    "db_version INT, db_version_label VARCHAR(25), " +
-                    "app_version INT, app_version_label VARCHAR(25), " +
-                    "app_width DOUBLE, app_height DOUBLE)");
+                    "db_version INT, db_version_label VARCHAR(25))");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
