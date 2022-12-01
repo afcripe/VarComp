@@ -23,6 +23,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -263,6 +264,7 @@ public class SettingsController implements Initializable {
     final FileChooser fcLogo = new FileChooser();
     final FileChooser fcExport = new FileChooser();
     final FileChooser fcImport = new FileChooser();
+    private static FileChannel fileChannel;
     String fs;
     String userHomeDir;
     ObservableList<KPIClass> kpiClassList;
@@ -565,7 +567,7 @@ public class SettingsController implements Initializable {
     }
 
     private void loadCompanyLogo() {
-        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyLogo.png";
+        String logoPath = DBUtils.getInstallDir()+fs+"companyLogo.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
@@ -579,7 +581,7 @@ public class SettingsController implements Initializable {
     }
 
     private void loadCompanyIcon() {
-        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyIcon.png";
+        String logoPath = DBUtils.getInstallDir()+fs+"companyIcon.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
@@ -595,7 +597,7 @@ public class SettingsController implements Initializable {
 
     private void browseLogo() {
         Image newLogo;
-        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyLogo.png";
+        String logoPath = DBUtils.getInstallDir()+fs+"companyLogo.png";
 
         fcLogo.setTitle("Select Logo Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
@@ -623,59 +625,9 @@ public class SettingsController implements Initializable {
         imgCompanyLogo.setImage(newLogo);
     }
 
-    private void exportDB() {
-        String dbPath = userHomeDir+fs+"varcomp"+fs+"varcompdb.mv.db";
-
-        fcExport.setTitle("Select Export Location");
-        File file = fcExport.showSaveDialog(null);
-
-        if(file.exists()) {
-            System.out.println("File Exists");
-        } else {
-            String fileName = file.toString();
-            if (!fileName.endsWith(".mv.db"))
-                fileName += ".mv.db";
-            try {
-                copyFile(dbPath, fileName);
-            } catch (IOException ioException) {
-                System.out.println(ioException);
-            }
-        }
-    }
-
-    private void importDB() {
-        String dbPath = userHomeDir+fs+"varcomp"+fs+"varcompdb.mv.db";
-
-        fcImport.setTitle("Select Export Location");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Database Files", "*.db");
-        fcImport.getExtensionFilters().add(extFilter);
-        File file = fcImport.showOpenDialog(null);
-
-        File dbFile = new File(dbPath);
-        if (dbFile.exists()) dbFile.delete();
-
-        try {
-            copyFile(file.getPath(), dbPath);
-        } catch (IOException cpException) {
-            System.out.println(cpException);
-        }
-    }
-
-    public static void copyFile(String src, String dest) throws IOException {
-        String dirSep = System.getProperty("file.separator");
-        String homeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", homeDir);
-        String logoPath = homeDir+dirSep+"varcomp"+dirSep+"varcompdb.mv.db";
-        String logoPath2 = homeDir+dirSep+"varcomp"+dirSep+"varcompdb-export.mv.db";
-        File logoFile = new File(logoPath);
-        File logoFile2 = new File(logoPath2);
-
-        Files.copy(Paths.get(src), Paths.get(dest));
-    }
-
     private void browseIcon() {
         Image newIcon;
-        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyIcon.png";
+        String logoPath = DBUtils.getInstallDir()+fs+"companyIcon.png";
 
         fcLogo.setTitle("Select Icon Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
@@ -701,6 +653,57 @@ public class SettingsController implements Initializable {
         }
 
         imgCompanyIcon.setImage(newIcon);
+    }
+
+    private void exportDB() {
+        String dbPath = DBUtils.getInstallDir()+fs+"varcompdb.mv.db";
+        String dumpFile;
+        fcExport.setTitle("Select Export Location");
+        File file = fcExport.showSaveDialog(null);
+
+        if(file.exists()) {
+            System.out.println("File Exists");
+        } else {
+            // Dump toSQL
+            dumpFile = DBUtils.getSQLDump();
+            // Fix the extension
+            String expFile = file.getPath();
+            if(!file.getPath().endsWith(".sql")) expFile = expFile+".sql";
+            // try to copy
+            if (!dumpFile.isEmpty()) {
+                try {
+                    copyFile(dumpFile, expFile);
+                } catch (IOException ioException) {
+                    System.out.println(ioException);
+                }
+            }
+        }
+    }
+
+    private void importDB() {
+        String dbPath = DBUtils.getInstallDir()+fs+"varcompdb.mv.db";
+
+        fcImport.setTitle("Select Export Location");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Database Files", "*.sql");
+        fcImport.getExtensionFilters().add(extFilter);
+        File file = fcImport.showOpenDialog(null);
+
+        DBUtils.insertSQLDump(file);
+        VarComp.changeScene("login-view.fxml", "Please, Login", false);
+//        VarComp.setCurrentCompany(CompanyConnector.getCompany(1));
+//        settingsNave("company");
+    }
+
+    public static void copyFile(String src, String dest) throws IOException {
+        String dirSep = System.getProperty("file.separator");
+        String homeDir = System.getProperty("user.home");
+        System.out.printf("The User Home Directory is %s", homeDir);
+        String logoPath = homeDir+dirSep+"varcomp"+dirSep+"varcompdb.mv.db";
+        String logoPath2 = homeDir+dirSep+"varcomp"+dirSep+"varcompdb-export.mv.db";
+        File logoFile = new File(logoPath);
+        File logoFile2 = new File(logoPath2);
+
+        Files.copy(Paths.get(src), Paths.get(dest));
     }
 
     private void removeKPIClass() {

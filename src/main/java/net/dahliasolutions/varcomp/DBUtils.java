@@ -1,12 +1,31 @@
 package net.dahliasolutions.varcomp;
 
+import java.io.File;
 import java.sql.*;
 
 public class DBUtils {
     private static final String fs = System.getProperty("file.separator");
-//    private static final String userHomeDir = System.getProperty("user.home");
+    private static String installDir = System.getProperty("user.home");
 
-    private static final String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
+    private static String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
+
+
+    public static void init() {
+        String homeDir = System.getProperty("user.home");
+        String AppData;
+
+        if(System.getProperty("os.name").startsWith("Win")) {
+            //Windows Install Dir
+            AppData = "AppData"+fs+"Local"+fs+"ProgramData"+fs+"varcomp"+fs+"varcompdb";
+        } else {
+            //Unix Install Dir
+            AppData = "varcomp";
+        }
+
+        varCompDB = "jdbc:h2:~"+fs+AppData+fs+"varcompdb";
+        installDir = homeDir+fs+AppData;
+        System.out.println(installDir);
+    }
 
     public static String getDBLocation() {
         return varCompDB;
@@ -15,6 +34,9 @@ public class DBUtils {
     public static String getAppVersion() {
         return "2.0.1";
     }
+     public static String getInstallDir() {
+        return installDir;
+     }
 
     public static Boolean updateDBTable(double w, double h) {
         Connection connection = null;
@@ -72,5 +94,60 @@ public class DBUtils {
             }
         }
         return returnSize;
+    }
+
+    public static String getSQLDump() {
+        Connection connection = null;
+        PreparedStatement preparedStatement;
+        File file = new File(getInstallDir()+fs+"varcomp_dump.sql");
+
+        try {
+            // remove old dumps
+            if (file.exists()) file.delete();
+
+            // dump script
+            connection = DriverManager.getConnection(getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SCRIPT TO ?");
+            preparedStatement.setString(1, file.getPath());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return file.getPath();
+    }
+
+    public static void insertSQLDump(File file) {
+        Connection connection = null;
+        PreparedStatement preparedStatement;
+
+        try {
+            connection = DriverManager.getConnection(getDBLocation(), "sa", "password");
+            // Drop current schema
+            preparedStatement = connection.prepareStatement("DROP ALL OBJECTS");
+            preparedStatement.execute();
+            // run script from file
+            preparedStatement = connection.prepareStatement("RUNSCRIPT FROM ?");
+            preparedStatement.setString(1, file.getPath());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

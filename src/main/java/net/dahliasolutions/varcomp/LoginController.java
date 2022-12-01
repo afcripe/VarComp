@@ -59,8 +59,7 @@ public class LoginController extends ViewController implements Initializable {
                     lblWarning.setVisible(false);
                     VarComp.setUser(u);
 
-                    Company c = CompanyConnector.getCompany(1);
-                    VarComp.setCurrentCompany(c);
+                    VarComp.setCurrentCompany(CompanyConnector.getCompany(1));
                     EmployeeUtils.updateAllEmployeeShares();
 
                     VarComp.changeScene("varcomp-view.fxml", "VarComp", false);
