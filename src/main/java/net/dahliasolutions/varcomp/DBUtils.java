@@ -16,7 +16,7 @@ public class DBUtils {
 
         if(System.getProperty("os.name").startsWith("Win")) {
             //Windows Install Dir
-            AppData = "AppData"+fs+"Local"+fs+"ProgramData"+fs+"varcomp"+fs+"varcompdb";
+            AppData = "AppData"+fs+"Local"+fs+"Programs"+fs+"VarComp";
         } else {
             //Unix Install Dir
             AppData = "varcomp";
