@@ -178,7 +178,7 @@ public class MetricPrintController implements Initializable {
     }
 
     private void loadCompanyLogo() {
-        String logoPath = userHomeDir+fs+"varcomp"+fs+"companyLogo.png";
+        String logoPath = DBUtils.getCompanyDir()+fs+"companyLogo.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {

@@ -1,5 +1,6 @@
 package net.dahliasolutions.varcomp;
 
+import java.io.File;
 import java.sql.*;
 
 public class DBSetup {
@@ -7,38 +8,73 @@ public class DBSetup {
     private static Connection appConnection;
 
     public static void initAppDB() {
+        // check if db exists
+        boolean goInit;
+        File appDB = new File(DBUtils.getInstallDir()+DBUtils.getFS()+"appdb.mv.db");
+        goInit = !appDB.exists();
         try {
             appConnection = DriverManager.getConnection(DBUtils.getAppDBLocation(), "sa", "password");
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return;
         }
-        dropAppObjects();
-//        initializeAppSettings();
+        if (goInit) {
+            initializeAppSettings();
+        } else {
+            getAppDB();
+        }
     }
 
-    public static void dropAppObjects() {
+    private static void getAppDB() {
         PreparedStatement preparedStatement;
+        ResultSet resultSet;
 
         try {
-            preparedStatement = appConnection.prepareStatement("DROP ALL OBJECTS");
+            preparedStatement = appConnection.prepareStatement("SELECT db_version FROM tbldbsettings");
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.isBeforeFirst()) {
+                while (resultSet.next()) {
+                    int recDBVersion = resultSet.getInt("db_version");
+                if (recDBVersion < DBUtils.getAppDBVersion()){
+                    // ToDO - Update Database
+                } else {
+                    // ToDo - cleanup and move on
+                }
+            }
+            } else {
+                System.out.println("Could not get DB Version!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanupAppConnection();
+        }
+    }
+
+    private static void initializeAppSettings() {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = appConnection.prepareStatement("CREATE TABLE IF NOT EXISTS tbldbsettings " +
+                    "(db_id INT, db_version INT, app_version VARCHAR(25), " +
+                    "app_width DOUBLE, app_height DOUBLE)");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            initializeAppSettings();
-//            cleanupAppConnection();
+            initializeAppSettingsDefault();
         }
     }
 
-    public static void initializeAppSettings() {
+    private static void initializeAppSettingsDefault() {
         PreparedStatement preparedStatement;
 
         try {
-            preparedStatement = appConnection.prepareStatement("CREATE TABLE IF NOT EXISTS tbldbsettings " +
-                    "(db_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                    "db_version INT, db_version_label VARCHAR(25), " +
-                    "app_version INT, app_version_label VARCHAR(25), " +
-                    "app_width DOUBLE, app_height DOUBLE)");
+            preparedStatement = appConnection.prepareStatement("INSERT INTO tbldbsettings " +
+                    "set db_id=1,  db_version=?, app_version=?, app_width=750, app_height=750");
+            preparedStatement.setInt(1, DBUtils.getAppDBVersion());
+            preparedStatement.setString(2, DBUtils.getAppVersion());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,9 +83,8 @@ public class DBSetup {
         }
     }
 
-    public static void initAppCompanies() {
+    private static void initAppCompanies() {
         PreparedStatement preparedStatement;
-
         try {
             preparedStatement = appConnection.prepareStatement("CREATE TABLE IF NOT EXISTS tblappcompanies " +
                     "(company_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
@@ -62,7 +97,7 @@ public class DBSetup {
         }
     }
 
-    public static void cleanupAppConnection() {
+    private static void cleanupAppConnection() {
         try {
             appConnection.close();
         } catch (SQLException e) {
@@ -76,24 +111,10 @@ public class DBSetup {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        dropAllObjects();
         initializeUsers();
     }
 
-    public static void dropAllObjects() {
-        PreparedStatement preparedStatement;
-
-        try {
-            preparedStatement = connection.prepareStatement("DROP ALL OBJECTS");
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            initializeUsers();
-        }
-    }
-
-    public static void initializeUsers() {
+    private static void initializeUsers() {
         PreparedStatement preparedStatement;
 
         try {
@@ -108,7 +129,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeUsersDefault() {
+    private static void initializeUsersDefault() {
         PreparedStatement getDefaultData;
         PreparedStatement setDefaultData;
         ResultSet resultSet;
@@ -130,45 +151,30 @@ public class DBSetup {
         }
     }
 
-    public static void initializeCompany() {
+    private static void initializeCompany() {
         PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tblcompany " +
-                    "(company_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                    "company_name VARCHAR(45), shares_total INT, shares_outstanding INT, " +
+                    "(company_id INT, company_name VARCHAR(45), shares_total INT, shares_outstanding INT, " +
                     "funding_percentage NUMERIC(5,4), shares_issued_years INT, " +
                     "shares_issued_amount INT, company_logo_show BOOLEAN)");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            initializeCompanyDefault("New Company");
+            initializeCompanyDefault();
         }
     }
 
-    public static void initializeCompanyDefault(String name) {
-        PreparedStatement getDefaultData;
+    private static void initializeCompanyDefault() {
         PreparedStatement setDefaultData;
-        ResultSet resultSet;
-
         try {
-            getDefaultData = connection.prepareStatement("SELECT * FROM tblcompany WHERE company_id=1");
-            resultSet = getDefaultData.executeQuery();
-
-            if (!resultSet.isBeforeFirst()) {
-                setDefaultData = connection.prepareStatement("INSERT INTO tblcompany " +
-                        "set company_name=?, shares_total=0, shares_outstanding=0, " +
-                        "funding_percentage=0.0000, shares_issued_years=0, shares_issued_amount=0, " +
-                        "company_logo_show=false");
-                setDefaultData.setString(1, name);
-                setDefaultData.execute();
-            } else {
-                setDefaultData = connection.prepareStatement("UPDATE tblcompany " +
-                        "set company_name=? WHERE company_id=1");
-                setDefaultData.setString(1, name);
-                setDefaultData.execute();
-            }
+            setDefaultData = connection.prepareStatement("INSERT INTO tblcompany " +
+                    "set company_name='New Company', shares_total=0, shares_outstanding=0, " +
+                    "funding_percentage=0.0000, shares_issued_years=0, shares_issued_amount=0, " +
+                    "company_logo_show=false");
+            setDefaultData.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,13 +183,12 @@ public class DBSetup {
         }
     }
 
-    public static void initializeDBSettings() {
+    private static void initializeDBSettings() {
         PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS tbldbsettings " +
-                    "(db_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                    "db_version INT, db_version_label VARCHAR(25))");
+                    "(db_id INT, db_version INT)");
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -192,22 +197,12 @@ public class DBSetup {
         }
     }
 
-    public static void initializeDBSettingsDefault() {
-        PreparedStatement getDefaultData;
+    private static void initializeDBSettingsDefault() {
         PreparedStatement setDefaultData;
-        ResultSet resultSet;
 
         try {
-            getDefaultData = connection.prepareStatement("SELECT * FROM tbldbsettings");
-            resultSet = getDefaultData.executeQuery();
-
-            if (!resultSet.isBeforeFirst()) {
-                setDefaultData = connection.prepareStatement("INSERT INTO tbldbsettings " +
-                        "set db_version=2100, db_version_label='2.1.0', app_version=2100, " +
-                        "app_version_label='2.1.0', app_width=600, app_height=400");
-                setDefaultData.execute();
-            }
-
+            setDefaultData = connection.prepareStatement("INSERT INTO tbldbsettings set db_id=1,  db_version=2");
+            setDefaultData.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -215,7 +210,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeEmployees() {
+    private static void initializeEmployees() {
         PreparedStatement preparedStatement;
 
         try {
@@ -231,7 +226,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializePositions() {
+    private static void initializePositions() {
         PreparedStatement preparedStatement;
 
         try {
@@ -246,7 +241,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeKPIMaster() {
+    private static void initializeKPIMaster() {
         PreparedStatement preparedStatement;
 
         try {
@@ -265,7 +260,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeClasses() {
+    private static void initializeClasses() {
         PreparedStatement preparedStatement;
 
         try {
@@ -280,7 +275,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeKPIClassesDefault() {
+    private static void initializeKPIClassesDefault() {
         PreparedStatement getDefaultData;
         PreparedStatement setDefaultData1;
         PreparedStatement setDefaultData2;
@@ -309,7 +304,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializePositionKPI() {
+    private static void initializePositionKPI() {
         PreparedStatement preparedStatement;
 
         try {
@@ -324,7 +319,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeCompanyKPI() {
+    private static void initializeCompanyKPI() {
         PreparedStatement preparedStatement;
 
         try {
@@ -342,7 +337,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeEmployeeKPI() {
+    private static void initializeEmployeeKPI() {
         PreparedStatement preparedStatement;
 
         try {
@@ -360,7 +355,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeEmployeeScores() {
+    private static void initializeEmployeeScores() {
         PreparedStatement preparedStatement;
 
         try {
@@ -376,7 +371,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeMetrics() {
+    private static void initializeMetrics() {
         PreparedStatement preparedStatement;
 
         try {
@@ -393,7 +388,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeMetricsDetail() {
+    private static void initializeMetricsDetail() {
         PreparedStatement preparedStatement;
 
         try {
@@ -409,7 +404,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeCalculationOptions() {
+    private static void initializeCalculationOptions() {
         PreparedStatement preparedStatement;
 
         try {
@@ -425,7 +420,7 @@ public class DBSetup {
         }
     }
 
-    public static void initializeCalculationOptionsDefault() {
+    private static void initializeCalculationOptionsDefault() {
         PreparedStatement getDefaultData;
         PreparedStatement setDefaultData;
         ResultSet resultSet;
@@ -465,13 +460,14 @@ public class DBSetup {
         }
     }
 
-    public static void cleanupConnection() {
+    private static void cleanupConnection() {
         try {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 }
 
 

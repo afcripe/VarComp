@@ -7,6 +7,7 @@ public class DBUtils {
     private static final String fs = System.getProperty("file.separator");
     private static String installDir = System.getProperty("user.home");
     private static String companyDir = System.getProperty("user.home");
+    private static String safeName = "varcomp";
     private static String AppData = "varcomp";
     private static String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
     private static String appDB = "jdbc:h2:~"+fs+"varcomp"+fs+"appdb";
@@ -21,7 +22,7 @@ public class DBUtils {
         setAppDBLocation();
         //setDBLocation("varcompdb");
         setInstallDir();
-        companyDir = System.getProperty("user.home")+fs+AppData;
+        setCompanyDir("");
     }
 
     public static String getAppDBLocation() {
@@ -42,8 +43,11 @@ public class DBUtils {
         } else {
             varCompDB = "jdbc:h2:~" + fs + AppData + fs + name + fs + name;
         }
+        safeName = name;
         setCompanyDir(name);
     }
+
+    public static String getSafeName() { return safeName; }
 
     public static String getInstallDir() {
         return installDir;
@@ -65,8 +69,18 @@ public class DBUtils {
         }
     }
 
+    public static String getFS() {
+        return fs;
+    }
+
     public static String getAppVersion() {
-        return "2.0.1";
+        return "2.0.2";
+    }
+    public static int getAppDBVersion() {
+        return 2;
+    }
+    public static int getCompanyDBVersion() {
+        return 2;
     }
 
     public static Boolean updateDBTable(double w, double h) {
@@ -76,7 +90,7 @@ public class DBUtils {
 
         try {
             connection = DriverManager.getConnection(getAppDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("UPDATE tbldbsettings SET app_width=?, app_height=? WHERE DB_ID=1 ORDER BY DB_ID DESC LIMIT 1");
+            preparedStatement = connection.prepareStatement("UPDATE tbldbsettings SET app_width=?, app_height=?");
             preparedStatement.setDouble(1, w);
             preparedStatement.setDouble(2, h);
             preparedStatement.executeUpdate();
@@ -104,7 +118,7 @@ public class DBUtils {
 
         try {
             connection = DriverManager.getConnection(getAppDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT " + col + " FROM tbldbsettings  WHERE DB_ID=1");
+            preparedStatement = connection.prepareStatement("SELECT " + col + " FROM tbldbsettings");
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.isBeforeFirst()) {
@@ -130,7 +144,7 @@ public class DBUtils {
     public static String getSQLDump() {
         Connection connection = null;
         PreparedStatement preparedStatement;
-        File file = new File(getInstallDir()+fs+"company_dump.sql");
+        File file = new File(getCompanyDir()+fs+getSafeName()+"_dump.sql");
 
         try {
             // remove old dumps

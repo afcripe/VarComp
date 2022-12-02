@@ -2,9 +2,7 @@ package net.dahliasolutions.varcomp.connectors;
 
 import net.dahliasolutions.varcomp.DBUtils;
 import net.dahliasolutions.varcomp.models.AppCompany;
-import net.dahliasolutions.varcomp.models.Company;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -85,7 +83,7 @@ public class AppCompanyConnector {
 
             if (!resultSet.isBeforeFirst()) {
                 System.out.println("No companies found.");
-                companies.add(new AppCompany());
+//                companies.add(new AppCompany());
             } else {
                 while (resultSet.next()) {
                     Integer recCompanyId = resultSet.getInt("company_id");
@@ -104,23 +102,33 @@ public class AppCompanyConnector {
         return companies;
     }
 
-    public static boolean insertCompany(AppCompany company) {
+    public static Integer insertCompany(AppCompany company) {
         Connection connection;
         PreparedStatement preparedStatement;
-        boolean updateSuccess = false;
+        PreparedStatement resultStatement;
+        ResultSet resultSet;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getAppDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("INSERT INTO tblappcompanies SET COMPANY_NAME= ?, DIR_NAME=?");
             preparedStatement.setString(1, company.getCompany_name());
             preparedStatement.setString(2, company.getDir_Name());
-            preparedStatement.executeUpdate();
+            preparedStatement.execute();
+
+            resultStatement = connection.prepareStatement(
+                    "SELECT COMPANY_ID FROM tblappcompanies WHERE COMPANY_NAME=? ORDER BY COMPANY_ID DESC ");
+            resultStatement.setString(1, company.getCompany_name());
+            resultSet = resultStatement.executeQuery();
+            if (resultSet.isBeforeFirst()) {
+                while (resultSet.next()) {
+                    return resultSet.getInt("company_id");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
-
-        return true;
+        return 0;
     }
 
     public static Boolean updateCompany(AppCompany company) {
@@ -134,6 +142,27 @@ public class AppCompanyConnector {
             preparedStatement.setString(1, company.getCompany_name());
             preparedStatement.setString(2, company.getDir_Name());
             preparedStatement.setInt(3, company.getCompany_id());
+            preparedStatement.executeUpdate();
+
+            updateSuccess = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return updateSuccess;
+    }
+
+    public static Boolean updateCompany(Integer companyID, String companyName) {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        boolean updateSuccess = false;
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getAppDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("UPDATE tblappcompanies SET COMPANY_NAME= ? WHERE company_id=?");
+            preparedStatement.setString(1, companyName);
+            preparedStatement.setInt(2, companyID);
             preparedStatement.executeUpdate();
 
             updateSuccess = true;

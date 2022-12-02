@@ -23,9 +23,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -264,7 +262,6 @@ public class SettingsController implements Initializable {
     final FileChooser fcLogo = new FileChooser();
     final FileChooser fcExport = new FileChooser();
     final FileChooser fcImport = new FileChooser();
-    private static FileChannel fileChannel;
     String fs;
     String userHomeDir;
     ObservableList<KPIClass> kpiClassList;
@@ -525,6 +522,7 @@ public class SettingsController implements Initializable {
 
     private void updateCompany(ActionEvent actionEvent) {
         VarComp.getCurrentCompany().setCompany_name(txtCompanyName.getText().trim());
+        VarComp.getAppCompany().setCompany_name(txtCompanyName.getText().trim());
         try{
             int intSharesIssued = Integer.parseInt(txtSharesIssued.getText());
             VarComp.getCurrentCompany().setShares_total(intSharesIssued);
@@ -562,12 +560,11 @@ public class SettingsController implements Initializable {
         }
         VarComp.getCurrentCompany().setCompany_logo_show(chkShowCompanyLogo.isSelected());
 
-        Boolean success = CompanyConnector.updateCompany(VarComp.getCurrentCompany());
-        System.out.println(success);
+        VarComp.getCurrentCompany().updateCompany();
     }
 
     private void loadCompanyLogo() {
-        String logoPath = DBUtils.getInstallDir()+fs+"companyLogo.png";
+        String logoPath = DBUtils.getCompanyDir()+fs+"companyLogo.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
@@ -581,7 +578,7 @@ public class SettingsController implements Initializable {
     }
 
     private void loadCompanyIcon() {
-        String logoPath = DBUtils.getInstallDir()+fs+"companyIcon.png";
+        String logoPath = DBUtils.getCompanyDir()+fs+"companyIcon.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
@@ -597,7 +594,7 @@ public class SettingsController implements Initializable {
 
     private void browseLogo() {
         Image newLogo;
-        String logoPath = DBUtils.getInstallDir()+fs+"companyLogo.png";
+        String logoPath = DBUtils.getCompanyDir()+fs+"companyLogo.png";
 
         fcLogo.setTitle("Select Logo Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
@@ -627,7 +624,7 @@ public class SettingsController implements Initializable {
 
     private void browseIcon() {
         Image newIcon;
-        String logoPath = DBUtils.getInstallDir()+fs+"companyIcon.png";
+        String logoPath = DBUtils.getCompanyDir()+fs+"companyIcon.png";
 
         fcLogo.setTitle("Select Icon Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
@@ -656,7 +653,7 @@ public class SettingsController implements Initializable {
     }
 
     private void exportDB() {
-        String dbPath = DBUtils.getInstallDir()+fs+"varcompdb.mv.db";
+        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+".mv.db";
         String dumpFile;
         fcExport.setTitle("Select Export Location");
         File file = fcExport.showSaveDialog(null);
@@ -681,7 +678,7 @@ public class SettingsController implements Initializable {
     }
 
     private void importDB() {
-        String dbPath = DBUtils.getInstallDir()+fs+"varcompdb.mv.db";
+        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+".mv.db";
 
         fcImport.setTitle("Select Export Location");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Database Files", "*.sql");
@@ -689,19 +686,25 @@ public class SettingsController implements Initializable {
         File file = fcImport.showOpenDialog(null);
 
         DBUtils.insertSQLDump(file);
-        VarComp.changeScene("login-view.fxml", "Please, Login", false);
-//        VarComp.setCurrentCompany(CompanyConnector.getCompany(1));
-//        settingsNave("company");
+        // update the companyID
+        System.out.println(VarComp.getAppCompany().getCompany_id().toString());
+        CompanyConnector.updateCompanyID(VarComp.getAppCompany().getCompany_id());
+
+        // update appCompany name
+        AppCompanyConnector.updateCompany(VarComp.getAppCompany().getCompany_id(), CompanyConnector.getCompany().getCompany_name());
+
+        // logout
+        VarComp.changeScene("login-view.fxml", "Login", false);
     }
 
     public static void copyFile(String src, String dest) throws IOException {
-        String dirSep = System.getProperty("file.separator");
-        String homeDir = System.getProperty("user.home");
-        System.out.printf("The User Home Directory is %s", homeDir);
-        String logoPath = homeDir+dirSep+"varcomp"+dirSep+"varcompdb.mv.db";
-        String logoPath2 = homeDir+dirSep+"varcomp"+dirSep+"varcompdb-export.mv.db";
-        File logoFile = new File(logoPath);
-        File logoFile2 = new File(logoPath2);
+//        String dirSep = System.getProperty("file.separator");
+//        String homeDir = System.getProperty("user.home");
+//        System.out.printf("The User Home Directory is %s", homeDir);
+//        String logoPath = homeDir+dirSep+"varcomp"+dirSep+"varcompdb.mv.db";
+//        String logoPath2 = homeDir+dirSep+"varcomp"+dirSep+"varcompdb-export.mv.db";
+//        File logoFile = new File(logoPath);
+//        File logoFile2 = new File(logoPath2);
 
         Files.copy(Paths.get(src), Paths.get(dest));
     }

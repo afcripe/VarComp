@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.dahliasolutions.varcomp.models.AppCompany;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;
 
@@ -17,6 +18,7 @@ public class VarComp extends Application {
 
     private static final User loggedInUser = new User();
     private static final Company currentCompany = new Company();
+    private static final AppCompany currentAppCompany = new AppCompany();
 
 
     private static Stage primaryStage;
@@ -51,7 +53,7 @@ public class VarComp extends Application {
         // GUI
         FXMLLoader fxmlLoader = new FXMLLoader(VarComp.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), recWidth, recHeight);
-        primaryStage.setTitle("VarComp Login");
+        primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -63,7 +65,6 @@ public class VarComp extends Application {
         // Configure Data
         DBUtils.init();
         DBSetup.initAppDB();
-//        DBSetup.initializeDB();
     }
 
     public static void closeApp() {
@@ -88,6 +89,8 @@ public class VarComp extends Application {
     }
     public static void setCurrentCompany(Company company) { currentCompany.setCompany(company); }
     public static Company getCurrentCompany() { return currentCompany; }
+    public static void setAppCompany(AppCompany appCompany) {currentAppCompany.setAppCompany(appCompany);}
+    public static AppCompany getAppCompany() { return currentAppCompany; }
 
     public static void changeScene(String fxmlFile, String title, Boolean newWindow) {
         Stage stage = new Stage();
@@ -114,7 +117,6 @@ public class VarComp extends Application {
     }
 
     public static void main(String[] args) {
-//        DBSetup.initializeDB("");
         launch();
     }
 

@@ -1,5 +1,8 @@
 package net.dahliasolutions.varcomp.models;
 
+import net.dahliasolutions.varcomp.connectors.AppCompanyConnector;
+import net.dahliasolutions.varcomp.connectors.CompanyConnector;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -115,4 +118,10 @@ public class Company {
     }
 
     public Company getCompany() { return this; }
+
+    public void updateCompany() {
+        CompanyConnector.updateCompany(this);
+        AppCompanyConnector.updateCompany(getCompany_id(), getCompany_name());
+    }
+    public void updateNewCompany() { CompanyConnector.updateNewCompany(this); }
 }

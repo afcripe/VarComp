@@ -17,12 +17,12 @@
       <jdbc-url>jdbc:h2:~/AppData/Local/Programs/varcomp/appdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="new_company" uuid="1ecb91a2-2ed6-48b2-a920-1d2d4a7d5a69">
+    <data-source source="LOCAL" name="dahlia" uuid="1ecb91a2-2ed6-48b2-a920-1d2d4a7d5a69">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:~\AppData\Local\Programs\VarComp\new_company\new_company</jdbc-url>
+      <jdbc-url>jdbc:h2:~\AppData\Local\Programs\VarComp\dahlia\dahlia</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

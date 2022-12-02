@@ -45,7 +45,7 @@ public class AppCompany {
         return dir_name;
     }
 
-    public void setDir_Name(String company_name) {
+    public void setDir_Name(String dir_name) {
         this.dir_name = dir_name;
     }
 
