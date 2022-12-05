@@ -179,6 +179,7 @@ public class DBUtils {
             // Drop current schema
             preparedStatement = connection.prepareStatement("DROP ALL OBJECTS");
             preparedStatement.execute();
+
             // run script from file
             preparedStatement = connection.prepareStatement("RUNSCRIPT FROM ?");
             preparedStatement.setString(1, file.getPath());

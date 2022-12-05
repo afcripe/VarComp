@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="varcompdb" uuid="81f7b17a-50c1-4ef7-8219-692f53c09492">
-      <driver-ref>h2.unified</driver-ref>
-      <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
-      <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:~/varcomp/varcompdb</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="appdb" uuid="738c6dfd-ebcb-4950-a1ed-766c25eaef4f">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:~/AppData/Local/Programs/varcomp/appdb</jdbc-url>
+      <jdbc-url>jdbc:h2:~/varcomp/appdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="dahlia" uuid="1ecb91a2-2ed6-48b2-a920-1d2d4a7d5a69">
+    <data-source source="LOCAL" name="ses" uuid="1805051f-a783-47a0-99af-7f402c6de0f6">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:~\AppData\Local\Programs\VarComp\dahlia\dahlia</jdbc-url>
+      <jdbc-url>jdbc:h2:~/varcomp/ses/ses</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

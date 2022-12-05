@@ -23,12 +23,16 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 public class SettingsController implements Initializable {
 
@@ -262,6 +266,7 @@ public class SettingsController implements Initializable {
     final FileChooser fcLogo = new FileChooser();
     final FileChooser fcExport = new FileChooser();
     final FileChooser fcImport = new FileChooser();
+
     String fs;
     String userHomeDir;
     ObservableList<KPIClass> kpiClassList;
@@ -653,41 +658,71 @@ public class SettingsController implements Initializable {
     }
 
     private void exportDB() {
-        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+".mv.db";
+        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"_dump.sql";
+
         String dumpFile;
         fcExport.setTitle("Select Export Location");
         File file = fcExport.showSaveDialog(null);
 
-        if(file.exists()) {
-            System.out.println("File Exists");
-        } else {
-            // Dump toSQL
-            dumpFile = DBUtils.getSQLDump();
-            // Fix the extension
-            String expFile = file.getPath();
-            if(!file.getPath().endsWith(".sql")) expFile = expFile+".sql";
-            // try to copy
-            if (!dumpFile.isEmpty()) {
-                try {
-                    copyFile(dumpFile, expFile);
-                } catch (IOException ioException) {
-                    System.out.println(ioException);
-                }
+        // Dump db to SQL
+        dumpFile = DBUtils.getSQLDump();
+        // get Logo and icon
+        File zipFolder = new File(DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"zip");
+        File logoFile = new File(DBUtils.getCompanyDir()+fs+"companyLogo.png");
+        File iconFile = new File(DBUtils.getCompanyDir()+fs+"companyIcon.png");
+
+        try {
+            // create the zip streams
+            FileOutputStream fos = new FileOutputStream(zipFolder);
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            // send files to Zip
+            if(logoFile.exists()) zipFile(logoFile.getPath(), zos);
+            if(iconFile.exists()) zipFile(iconFile.getPath(), zos);
+            zipFile(dbPath, zos);
+            zos.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        // Fix the extension
+        String expFile = file.getPath();
+        if(!file.getPath().endsWith(".zip")) expFile = expFile+".zip";
+        // try to copy
+        if (!dumpFile.isEmpty()) {
+            try {
+                copyFile(zipFolder.getPath(), expFile);
+            } catch (IOException ioException) {
+                System.out.println(ioException);
             }
         }
+
+        // cleanup company directory
+        if(zipFolder.exists()) zipFolder.delete();
+        File dbFile = new File(dbPath);
+        if(dbFile.exists()) dbFile.delete();
     }
 
     private void importDB() {
-        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+".mv.db";
+        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"_dump.sql";
 
         fcImport.setTitle("Select Export Location");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Database Files", "*.sql");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("VarComp ZIP File", "*.zip");
         fcImport.getExtensionFilters().add(extFilter);
         File file = fcImport.showOpenDialog(null);
 
-        DBUtils.insertSQLDump(file);
+        // unzip tho the company directory
+        unZipFiles(file.getPath(), DBUtils.getCompanyDir());
+
+        //restore the database
+        DBUtils.insertSQLDump(new File(dbPath));
+
+        //cleanup dump file
+        File dbFile = new File(dbPath);
+        if(dbFile.exists()) dbFile.delete();
+
         // update the companyID
-        System.out.println(VarComp.getAppCompany().getCompany_id().toString());
         CompanyConnector.updateCompanyID(VarComp.getAppCompany().getCompany_id());
 
         // update appCompany name
@@ -698,15 +733,69 @@ public class SettingsController implements Initializable {
     }
 
     public static void copyFile(String src, String dest) throws IOException {
-//        String dirSep = System.getProperty("file.separator");
-//        String homeDir = System.getProperty("user.home");
-//        System.out.printf("The User Home Directory is %s", homeDir);
-//        String logoPath = homeDir+dirSep+"varcomp"+dirSep+"varcompdb.mv.db";
-//        String logoPath2 = homeDir+dirSep+"varcomp"+dirSep+"varcompdb-export.mv.db";
-//        File logoFile = new File(logoPath);
-//        File logoFile2 = new File(logoPath2);
-
+        File targetFile = new File(dest);
+        if(targetFile.exists()) targetFile.delete();
         Files.copy(Paths.get(src), Paths.get(dest));
+    }
+
+    private static void zipFile(String fileName, ZipOutputStream zos) throws IOException {
+        final int oBUFFER = 1024;
+        BufferedInputStream bis = null;
+        try {
+            File file = new File(fileName);
+            FileInputStream fis = new FileInputStream(file);
+            bis = new BufferedInputStream(fis, oBUFFER);
+
+            // ZipEntry --- Here file name can be created using the source file
+            ZipEntry zipEntry = new ZipEntry(file.getName());
+            zos.putNextEntry(zipEntry);
+            byte data[] = new byte[oBUFFER];
+            int count;
+
+            while ((count = bis.read(data, 0, oBUFFER)) != -1) {
+                zos.write(data, 0, oBUFFER);
+            }
+        }
+        finally {
+            try {
+                bis.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void unZipFiles(String zipFilePath, String destDir) {
+        FileInputStream fis;
+        //buffer for read and write data to file
+        byte[] buffer = new byte[1024];
+        try {
+            fis = new FileInputStream(zipFilePath);
+            ZipInputStream zis = new ZipInputStream(fis);
+            ZipEntry ze = zis.getNextEntry();
+            while(ze != null){
+                String fileName = ze.getName();
+                File newFile = new File(destDir + File.separator + fileName);
+                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+                //close this ZipEntry
+                zis.closeEntry();
+                ze = zis.getNextEntry();
+            }
+            //close last ZipEntry
+            zis.closeEntry();
+            zis.close();
+            fis.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
     }
 
     private void removeKPIClass() {

@@ -155,18 +155,18 @@ public class LoginController extends ViewController implements Initializable {
     }
 
     private void goLogin(String companyName) {
+        // get company from AppCompanies
+        AppCompany appCompany = AppCompanyConnector.getCompanyByName(companyName);
+        VarComp.setAppCompany(appCompany);
+
+        // set dDBUtils for current company
+        DBUtils.setDBLocation(appCompany.getDir_Name());
+
+        // verify user
         User u = UserConnector.loginUser(txtUsername.getText(), pwdPassword.getText());
         if (!u.getUser_id().equals(0)) {
             lblWarning.setVisible(false);
             VarComp.setUser(u);
-
-            // get company from AppCompanies
-            AppCompany appCompany = AppCompanyConnector.getCompanyByName(companyName);
-            VarComp.setAppCompany(appCompany);
-            System.out.println(VarComp.getAppCompany().getCompany_id().toString());
-
-            // set dDBUtils for current company
-            DBUtils.setDBLocation(appCompany.getDir_Name());
 
             //get company info
             VarComp.setCurrentCompany(CompanyConnector.getCompany());
