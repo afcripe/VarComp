@@ -4,6 +4,9 @@ import java.io.File;
 import java.sql.*;
 
 public class DBUtils {
+    private static final String appVersion = "2.0.3";
+    private static final int appDBVersion = 2;
+    private static final int companyDBVersion = 2;
     private static final String fs = System.getProperty("file.separator");
     private static String installDir = System.getProperty("user.home");
     private static String companyDir = System.getProperty("user.home");
@@ -74,13 +77,13 @@ public class DBUtils {
     }
 
     public static String getAppVersion() {
-        return "2.0.2";
+        return appVersion;
     }
     public static int getAppDBVersion() {
-        return 2;
+        return appDBVersion;
     }
     public static int getCompanyDBVersion() {
-        return 2;
+        return companyDBVersion;
     }
 
     public static Boolean updateDBTable(double w, double h) {

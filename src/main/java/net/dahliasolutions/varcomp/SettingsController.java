@@ -25,10 +25,13 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.Buffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -128,6 +131,11 @@ public class SettingsController implements Initializable {
     private TableColumn<KPIMaster, String> tbcKPIClass;
     @FXML
     private Pane paneFormKPIClass;
+
+    @FXML
+    private Label lblEvalNatural;
+    @FXML
+    private Label lblEvalReverse;
 
     @FXML
     private TableView<Position> tblPositions;
@@ -276,6 +284,8 @@ public class SettingsController implements Initializable {
     ObservableList<User> userList;
     ObservableList<CalculationOptions> calcList;
 
+    List<String> filesListInDir = new ArrayList<String>();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -305,7 +315,13 @@ public class SettingsController implements Initializable {
         txtFundingPercentage.setText(VarComp.getCurrentCompany().getFunding_percentage().toString());
         chkShowCompanyLogo.setSelected(VarComp.getCurrentCompany().getCompany_logo_show());
         btnSaveCompany.setOnAction(this::updateCompany);
-        btnExportData.setOnAction(event -> exportDB());
+        btnExportData.setOnAction(event -> {
+            try {
+                exportDB();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         btnImportData.setOnAction(event -> importDB());
         btnLoadCompanyLogo.setOnAction(event -> browseLogo());
         btnLoadCompanyIcon.setOnAction(event -> browseIcon());
@@ -374,6 +390,8 @@ public class SettingsController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+        chkEvalReverseOrder.setOnAction(event -> updateEvalCheckbox());
+        cmbFormMastKPI_calc.setOnAction(event -> updateCalcToolTip());
 
 /* Employee Tab */
         bntNewPosition.setOnAction(event -> setFormPosition(new Position()));
@@ -657,8 +675,13 @@ public class SettingsController implements Initializable {
         imgCompanyIcon.setImage(newIcon);
     }
 
-    private void exportDB() {
+    private void exportDB() throws IOException {
         String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"_dump.sql";
+        String zipFolder = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+".zip";
+
+        File logoFile = new File(DBUtils.getCompanyDir()+fs+"companyLogo.png");
+        File iconFile = new File(DBUtils.getCompanyDir()+fs+"companyIcon.png");
+        File sqlFile = new File(dbPath);
 
         String dumpFile;
         fcExport.setTitle("Select Export Location");
@@ -666,42 +689,35 @@ public class SettingsController implements Initializable {
 
         // Dump db to SQL
         dumpFile = DBUtils.getSQLDump();
-        // get Logo and icon
-        File zipFolder = new File(DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"zip");
-        File logoFile = new File(DBUtils.getCompanyDir()+fs+"companyLogo.png");
-        File iconFile = new File(DBUtils.getCompanyDir()+fs+"companyIcon.png");
 
-        try {
-            // create the zip streams
-            FileOutputStream fos = new FileOutputStream(zipFolder);
-            ZipOutputStream zos = new ZipOutputStream(fos);
+        // create folder to zip
+        Path folderToZip = Paths.get(DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"_zip");
+        Files.createDirectory(folderToZip);
 
-            // send files to Zip
-            if(logoFile.exists()) zipFile(logoFile.getPath(), zos);
-            if(iconFile.exists()) zipFile(iconFile.getPath(), zos);
-            zipFile(dbPath, zos);
-            zos.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        //copy files to new folder
+        if(logoFile.exists()) copyFile(logoFile.getPath(), folderToZip+fs+"companyLogo.png");
+        if(iconFile.exists()) copyFile(iconFile.getPath(), folderToZip+fs+"companyIcon.png");
+        if(sqlFile.exists()) copyFile(sqlFile.getPath(), folderToZip+fs+DBUtils.getSafeName()+"_dump.sql");
+
+        // zip folder
+        zipDirectory(new File(folderToZip.toUri()), zipFolder);
+
         // Fix the extension
         String expFile = file.getPath();
         if(!file.getPath().endsWith(".zip")) expFile = expFile+".zip";
         // try to copy
         if (!dumpFile.isEmpty()) {
             try {
-                copyFile(zipFolder.getPath(), expFile);
+                copyFile(zipFolder, expFile);
             } catch (IOException ioException) {
                 System.out.println(ioException);
             }
         }
 
-        // cleanup company directory
-        if(zipFolder.exists()) zipFolder.delete();
-        File dbFile = new File(dbPath);
-        if(dbFile.exists()) dbFile.delete();
+        /* cleanup company directory */
+        if(sqlFile.exists()) sqlFile.delete();
+        if(new File(zipFolder).exists()) new File(zipFolder).delete();
+        if(folderToZip.toFile().exists()) deleteDir(folderToZip.toFile());
     }
 
     private void importDB() {
@@ -737,32 +753,53 @@ public class SettingsController implements Initializable {
         if(targetFile.exists()) targetFile.delete();
         Files.copy(Paths.get(src), Paths.get(dest));
     }
-
-    private static void zipFile(String fileName, ZipOutputStream zos) throws IOException {
-        final int oBUFFER = 1024;
-        BufferedInputStream bis = null;
+    private void zipDirectory(File dir, String zipDirName) {
         try {
-            File file = new File(fileName);
-            FileInputStream fis = new FileInputStream(file);
-            bis = new BufferedInputStream(fis, oBUFFER);
-
-            // ZipEntry --- Here file name can be created using the source file
-            ZipEntry zipEntry = new ZipEntry(file.getName());
-            zos.putNextEntry(zipEntry);
-            byte data[] = new byte[oBUFFER];
-            int count;
-
-            while ((count = bis.read(data, 0, oBUFFER)) != -1) {
-                zos.write(data, 0, oBUFFER);
+            populateFilesList(dir);
+            //now zip files one by one
+            //create ZipOutputStream to write to the zip file
+            FileOutputStream fos = new FileOutputStream(zipDirName);
+            ZipOutputStream zos = new ZipOutputStream(fos);
+            for(String filePath : filesListInDir){
+                System.out.println("Zipping "+filePath);
+                //for ZipEntry we need to keep only relative file path, so we used substring on absolute path
+                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length()+1, filePath.length()));
+                zos.putNextEntry(ze);
+                //read the file and write to ZipOutputStream
+                FileInputStream fis = new FileInputStream(filePath);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                zos.closeEntry();
+                fis.close();
             }
+            zos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        finally {
-            try {
-                bis.close();
+    }
+    private void populateFilesList(File dir) throws IOException {
+        File[] files = dir.listFiles();
+        for(File file : files){
+            if(file.isFile()) filesListInDir.add(file.getAbsolutePath());
+            else populateFilesList(file);
+        }
+    }
+    private void deleteDir(File dir) {
+        try {
+            populateFilesList(dir);
+            // delete each file in directory
+            for(String filePath : filesListInDir){
+                System.out.println("Deleting "+filePath);
+                new File(filePath).delete();
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            // now delete the folder
+            dir.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -868,6 +905,10 @@ public class SettingsController implements Initializable {
         txtFormMastKPI_code.setText(kpiMaster.getKpi_code());
         txtFormMastKPI_description.setText(kpiMaster.getDescription());
         chkEvalReverseOrder.setSelected(kpiMaster.getReverse_scores());
+        lblEvalNatural.setVisible(!chkEvalReverseOrder.isSelected());
+        lblEvalNatural.setManaged(!chkEvalReverseOrder.isSelected());
+        lblEvalReverse.setVisible(chkEvalReverseOrder.isSelected());
+        lblEvalReverse.setManaged(chkEvalReverseOrder.isSelected());
         txtFormMasterKPI_extraordinary.setText(kpiMaster.getScore_extraordinary().toString());
         txtFormMasterKPI_great.setText(kpiMaster.getScore_great().toString());
         txtFormMasterKPI_well.setText(kpiMaster.getScore_well().toString());
@@ -892,9 +933,25 @@ public class SettingsController implements Initializable {
             cmbFormMastKPI_calc.getItems().add(cOption.getCalculation_id()+": "+cOption.getCalculation_name());
             if(cOption.getCalculation_id().equals(kpiMaster.getCalc_instructions())) {
                 cmbFormMastKPI_calc.setValue(cOption.getCalculation_id()+": "+cOption.getCalculation_name());
+                cmbFormMastKPI_calc.setTooltip(new Tooltip(cOption.getCalculation_description()));
             }
         }
 
+    }
+    private void updateEvalCheckbox() {
+        lblEvalNatural.setVisible(!chkEvalReverseOrder.isSelected());
+        lblEvalNatural.setManaged(!chkEvalReverseOrder.isSelected());
+        lblEvalReverse.setVisible(chkEvalReverseOrder.isSelected());
+        lblEvalReverse.setManaged(chkEvalReverseOrder.isSelected());
+    }
+    private void updateCalcToolTip() {
+        String[] splitCalc = cmbFormMastKPI_calc.getSelectionModel().getSelectedItem().split(":");
+
+        for (CalculationOptions cOption: calcList) {
+            if(cOption.getCalculation_id().equals(Integer.parseInt(splitCalc[0]))) {
+                cmbFormMastKPI_calc.setTooltip(new Tooltip(cOption.getCalculation_description()));
+            }
+        }
     }
 
     private void removeKPIMaster() {

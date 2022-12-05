@@ -64,7 +64,7 @@ public class VarComp extends Application {
     public void init() {
         // Configure Data
         DBUtils.init();
-        DBSetup.initAppDB();
+        AppDBSetup.initAppDB();
     }
 
     public static void closeApp() {

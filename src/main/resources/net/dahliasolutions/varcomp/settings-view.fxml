@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.SettingsController">
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.SettingsController">
 
 <!--    Navigation    -->
     <HBox alignment="CENTER_LEFT" spacing="8" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14">
@@ -203,30 +203,32 @@
         </VBox>
 
         <VBox fx:id="paneMasterKPI" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-            <HBox spacing="4">
+            <HBox spacing="4" alignment="CENTER_LEFT">
                 <Label alignment="CENTER_RIGHT" prefWidth="53.0" text="ID:" />
                 <TextField fx:id="txtFormMastKPI_id" editable="false" prefWidth="40.0" />
             </HBox>
-            <HBox spacing="4">
+            <HBox spacing="4" alignment="CENTER_LEFT">
                 <Label alignment="CENTER_RIGHT" prefWidth="62.0" text="KPI Code:" />
                 <TextField fx:id="txtFormMastKPI_code" prefWidth="142.0" />
                 <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Description:" />
                 <TextField fx:id="txtFormMastKPI_description" prefWidth="237.0" />
             </HBox>
-            <HBox spacing="4">
+            <HBox spacing="4" alignment="CENTER_LEFT">
                 <Label alignment="CENTER_RIGHT" prefWidth="62.0" text="KPI Class:" />
                 <ComboBox fx:id="cmbFormMastKPI_class" prefWidth="142.0" />
                 <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Calculation:" />
-                <ComboBox fx:id="cmbFormMastKPI_calc" prefWidth="142.0" />
+                <ComboBox fx:id="cmbFormMastKPI_calc" prefWidth="142.0"/>
             </HBox>
             <VBox spacing="4">
-                <HBox>
-                    <Label prefHeight="17.0" prefWidth="150.0" text="Score Evaluations:">
+                <HBox spacing="4">
+                    <Label prefHeight="17.0" prefWidth="145.0" text="Score Evaluations:">
                         <font>
                             <Font name="Arial Bold" />
                         </font>
                     </Label>
                     <CheckBox fx:id="chkEvalReverseOrder" />
+                    <Label fx:id="lblEvalNatural" text="When score is GREATER than or equal to provided Value." />
+                    <Label fx:id="lblEvalReverse" text="When score is LESS than or equal to provided Value." />
                 </HBox>
                 <HBox spacing="4" VBox.vgrow="ALWAYS">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
@@ -258,11 +260,14 @@
                 </HBox>
             </VBox>
             <VBox spacing="4">
-                <Label prefHeight="17.0" prefWidth="150.0" text=" KPI Column Names:">
-                    <font>
-                        <Font name="Arial Bold" />
-                    </font>
-                </Label>
+                <HBox spacing="4">
+                    <Label prefHeight="17.0" prefWidth="150.0" text=" KPI Column Names:">
+                        <font>
+                            <Font name="Arial Bold" />
+                        </font>
+                    </Label>
+                    <Label text="* Field names are required for some calculations." />
+                </HBox>
                 <HBox spacing="4">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
                         <Label text="Field 1 Name:" />
