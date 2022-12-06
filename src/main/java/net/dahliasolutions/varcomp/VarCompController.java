@@ -73,7 +73,19 @@ public class VarCompController extends ViewController implements Initializable {
     }
 
     private void showAbout() {
-        //ToDo
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource("aboutView.fxml"));
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(root, 500, 400));
+        stage.setTitle("Help");
+        stage.show();
     }
 
     private void showHelp() {
@@ -82,12 +94,12 @@ public class VarCompController extends ViewController implements Initializable {
         FXMLLoader loader;
 
         try {
-            loader = new FXMLLoader(VarComp.class.getResource("home.fxml"));
+            loader = new FXMLLoader(VarComp.class.getResource("helpView.fxml"));
             root = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stage.setScene(new Scene(root, 600, 700));
+        stage.setScene(new Scene(root, 600, 500));
         stage.setTitle("Help");
         stage.show();
     }

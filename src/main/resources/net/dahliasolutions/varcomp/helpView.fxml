@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.web.WebView?>
-<BorderPane fx:id="viewMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.Home">
+<BorderPane fx:id="viewMain" prefHeight="400" prefWidth="300" minWidth="200" minHeight="200"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.HelpViewController">
 <!--
     <left>
         <VBox fx:id="vboxNavigation" minWidth="100" prefHeight="200.0" prefWidth="100.0" spacing="2.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER_LEFT">

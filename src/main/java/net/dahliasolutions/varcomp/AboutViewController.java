@@ -2,14 +2,13 @@ package net.dahliasolutions.varcomp;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Home implements Initializable {
+public class AboutViewController implements Initializable {
 
     @FXML
     private WebView webViewer;
@@ -17,6 +16,6 @@ public class Home implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         WebEngine webEngine = webViewer.getEngine();
-        webEngine.load(DBUtils.getHelpDocs());
+        webEngine.load("http://vcp.presidiumapp.com:8888/aboutApp.cfm");
     }
 }
