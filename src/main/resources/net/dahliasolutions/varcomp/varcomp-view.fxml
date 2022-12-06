@@ -13,7 +13,8 @@
                     <MenuItem fx:id="menuExit" mnemonicParsing="false" text="Exit" />
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
-                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="menuHelp" mnemonicParsing="false" text="Help" />
+                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" visible="false" />
                 </Menu>
             </MenuBar>
          </top>

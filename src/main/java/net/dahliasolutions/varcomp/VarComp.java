@@ -109,8 +109,13 @@ public class VarComp extends Application {
 
         if (!newWindow) { stage = VarComp.getPrimaryStage(); }
 
-        userWidth = stage.getScene().getWidth();
-        userHeight = stage.getScene().getHeight();
+        try {
+            userWidth = stage.getScene().getWidth();
+            userHeight = stage.getScene().getHeight();
+        } catch (Error e) {
+            userWidth = 600;
+            userHeight = 700;
+        }
         stage.setScene(new Scene(root, userWidth, userHeight));
         stage.setTitle(title);
         stage.show();

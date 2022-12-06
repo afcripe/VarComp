@@ -7,6 +7,7 @@ module net.dahliasolutions.varcomp {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires javafx.swing;
+    requires javafx.web;
 
     opens net.dahliasolutions.varcomp to javafx.fxml;
     exports net.dahliasolutions.varcomp;

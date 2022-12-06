@@ -14,6 +14,7 @@ public class DBUtils {
     private static String AppData = "varcomp";
     private static String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
     private static String appDB = "jdbc:h2:~"+fs+"varcomp"+fs+"appdb";
+    private static String helpDocs = "http://www.presidiumapp.com/varcomp/index.cfm";
 
 
     public static void init() {
@@ -85,6 +86,8 @@ public class DBUtils {
     public static int getCompanyDBVersion() {
         return companyDBVersion;
     }
+
+    public static String getHelpDocs() { return helpDocs; }
 
     public static Boolean updateDBTable(double w, double h) {
         Connection connection = null;
