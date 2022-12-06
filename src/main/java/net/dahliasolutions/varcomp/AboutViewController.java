@@ -16,6 +16,6 @@ public class AboutViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         WebEngine webEngine = webViewer.getEngine();
-        webEngine.load("http://vcp.presidiumapp.com:8888/aboutApp.cfm");
+        webEngine.load("http://vcp.presidiumapp.com/aboutApp.cfm");
     }
 }

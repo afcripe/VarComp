@@ -14,7 +14,7 @@ public class DBUtils {
     private static String AppData = "varcomp";
     private static String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
     private static String appDB = "jdbc:h2:~"+fs+"varcomp"+fs+"appdb";
-    private static String helpDocs = "http://vcp.presidiumapp.com:8888/desktopDocs/#";
+    private static String helpDocs = "http://vcp.presidiumapp.com/desktopDocs/#";
 
 
     public static void init() {
