@@ -1,17 +1,60 @@
 package net.dahliasolutions.varcomp;
 
+import java.io.File;
 import java.sql.*;
 
 public class DBSetup {
     private static Connection connection;
 
     public static void initializeDB() {
+        // check if db exists
+        boolean goInit;
+        File compDB = new File(DBUtils.getCompanyDir()+DBUtils.getFS()+DBUtils.getSafeName()+".mv.db");
+        goInit = !compDB.exists();
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
         } catch (SQLException e) {
             e.printStackTrace();
+            cleanupConnection();
+            return;
         }
-        initializeUsers();
+        if (goInit) {
+            initializeUsers();
+        } else {
+            getDBVersion();
+        }
+    }
+
+    private static void getDBVersion() {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT db_version FROM tbldbsettings");
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.isBeforeFirst()) {
+                while (resultSet.next()) {
+                    int recDBVersion = resultSet.getInt("db_version");
+                    while (recDBVersion < DBUtils.getCompanyDBVersion()) {
+                        int uv = recDBVersion;
+                        int nv = recDBVersion+1;
+                        switch (nv){
+                            case 3:
+                                uv = updateTOV3();
+                                break;
+                        }
+                        recDBVersion = uv;
+                    }
+                }
+            } else {
+                System.out.println("Could not get DB Version!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cleanupConnection();
+        }
     }
 
     private static void initializeUsers() {
@@ -68,13 +111,21 @@ public class DBSetup {
     }
 
     private static void initializeCompanyDefault() {
+        PreparedStatement getDefaultData;
         PreparedStatement setDefaultData;
+        ResultSet resultSet;
+
         try {
-            setDefaultData = connection.prepareStatement("INSERT INTO tblcompany " +
-                    "set company_name='New Company', shares_total=0, shares_outstanding=0, " +
-                    "funding_percentage=0.0000, shares_issued_years=0, shares_issued_amount=0, " +
-                    "company_logo_show=false");
-            setDefaultData.execute();
+            getDefaultData = connection.prepareStatement("SELECT * FROM tblcompany WHERE COMPANY_ID=1");
+            resultSet = getDefaultData.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                setDefaultData = connection.prepareStatement("INSERT INTO tblcompany " +
+                        "set company_name='New Company', shares_total=0, shares_outstanding=0, " +
+                        "funding_percentage=0.0000, shares_issued_years=0, shares_issued_amount=0, " +
+                        "company_logo_show=false");
+                setDefaultData.execute();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,11 +149,18 @@ public class DBSetup {
     }
 
     private static void initializeDBSettingsDefault() {
+        PreparedStatement getDefaultData;
         PreparedStatement setDefaultData;
+        ResultSet resultSet;
 
         try {
-            setDefaultData = connection.prepareStatement("INSERT INTO tbldbsettings set db_id=1,  db_version=2");
-            setDefaultData.execute();
+            getDefaultData = connection.prepareStatement("SELECT * FROM tbldbsettings WHERE db_id=1");
+            resultSet = getDefaultData.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                setDefaultData = connection.prepareStatement("INSERT INTO tbldbsettings set db_id=1,  db_version=2");
+                setDefaultData.execute();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -358,6 +416,22 @@ public class DBSetup {
         } finally {
             cleanupConnection();
         }
+    }
+
+    private static int updateTOV3() {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = connection.prepareStatement("ALTER TABLE tblpositionkpis " +
+                    "ALTER COLUMN weight NUMERIC(10,4)");
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement("UPDATE TBLDBSETTINGS " +
+                    "SET DB_VERSION=3 WHERE DB_ID=1");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 3;
     }
 
     private static void cleanupConnection() {

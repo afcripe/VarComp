@@ -30,6 +30,8 @@ public class LoginController extends ViewController implements Initializable {
     @FXML
     private ComboBox<String> choiceCompanies;
     @FXML
+    private Label lblStatus;
+    @FXML
     private Label lblDBL;
     @FXML
     private Label lblVersion;
@@ -45,6 +47,7 @@ public class LoginController extends ViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        lblStatus.setText("");
         companies = FXCollections.observableArrayList(AppCompanyConnector.getCompanies());
 
         btnLogin.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
@@ -102,6 +105,7 @@ public class LoginController extends ViewController implements Initializable {
     }
 
     private void createCompany() {
+        lblStatus.setText("Creating New Company");
         String newName = txtNewCompany.getText().toString();
         String newSafeName = newName.replaceAll(" ", "_");
         newSafeName = newSafeName.toLowerCase();
@@ -118,6 +122,7 @@ public class LoginController extends ViewController implements Initializable {
         }
         if (i > 0) newName = newName+" "+i;
 
+        lblStatus.setText("Setting Up the Database");
         DBSetup.initializeDB();
 
         // insert the company into AppDB
@@ -140,6 +145,7 @@ public class LoginController extends ViewController implements Initializable {
         toggleNewCompany(false);
         fillCompanies();
         goLogin(newName);
+        lblStatus.setText("");
     }
 
     private void toggleNewCompany(boolean b) {
@@ -155,6 +161,7 @@ public class LoginController extends ViewController implements Initializable {
     }
 
     private void goLogin(String companyName) {
+        lblStatus.setText("Retrieving Company Data");
         // get company from AppCompanies
         AppCompany appCompany = AppCompanyConnector.getCompanyByName(companyName);
         VarComp.setAppCompany(appCompany);
@@ -162,8 +169,13 @@ public class LoginController extends ViewController implements Initializable {
         // set dDBUtils for current company
         DBUtils.setDBLocation(appCompany.getDir_Name());
 
+        //update company if needed
+        lblStatus.setText("Checking for Database Updates");
+        DBSetup.initializeDB();
+
         // verify user
         User u = UserConnector.loginUser(txtUsername.getText(), pwdPassword.getText());
+        lblStatus.setText("Verifying User Info");
         if (!u.getUser_id().equals(0)) {
             lblWarning.setVisible(false);
             VarComp.setUser(u);
@@ -179,6 +191,7 @@ public class LoginController extends ViewController implements Initializable {
             lblWarning.setText("Unsuccessful Login Attempt!");
             lblWarning.setVisible(true);
         }
+        lblStatus.setText("");
     }
 
 }

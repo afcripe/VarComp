@@ -4,7 +4,7 @@
   <groupId>net.dahliasolutions</groupId>
   <artifactId>VarComp</artifactId>
   <name>VarComp</name>
-  <version>2.0.4</version>
+  <version>2.0.5</version>
   <build>
     <plugins>
       <plugin>

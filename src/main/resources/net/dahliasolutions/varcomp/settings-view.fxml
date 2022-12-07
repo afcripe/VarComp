@@ -266,7 +266,7 @@
                             <Font name="Arial Bold" />
                         </font>
                     </Label>
-                    <Label text="* Field names are required for some calculations." />
+                    <Label text="* Field names are required. Blank fields are hidden." />
                 </HBox>
                 <HBox spacing="4">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
@@ -331,6 +331,14 @@
                      <Insets left="16.0" />
                   </padding>
                 </Label>
+                <Label fx:id="lblPositionTotalWeight" prefWidth="150.0" text="0 %">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets left="16.0" right="16.0" />
+                    </padding>
+                </Label>
                   <HBox HBox.hgrow="ALWAYS" />
                 <Button fx:id="bntAddPositionKPI" mnemonicParsing="false" prefWidth="75" text="Add" />
                 <Button fx:id="bntRemovePositionKPI" mnemonicParsing="false" prefWidth="75" text="Remove" />
@@ -339,7 +347,7 @@
                 </padding>
             </HBox>
             <HBox spacing="8.0">
-                <TableView fx:id="tblPositionKPI" prefHeight="120.0" prefWidth="273">
+                <TableView fx:id="tblPositionKPI" prefHeight="155.0" prefWidth="273">
                     <columns>
                         <TableColumn fx:id="tbcPKMasterKPI" prefWidth="135" text="KPI" />
                         <TableColumn fx:id="tbcPKWeight" prefWidth="135" text="Weight" />
@@ -347,8 +355,8 @@
                 </TableView>
 
 
-                <VBox fx:id="paneFormPositionKPI" fillWidth="false" prefWidth="273.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-                    <HBox spacing="4" VBox.vgrow="ALWAYS">
+                <VBox fx:id="paneFormPositionKPI" fillWidth="false" prefHeight="155.0" prefWidth="273.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+                    <HBox spacing="4">
                         <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Position:">
                             <padding>
                                 <Insets right="5.0" />
@@ -364,7 +372,7 @@
                         </Label>
                         <ComboBox fx:id="cmbFormPK_kpi" prefHeight="25.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                     </HBox>
-                    <HBox spacing="4">
+                    <HBox spacing="4" VBox.vgrow="ALWAYS">
                         <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Weight:">
                             <padding>
                                 <Insets right="5.0" />
@@ -373,14 +381,8 @@
                         <TextField fx:id="txtFormPK_weight" prefHeight="25.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                     </HBox>
                     <HBox alignment="CENTER" spacing="4">
-                        <Label alignment="CENTER_RIGHT" prefWidth="45.0" text="ID:" textFill="#00000080">
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                            <padding>
-                                <Insets right="4.0" />
-                            </padding></Label>
-                        <TextField fx:id="txtFormPKItem_id" disable="true" editable="false" prefHeight="25.0" prefWidth="45.0" />
+                        <Label alignment="CENTER_RIGHT" prefWidth="45.0" text="ID:" textFill="#00000080" visible="false" />
+                        <TextField fx:id="txtFormPKItem_id" disable="true" editable="false" prefHeight="25.0" prefWidth="45.0" visible="false" />
                         <HBox HBox.hgrow="ALWAYS" />
                         <Button fx:id="btnFormPK_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
                         <Button fx:id="btnFormPK_save" mnemonicParsing="false" prefWidth="95" text="Save" />
@@ -393,7 +395,7 @@
             </HBox>
             <padding>
                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-              </padding>
+            </padding>
         </VBox>
 
         <VBox fx:id="paneFormPosition" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">

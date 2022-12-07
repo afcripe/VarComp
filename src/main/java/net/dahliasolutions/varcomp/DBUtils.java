@@ -4,9 +4,9 @@ import java.io.File;
 import java.sql.*;
 
 public class DBUtils {
-    private static final String appVersion = "2.0.4";
+    private static final String appVersion = "2.0.5";
     private static final int appDBVersion = 2;
-    private static final int companyDBVersion = 2;
+    private static final int companyDBVersion = 3;
     private static final String fs = System.getProperty("file.separator");
     private static String installDir = System.getProperty("user.home");
     private static String companyDir = System.getProperty("user.home");
@@ -24,7 +24,6 @@ public class DBUtils {
         }
 
         setAppDBLocation();
-        //setDBLocation("varcompdb");
         setInstallDir();
         setCompanyDir("");
     }
@@ -83,12 +82,8 @@ public class DBUtils {
     public static int getAppDBVersion() {
         return appDBVersion;
     }
-    public static int getCompanyDBVersion() {
-        return companyDBVersion;
-    }
-
+    public static int getCompanyDBVersion() { return companyDBVersion; }
     public static String getHelpDocs() { return helpDocs; }
-
     public static Boolean updateDBTable(double w, double h) {
         Connection connection = null;
         PreparedStatement preparedStatement;

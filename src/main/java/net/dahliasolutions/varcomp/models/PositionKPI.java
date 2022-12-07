@@ -19,7 +19,7 @@ public class PositionKPI {
         setPosition_id(0);
         setKpi_master_id(0);
         setKpi_class_id(0);
-        setWeight(BigDecimal.valueOf(0.00));
+        setWeight(BigDecimal.valueOf(0.0000));
     }
 
     public PositionKPI(Integer itemID, Integer positionID, Integer kpiMastID, Integer kpiClass, BigDecimal weight) {
@@ -60,7 +60,7 @@ public class PositionKPI {
 
     public void setWeight(BigDecimal weight) {
         this.weight = weight;
-        this.weight = this.weight.setScale(2, RoundingMode.HALF_UP);
+        this.weight = this.weight.setScale(4, RoundingMode.HALF_UP);
     }
 
     public Integer insertPositionKPI() {return PositionKPIConnector.insertPositionKPI(this).getItem_id();}

@@ -13,9 +13,9 @@ public class AppDBSetup {
         goInit = !appDB.exists();
         try {
             appConnection = DriverManager.getConnection(DBUtils.getAppDBLocation(), "sa", "password");
-
         } catch (SQLException e) {
             e.printStackTrace();
+            cleanupAppConnection();
             return;
         }
         if (goInit) {
@@ -36,12 +36,17 @@ public class AppDBSetup {
             if (resultSet.isBeforeFirst()) {
                 while (resultSet.next()) {
                     int recDBVersion = resultSet.getInt("db_version");
-                if (recDBVersion < DBUtils.getAppDBVersion()){
-                    // ToDO - Update Database
-                } else {
-                    // ToDo - cleanup and move on
+                    while (recDBVersion < DBUtils.getAppDBVersion()) {
+                        int uv = recDBVersion;
+                        int nv = recDBVersion+1;
+                        switch (nv){
+                            case 3:
+                                // ToDo - update function for version 3
+                                break;
+                        }
+                        recDBVersion = uv;
+                    }
                 }
-            }
             } else {
                 System.out.println("Could not get DB Version!");
             }
@@ -67,14 +72,21 @@ public class AppDBSetup {
     }
 
     private static void initializeAppSettingsDefault() {
+        PreparedStatement getDefaultData;
         PreparedStatement preparedStatement;
+        ResultSet resultSet;
 
         try {
-            preparedStatement = appConnection.prepareStatement("INSERT INTO tbldbsettings " +
-                    "set db_id=1,  db_version=?, app_version=?, app_width=750, app_height=750");
-            preparedStatement.setInt(1, DBUtils.getAppDBVersion());
-            preparedStatement.setString(2, DBUtils.getAppVersion());
-            preparedStatement.execute();
+            getDefaultData = appConnection.prepareStatement("SELECT * FROM tblusers WHERE user_name='admin'");
+            resultSet = getDefaultData.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                preparedStatement = appConnection.prepareStatement("INSERT INTO tbldbsettings " +
+                        "set db_id=1,  db_version=?, app_version=?, app_width=750, app_height=750");
+                preparedStatement.setInt(1, DBUtils.getAppDBVersion());
+                preparedStatement.setString(2, DBUtils.getAppVersion());
+                preparedStatement.execute();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

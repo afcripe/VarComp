@@ -23,7 +23,6 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -234,6 +233,8 @@ public class SettingsController implements Initializable {
     private Button btnFormPK_cancel;
     @FXML
     private Button btnFormPK_save;
+    @FXML
+    private Label lblPositionTotalWeight;
 
     @FXML
     private HBox boxPositionKPIs;
@@ -945,11 +946,13 @@ public class SettingsController implements Initializable {
         lblEvalReverse.setManaged(chkEvalReverseOrder.isSelected());
     }
     private void updateCalcToolTip() {
-        String[] splitCalc = cmbFormMastKPI_calc.getSelectionModel().getSelectedItem().split(":");
+        if (!cmbFormMastKPI_calc.getValue().equals("")) {
+            String[] splitCalc = cmbFormMastKPI_calc.getSelectionModel().getSelectedItem().split(":");
 
-        for (CalculationOptions cOption: calcList) {
-            if(cOption.getCalculation_id().equals(Integer.parseInt(splitCalc[0]))) {
-                cmbFormMastKPI_calc.setTooltip(new Tooltip(cOption.getCalculation_description()));
+            for (CalculationOptions cOption : calcList) {
+                if (cOption.getCalculation_id().equals(Integer.parseInt(splitCalc[0]))) {
+                    cmbFormMastKPI_calc.setTooltip(new Tooltip(cOption.getCalculation_description()));
+                }
             }
         }
     }
@@ -1160,6 +1163,7 @@ public class SettingsController implements Initializable {
         tblPositionKPI.setVisible(true);
         bntAddPositionKPI.setVisible(true);
         bntRemovePositionKPI.setVisible(true);
+        verifyPositionWeight();
     }
     private void hidePositionKPIs() {
         boxPositionKPIs.setVisible(false);
@@ -1202,7 +1206,7 @@ public class SettingsController implements Initializable {
         decimalFormat.setParseBigDecimal(true);
         try {
             decWeight = (BigDecimal) decimalFormat.parse(txtFormPK_weight.getText());
-            decWeight = decWeight.setScale(2, RoundingMode.HALF_UP);
+            decWeight = decWeight.setScale(4, RoundingMode.HALF_UP);
         } catch (ParseException e) {
             System.out.println("Weight is not a number!");
             decWeight = new BigDecimal("100.00");
@@ -1232,6 +1236,18 @@ public class SettingsController implements Initializable {
         tblPositionKPI.setItems(positionKPIList);
         clearFormPositionKPI();
         hideFormPositionKPI();
+        verifyPositionWeight();
+    }
+
+    private void verifyPositionWeight() {
+        BigDecimal totalWeight = new BigDecimal("0.00");
+
+        for ( PositionKPI pKPI : positionKPIList ){
+            totalWeight = totalWeight.add(pKPI.getWeight());
+        }
+        totalWeight = totalWeight.multiply(new BigDecimal("100.00"));
+        totalWeight = totalWeight.setScale(1, RoundingMode.HALF_UP);
+        lblPositionTotalWeight.setText(totalWeight.toString()+" %");
     }
 
     private void removePositionKPI() {
