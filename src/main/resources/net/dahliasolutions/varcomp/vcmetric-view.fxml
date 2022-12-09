@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCMetricController">
 
 <!--    Navigation    -->
    <HBox alignment="CENTER" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
@@ -18,23 +28,22 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER_RIGHT" spacing="8">
          <Label fx:id="lblPrintJobStatus" visible="false" />
-         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false"/>
+         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false" />
          <Button fx:id="btnMetricPrint" prefWidth="75" text="Print" visible="false" />
          <Button fx:id="btnMetricSave" prefWidth="75" text="Save" visible="false" />
          <Button fx:id="btnMetricHome" prefWidth="75" text="Back" visible="false" />
       </HBox>
    </HBox>
 
-   <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
-         <Pane>
+   <ScrollPane fx:id="spMetric" fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+      <VBox VBox.vgrow="ALWAYS">
 
-         <VBox fx:id="paneMetricTable" spacing="8.0">
+         <VBox fx:id="paneMetricTable" minHeight="250.0" spacing="8.0" VBox.vgrow="ALWAYS">
             <HBox>
                <HBox prefHeight="25.0" prefWidth="350.0" />
                <Button fx:id="bntNewMetric" prefWidth="125" text="New Metric" />
             </HBox>
-            <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
-            <TableView fx:id="tblMetrics" prefHeight="220.0" prefWidth="550.0">
+            <TableView fx:id="tblMetrics" minHeight="150.0" minWidth="550" prefHeight="220.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="tbcMetricLabel" editable="false" text="Metric" />
                   <TableColumn fx:id="tbcMetricEarnings" editable="false" text="Earnings" />
@@ -47,7 +56,7 @@
             </padding>
          </VBox>
 
-         <VBox fx:id="paneFormNewMetric" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+         <VBox fx:id="paneFormNewMetric" managed="false" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
             <HBox>
                <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Metric Label:" />
                <TextField fx:id="txtFormNewLabel" disable="true" prefWidth="369.0" />
@@ -71,7 +80,7 @@
                </Label>
             </HBox>
             <HBox spacing="4.0">
-               <HBox HBox.hgrow="ALWAYS" />
+               <HBox prefWidth="200" />
                <Button fx:id="btnFormNewMetric_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
                <Button fx:id="btnFormNewMetric_save" mnemonicParsing="false" prefWidth="95" text="Save" />
             </HBox>
@@ -80,7 +89,7 @@
             </padding>
          </VBox>
 
-         <VBox fx:id="paneMetricDetail" fillWidth="false" spacing="8.0" visible="false">
+         <VBox fx:id="paneMetricDetail" fillWidth="false" managed="false" spacing="8.0" visible="false" VBox.vgrow="ALWAYS">
             <HBox minHeight="4" prefHeight="4.0" prefWidth="450.0">
                <HBox fx:id="boxMetricDetailStatus" minHeight="4" minWidth="517.0" prefHeight="5.0" style="-fx-background-color: DARKGREEN;" />
             </HBox>
@@ -94,19 +103,19 @@
             <HBox alignment="CENTER_LEFT" spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Year:" />
                <TextField fx:id="txtDetailMetricYear" prefWidth="95.0" />
-               <Label fx:id="lblDetailMetricYearWarn" accessibleText="Warning" prefWidth="8" text="*" textFill="RED">
+               <Label fx:id="lblDetailMetricYearWarn" accessibleText="Warning" prefWidth="8" text="*" textFill="RED" visible="false">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></Label>
                <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Period:" />
                <TextField fx:id="txtDetailMetricPeriod" prefWidth="80.0" />
-               <Label fx:id="lblDetailMetricPeriodWarn" prefWidth="8" text="*" textFill="RED">
+               <Label fx:id="lblDetailMetricPeriodWarn" prefWidth="8" text="*" textFill="RED" visible="false">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></Label>
             </HBox>
             <HBox fx:id="boxMetricDetailTable" spacing="4.0">
-               <TableView fx:id="tblDetailMetricPeriods" prefHeight="115.0" prefWidth="433.0">
+               <TableView fx:id="tblDetailMetricPeriods" minHeight="115.0" prefHeight="215" prefWidth="433.0">
                   <columns>
                      <TableColumn fx:id="tbcDetailPeriod" text="Period" />
                      <TableColumn fx:id="tbcDetailBudget" text="Budget" />
@@ -114,11 +123,48 @@
                      <TableColumn fx:id="tbcDetailEarnings" text="Earnings" />
                   </columns>
                </TableView>
+
                <VBox spacing="4.0">
                   <Button fx:id="btnDetailAddMetricDetail" mnemonicParsing="false" prefWidth="81.0" text="Insert" />
                   <Button fx:id="btnDetailRemoveMetricDetail" mnemonicParsing="false" prefWidth="81.0" text="Remove" />
                </VBox>
             </HBox>
+
+            <VBox fx:id="formDetailMetricPeriod" prefWidth="540" managed="false" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+               <HBox>
+                  <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="95.0" text="Detail Period:">
+                     <padding>
+                        <Insets right="4.0" />
+                     </padding></Label>
+                  <TextField fx:id="txtFormDPPeriod" prefWidth="75.0" />
+               </HBox>
+               <HBox>
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Budget:">
+                     <padding>
+                        <Insets right="4.0" />
+                     </padding></Label>
+                  <TextField fx:id="txtFormDPBudget" prefWidth="115.0" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Actual:">
+                     <padding>
+                        <Insets right="4.0" />
+                     </padding></Label>
+                  <TextField fx:id="txtFormDPActual" prefWidth="115.0" />
+               </HBox>
+               <HBox>
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Earnings:">
+                     <padding>
+                        <Insets right="4.0" />
+                     </padding></Label>
+                  <TextField fx:id="txtFormDPEarnings" prefWidth="115.0" />
+                  <TextField fx:id="txtFormDPDetailID" visible="false" prefWidth="25.0" />
+                  <Button fx:id="btnFormDP_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
+                  <Button fx:id="btnFormDP_save" mnemonicParsing="false" prefWidth="95" text="Save" />
+               </HBox>
+               <padding>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </padding>
+            </VBox>
+
             <HBox>
                <VBox spacing="8.0">
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
@@ -152,104 +198,34 @@
             </HBox>
 
          <!-- Company KPI Info -->
-            <HBox alignment="CENTER_LEFT" spacing="8.0">
-               <Label prefWidth="150.0" text="Company KPIs">
-                  <font>
-                     <Font name="System Bold" size="16.0" />
-                  </font>
-               </Label>
-                  <Line endX="175.0" startX="-175.0" />
-                  <VBox.margin>
-                     <Insets bottom="5.0" top="20.0" />
-                  </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" spacing="4.0">
-               <HBox prefWidth="200.0" />
-               <Button fx:id="btnAddCompanyKPI" mnemonicParsing="false" text="Add KPIs" />
-               <Button fx:id="btnRemoveCompanyKPI" mnemonicParsing="false" text="Remove Selected" />
-            </HBox>
-            <TableView fx:id="tblDetailCompanyKPI" prefHeight="100.0" prefWidth="517.0">
-               <columns>
-                  <TableColumn fx:id="tbcCompanyKPICode" text="KPI" />
-                  <TableColumn fx:id="tbcCompanyKPIScore" text="Score" />
-                  <TableColumn fx:id="tbcCompanyKPIGrade" text="Grade" />
-               </columns>
-            </TableView>
+            <VBox fx:id="boxDetailCompanyKPI">
+               <HBox alignment="CENTER_LEFT" spacing="8.0">
+                  <Label prefWidth="150.0" text="Company KPIs">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                     <Line endX="175.0" startX="-175.0" />
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="20.0" />
+                     </VBox.margin>
+               </HBox>
+               <HBox alignment="CENTER_RIGHT" spacing="4.0">
+                  <HBox prefWidth="200.0" />
+                  <Button fx:id="btnAddCompanyKPI" mnemonicParsing="false" text="Add KPIs" />
+                  <Button fx:id="btnRemoveCompanyKPI" mnemonicParsing="false" text="Remove Selected" />
+               </HBox>
+               <TableView fx:id="tblDetailCompanyKPI" minHeight="150.0" prefHeight="150.0" prefWidth="517.0">
+                  <columns>
+                     <TableColumn fx:id="tbcCompanyKPICode" text="KPI" />
+                     <TableColumn fx:id="tbcCompanyKPIScore" text="Score" />
+                     <TableColumn fx:id="tbcCompanyKPIGrade" text="Grade" />
+                  </columns>
+               </TableView>
+            </VBox>
 
-         <!-- Employee Score and Bonus Info -->
-            <HBox alignment="CENTER_LEFT" spacing="8.0">
-               <Label prefWidth="150.0" text="Scores and Bonuses">
-                  <font>
-                     <Font name="System Bold" size="16.0" />
-                  </font>
-               </Label>
-               <Line endX="175.0" startX="-175.0" />
-               <VBox.margin>
-                  <Insets bottom="5.0" top="20.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" spacing="4.0">
-               <HBox prefWidth="200.0" />
-               <Button fx:id="btnAddEmployee" mnemonicParsing="false" text="Add Employees" />
-               <Button fx:id="btnRemoveEmployee" mnemonicParsing="false" text="Remove Selected" />
-            </HBox>
-            <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" prefWidth="517.0">
-               <columns>
-                  <TableColumn fx:id="tbcEmployeeName" text="Employee ID" />
-                  <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
-                  <TableColumn fx:id="tbcEmployeeGrade" text="Grade" />
-                  <TableColumn fx:id="tbcEmployeeBonus" text="Bonus" />
-               </columns>
-            </TableView>
-            <opaqueInsets>
-               <Insets />
-            </opaqueInsets>
-            <padding>
-               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-            </padding>
-         </VBox>
-
-         <VBox fx:id="formDetailMetricPeriod" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-            <HBox>
-               <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="95.0" text="Detail Period:">
-                     <padding>
-                        <Insets right="4.0" />
-                     </padding></Label>
-               <TextField fx:id="txtFormDPPeriod" prefWidth="75.0" />
-            </HBox>
-            <HBox>
-               <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Budget:">
-                     <padding>
-                        <Insets right="4.0" />
-                     </padding></Label>
-               <TextField fx:id="txtFormDPBudget" prefWidth="115.0" />
-               <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Actual:">
-                     <padding>
-                        <Insets right="4.0" />
-                     </padding></Label>
-               <TextField fx:id="txtFormDPActual" prefWidth="115.0" />
-            </HBox>
-            <HBox>
-               <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Earnings:">
-                     <padding>
-                        <Insets right="4.0" />
-                     </padding></Label>
-               <TextField fx:id="txtFormDPEarnings" prefWidth="115.0" />
-            </HBox>
-
-            <HBox spacing="4.0">
-               <HBox prefHeight="25.0" prefWidth="200.0" />
-               <TextField fx:id="txtFormDPDetailID" disable="true" prefWidth="50.0" />
-               <Button fx:id="btnFormDP_cancel" mnemonicParsing="false" prefWidth="95" text="Cancel" />
-               <Button fx:id="btnFormDP_save" mnemonicParsing="false" prefWidth="95" text="Save" />
-            </HBox>
-            <padding>
-               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-            </padding>
-         </VBox>
-
-         <!-- Company KPI Editor -->
-         <VBox fx:id="paneDetailEditorCompanyKPI" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <!-- Company KPI Editor -->
+            <VBox fx:id="paneDetailEditorCompanyKPI" managed="false" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
                <HBox spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="KPI:" />
                   <Label fx:id="lblCompKPIEditorCode" prefWidth="105.0" text="AGE">
@@ -339,13 +315,46 @@
                </padding>
             </VBox>
 
-         </Pane>
+         <!-- Employee Score and Bonus Info -->
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+               <Label prefWidth="150.0" text="Scores and Bonuses">
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font>
+               </Label>
+               <Line endX="175.0" startX="-175.0" />
+               <VBox.margin>
+                  <Insets bottom="5.0" top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="4.0">
+               <HBox prefWidth="200.0" />
+               <Button fx:id="btnAddEmployee" mnemonicParsing="false" text="Add Employees" />
+               <Button fx:id="btnRemoveEmployee" mnemonicParsing="false" text="Remove Selected" />
+            </HBox>
+            <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" minHeight="200.0" prefWidth="517.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="tbcEmployeeName" text="Employee ID" />
+                  <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
+                  <TableColumn fx:id="tbcEmployeeGrade" text="Grade" />
+                  <TableColumn fx:id="tbcEmployeeBonus" text="Bonus" />
+               </columns>
+            </TableView>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <padding>
+               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </padding>
+         </VBox>
+
+      </VBox>
    </ScrollPane>
 
-   <ScrollPane fx:id="paneEmployeeKPI" fitToWidth="true" visible="false" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
-      <Pane>
+   <ScrollPane fx:id="paneEmployeeKPI" fitToHeight="true" fitToWidth="true" managed="false" visible="false" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+      <VBox VBox.vgrow="ALWAYS">
       <!-- Employee Editor -->
-         <VBox fillWidth="false" spacing="8.0">
+         <VBox fillWidth="false" spacing="8.0" minHeight="350" VBox.vgrow="ALWAYS">
             <HBox prefWidth="550">
                <Label text="Employee KPI Editor">
                   <font>
@@ -359,7 +368,7 @@
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
             </HBox>
-            <HBox VBox.vgrow="ALWAYS">
+            <HBox>
                <VBox spacing="4.0">
                   <HBox alignment="CENTER_LEFT" spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="Employee ID:" />
@@ -449,7 +458,7 @@
                   <Insets top="8.0" />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="tblEditorKPIs" prefHeight="200.0" prefWidth="550">
+            <TableView fx:id="tblEditorKPIs" prefHeight="200.0" prefWidth="550" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="tbcEditorKPICode" text="KPI" />
                 <TableColumn fx:id="tbcEditorKPIWeight" text="Weight" />
@@ -464,7 +473,7 @@
          </VBox>
 
       <!-- Employee KPI Editor -->
-         <VBox fx:id="paneFormEditorKPI" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+         <VBox fx:id="paneFormEditorKPI" managed="false" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
             <HBox spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="KPI:" />
                <Label fx:id="lblKPIEditorCode" prefWidth="105.0" text="AGE">
@@ -472,8 +481,7 @@
                      <Font size="14.0" />
                   </font>
                </Label>
-               <Label fx:id="lblKPIEditorCompany" prefHeight="23.0" prefWidth="325.0"
-                      text="Please Edit this KPI under the Company KPI!" textFill="#ab0000" HBox.hgrow="ALWAYS">
+               <Label fx:id="lblKPIEditorCompany" prefHeight="23.0" prefWidth="325.0" text="Please Edit this KPI under the Company KPI!" textFill="#ab0000" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -559,7 +567,7 @@
                <Insets bottom="8.0" top="8.0" />
             </padding>
          </VBox>
-      </Pane>
+      </VBox>
    </ScrollPane>
 
 </AnchorPane>

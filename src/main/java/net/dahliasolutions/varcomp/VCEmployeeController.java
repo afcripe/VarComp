@@ -103,10 +103,12 @@ public class VCEmployeeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        EmployeeUtils.updateAllEmployeeShares();
+
         employeeList = FXCollections.observableArrayList(EmployeeConnector.getEmployees());
         positionList = FXCollections.observableArrayList(PositionsConnector.getPositions());
 
-        btnEmployeeHome.setOnAction(event -> navEmployeeHome());
+        btnEmployeeHome.setOnAction(event -> navEmployee("home"));
 
     /* Employee List */
         bntNewEmployee.setOnAction(event -> setFormEmployee(new Employee()));
@@ -143,7 +145,7 @@ public class VCEmployeeController implements Initializable {
 
         btnFormEmployee_cancel.setOnAction(event -> {
             clearFormEmployee();
-            showPaneFormEmployee(false);
+            navEmployee("home");
         });
         btnFormEmployee_save.setOnAction(event -> saveEmployee());
         txtFormEmployeeID.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeFormFocusState(newValue));
@@ -179,27 +181,39 @@ public class VCEmployeeController implements Initializable {
         });
         tbcDetailBonus.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
 
-
-        showPaneEmployeeList();
+        navEmployee("home");
     }
 
-    private void navEmployeeHome() {
-        showPaneEmployeeDetail(false);
-        showPaneEmployeeList();
-    }
-
-    private void showPaneEmployeeList() {
+    private void navEmployee(String loc) {
+        paneFormEmployee.setVisible(false);
+        paneFormEmployee.setManaged(false);
         paneEmployeeDetail.setVisible(false);
-        paneEmployeeTable.setVisible(true);
-        btnEmployeeHome.setVisible(false);
+        paneEmployeeDetail.setManaged(false);
+        paneEmployeeTable.setVisible(false);
+        paneEmployeeTable.setManaged(false);
         btnEditEmployee_save.setVisible(false);
-        showPaneFormEmployee(false);
+        btnEmployeeHome.setVisible(false);
+        switch (loc) {
+            case "new" -> {
+                paneFormEmployee.setVisible(true);
+                paneFormEmployee.setManaged(true);
+            }
+            case "detail" -> {
+                paneEmployeeDetail.setVisible(true);
+                paneEmployeeDetail.setManaged(true);
+                btnEditEmployee_save.setVisible(true);
+                btnEmployeeHome.setVisible(true);
+            }
+            default -> {
+                paneEmployeeTable.setVisible(true);
+                paneEmployeeTable.setManaged(true);
+            }
+        }
     }
-
 
     private void setFormEmployee(Employee employee) {
         fillFormEmployee(employee);
-        showPaneFormEmployee(true);
+        navEmployee("new");
     }
     private void fillFormEmployee(Employee employee) {
         txtFormEmployeeID.setText(employee.getEmployee_id());
@@ -216,10 +230,6 @@ public class VCEmployeeController implements Initializable {
         }
     }
 
-    private void showPaneFormEmployee(Boolean show) {
-        paneFormEmployee.setVisible(show);
-    }
-
     private void clearFormEmployee() {
         txtFormEmployeeID.setText("");
         txtFormEmployeeLastName.setText("");
@@ -228,6 +238,7 @@ public class VCEmployeeController implements Initializable {
         txtFormEmployeeShares.setText("");
         cmbFormEmployeePosition.setValue("");
         chkFormEmployeeActive.setSelected(false);
+        pkrStartDate.setValue(null);
     }
 
     private void employeeFormFocusState(Boolean b) {
@@ -259,14 +270,7 @@ public class VCEmployeeController implements Initializable {
         tblEmployees.getItems().removeAll();
         tblEmployees.setItems(employeeList);
         clearFormEmployee();
-        showPaneFormEmployee(false);
-    }
-
-    private void showPaneEmployeeDetail(Boolean show) {
-        paneEmployeeTable.setVisible(!show);
-        paneEmployeeDetail.setVisible(show);
-        btnEmployeeHome.setVisible(show);
-        btnEditEmployee_save.setVisible(show);
+        navEmployee("home");
     }
     private void fillPaneEmployeeDetail(Employee employee) {
         selectedEmployee.setEmployee(employee);
@@ -292,7 +296,7 @@ public class VCEmployeeController implements Initializable {
         tblEmployeeMetrics.getItems().removeAll();
         employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
         tblEmployeeMetrics.setItems(employeeScores);
-        showPaneEmployeeDetail(true);
+        navEmployee("detail");
     }
 
     private void employeeDetailFocusState(Boolean b) {

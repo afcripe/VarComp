@@ -40,6 +40,8 @@ public class VCMetricController implements Initializable {
     @FXML
     private CheckBox chkPrintPreview;
     @FXML
+    private ScrollPane spMetric;
+    @FXML
     private Pane paneMetricTable;
     @FXML
     private Button bntNewMetric;
@@ -139,6 +141,8 @@ public class VCMetricController implements Initializable {
     @FXML
     private Button btnFormDP_save;
 
+    @FXML
+    private VBox boxDetailCompanyKPI;
     @FXML
     private Button btnAddCompanyKPI;
     @FXML
@@ -308,7 +312,7 @@ public class VCMetricController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         metricList = FXCollections.observableArrayList(MetricConnector.getMetrics());
 
-        btnMetricHome.setOnAction(event -> navMetricHome());
+        btnMetricHome.setOnAction(event -> navMetric(""));
         bntNewMetric.setOnAction(event -> newMetric());
         txtFormNewYear.setOnKeyPressed(this::updateFormNewMetricLabel);
         txtFormNewPeriod.setOnKeyPressed(this::updateFormNewMetricLabel);
@@ -427,7 +431,7 @@ public class VCMetricController implements Initializable {
                 }
             }
         });
-        btnCompKPIEditorCancel.setOnAction(event -> cancelCompanyKPIEditor());
+        btnCompKPIEditorCancel.setOnAction(event -> showCompKIPEditor(false));
         btnCompKPIEditorSave.setOnAction(event -> {
             try {
                 saveCompanyKPIEditor();
@@ -467,19 +471,19 @@ public class VCMetricController implements Initializable {
         tbcEditorKPICode.setCellValueFactory(new PropertyValueFactory<>("kpi_code"));
         tbcEditorKPICode.setPrefWidth(85);
         tbcEditorKPIWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
-        tbcEditorKPIWeight.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/4);
+        tbcEditorKPIWeight.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/5);
         tbcEditorKPIClass.setCellValueFactory(param -> new SimpleObjectProperty<>(KPIClassConnector.getKPIClass(param.getValue().getKpi_class()).getName()));
-        tbcEditorKPIClass.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/4);
+        tbcEditorKPIClass.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/5);
         tbcEditorKPIScore.setCellValueFactory(param -> {
             NumberFormat fm = NumberFormat.getNumberInstance();
             return new SimpleObjectProperty<>(fm.format(param.getValue().getKpi_score()));
         });
-        tbcEditorKPIScore.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/4);
+        tbcEditorKPIScore.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/5);
         tbcEditorKPIGrade.setCellValueFactory(param -> {
             NumberFormat fm = NumberFormat.getPercentInstance();
             return new SimpleObjectProperty<>(fm.format(param.getValue().getKpi_grade()));
         });
-        tbcEditorKPIGrade.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/4);
+        tbcEditorKPIGrade.setPrefWidth((tblEditorKPIs.getPrefWidth()-90)/5);
         tblEditorKPIs.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
                 if(!metricDetail.getLocked()) {
@@ -488,7 +492,7 @@ public class VCMetricController implements Initializable {
             }
         });
 
-        btnKPIEditorCancel.setOnAction(event -> cancelKPIEditor());
+        btnKPIEditorCancel.setOnAction(event -> showFormEditorKPI(false));
         btnKPIEditorSave.setOnAction(event -> {
             try {
                 saveKPIEditor();
@@ -497,7 +501,7 @@ public class VCMetricController implements Initializable {
             }
         });
 
-        navMetricHome();
+        navMetric("");
     }
 
     private void focusState(Boolean b) {
@@ -519,15 +523,12 @@ public class VCMetricController implements Initializable {
         txtFormNewYear.setText(Integer.toString(nY));
         txtFormNewPeriod.setText(Integer.toString(nP));
         txtFormNewLabel.setText(nY +" - "+ nP);
-        showFormNewMetric(true);
-    }
 
-    private void showFormNewMetric(Boolean show) {
         paneFormNewMetric.setLayoutX(tblMetrics.getLayoutX());
         paneFormNewMetric.setLayoutY(tblMetrics.getLayoutY());
         paneFormNewMetric.setPrefHeight(tblMetrics.getPrefHeight());
         paneFormNewMetric.setPrefWidth(tblMetrics.getPrefWidth());
-        paneFormNewMetric.setVisible(show);
+        navMetric("new");
     }
 
     private void updateFormNewMetricLabel(KeyEvent keyEvent) {
@@ -550,7 +551,7 @@ public class VCMetricController implements Initializable {
         txtFormNewYear.setText("");
         txtFormNewPeriod.setText("");
         txtFormNewLabel.setText("");
-        showFormNewMetric(false);
+        navMetric("");
     }
     private void saveNewMetric() {
         Metric metric = new Metric();
@@ -567,19 +568,48 @@ public class VCMetricController implements Initializable {
         tblMetrics.setItems(metricList);
     }
 
-    private void navMetricHome(){
+    private void navMetric(String loc){
+        paneMetricTable.setVisible(false);
+        paneMetricTable.setManaged(false);
         paneFormNewMetric.setVisible(false);
+        paneFormNewMetric.setManaged(false);
         paneEmployeeKPI.setVisible(false);
+        paneEmployeeKPI.setManaged(false);
         paneMetricDetail.setVisible(false);
         paneMetricDetail.setManaged(false);
+        paneFormEditorKPI.setVisible(false);
+        paneFormEditorKPI.setManaged(false);
+        showCompKIPEditor(false);
         showFormEditorKPI(false);
-        fillPaneMetricDetail(new Metric());
-        showPaneMetricDetail(false);
+
+        switch (loc) {
+            case "new" -> {
+                paneFormNewMetric.setVisible(true);
+                paneFormNewMetric.setManaged(true);
+            }
+            case "detail" -> {
+                paneMetricDetail.setVisible(true);
+                paneMetricDetail.setManaged(true);
+                btnMetricSave.setVisible(true);
+                btnMetricHome.setVisible(true);
+                btnMetricPrint.setVisible(true);
+                chkPrintPreview.setVisible(true);
+                lblPrintJobStatus.setVisible(true);
+                lblPrintJobStatus.setText("");
+                lblDetailMetricYearWarn.setVisible(false);
+                lblDetailMetricPeriodWarn.setVisible(false);
+            }
+            default -> {
+                paneMetricTable.setVisible(true);
+                paneMetricTable.setManaged(true);
+                fillPaneMetricDetail(new Metric());
+            }
+        }
     }
     private void navMetricDetail(Metric metric){
         metricDetail.setMetric(metric);
         fillPaneMetricDetail(metricDetail);
-        showPaneMetricDetail(true);
+        navMetric("detail");
     }
 
     private void fillPaneMetricDetail(Metric metric) {
@@ -650,24 +680,6 @@ public class VCMetricController implements Initializable {
         tblDetailEmployeeScores.setItems(employeeScoresObservableList);
     }
 
-    private void showPaneMetricDetail(Boolean show) {
-        lblDetailMetricYearWarn.setVisible(false);
-        lblDetailMetricPeriodWarn.setVisible(false);
-        paneEmployeeKPI.setVisible(false);
-        showFormEditorKPI(false);
-
-        btnMetricSave.setVisible(show);
-        btnMetricHome.setVisible(show);
-        btnMetricPrint.setVisible(show);
-        chkPrintPreview.setVisible(show);
-        lblPrintJobStatus.setVisible(show);
-        lblPrintJobStatus.setText("");
-
-        paneMetricTable.setVisible(!show);
-        paneMetricDetail.setVisible(show);
-        paneMetricDetail.setManaged(show);
-    }
-
      private void metricDetailUpdateLabel() {
          lblDetailMetricYearWarn.setVisible(false);
          lblDetailMetricPeriodWarn.setVisible(false);
@@ -725,7 +737,7 @@ public class VCMetricController implements Initializable {
         metricDetail.setMetric_shares(Integer.parseInt(txtDetailMetricShares.getText()));
         metricDetail.updateMetric();
         setLockStyle();
-        // navMetricHome();
+
         metricList = FXCollections.observableArrayList(MetricConnector.getMetrics());
         tblMetrics.getItems().removeAll();
         tblMetrics.setItems(metricList);
@@ -781,13 +793,18 @@ public class VCMetricController implements Initializable {
 
     private void showFormDP() {
 //        paneMetricDetail.setVisible(true);
+        boxMetricDetailTable.setVisible(true);
+        boxMetricDetailTable.setManaged(true);
         formDetailMetricPeriod.setVisible(false);
+        formDetailMetricPeriod.setManaged(false);
     }
     private void showFormDP(MetricDetail md) {
+        boxMetricDetailTable.setVisible(false);
+        boxMetricDetailTable.setManaged(false);
         formDetailMetricPeriod.setLayoutX(boxMetricDetailTable.getLayoutX());
         formDetailMetricPeriod.setLayoutY(boxMetricDetailTable.getLayoutY());
-        formDetailMetricPeriod.setPrefWidth(tblDetailMetricPeriods.getPrefWidth());
         formDetailMetricPeriod.setVisible(true);
+        formDetailMetricPeriod.setManaged(true);
 
         txtFormDPPeriod.setText(md.getDetail_period().toString());
         txtFormDPBudget.setText(md.getDetail_budget().toString());
@@ -911,15 +928,18 @@ public class VCMetricController implements Initializable {
         if(show) {
             fillFormEditorCompanyKPI();
         }
+        boxDetailCompanyKPI.setVisible(!show);
+        boxDetailCompanyKPI.setManaged(!show);
         paneDetailEditorCompanyKPI.setVisible(show);
+        paneDetailEditorCompanyKPI.setManaged(show);
     }
 
     private void fillFormEditorCompanyKPI() {
         CompanyKPI cKPI = tblDetailCompanyKPI.getSelectionModel().getSelectedItem();
         paneDetailEditorCompanyKPI.setLayoutX(tblDetailCompanyKPI.getLayoutX());
         paneDetailEditorCompanyKPI.setLayoutY(tblDetailCompanyKPI.getLayoutY());
-        paneDetailEditorCompanyKPI.setPrefHeight(tblDetailCompanyKPI.getPrefHeight());
-        paneDetailEditorCompanyKPI.setPrefWidth(tblDetailCompanyKPI.getPrefWidth());
+//        paneDetailEditorCompanyKPI.setPrefHeight(tblDetailCompanyKPI.getPrefHeight());
+//        paneDetailEditorCompanyKPI.setPrefWidth(tblDetailCompanyKPI.getPrefWidth());
 
         lblCompKPIEditorCode.setText(cKPI.getKpi_code());
         lblCompKPIEditorClass.setText(KPIClassConnector.getKPIClass(cKPI.getKpi_class()).getName());
@@ -975,10 +995,6 @@ public class VCMetricController implements Initializable {
         }
         cmbCompKPIEditorCalc.setValue(cbCalc);
     }
-
-    private void cancelCompanyKPIEditor() {
-        paneDetailEditorCompanyKPI.setVisible(false);
-    }
     private void saveCompanyKPIEditor() throws ParseException {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator('.');
@@ -1026,6 +1042,7 @@ public class VCMetricController implements Initializable {
 
     private void closeEmployeeKPIEdit() {
         paneEmployeeKPI.setVisible(false);
+        paneEmployeeKPI.setManaged(false);
         showFormEditorKPI(false);
     }
 
@@ -1055,20 +1072,24 @@ public class VCMetricController implements Initializable {
 
         showFormEditorKPI(false);
         paneEmployeeKPI.setVisible(true);
+        paneEmployeeKPI.setManaged(true);
     }
     private void showFormEditorKPI(Boolean show) {
         if(show) {
             fillFormEditorKPI();
         }
+        tblEditorKPIs.setVisible(!show);
+        tblEditorKPIs.setManaged(!show);
         paneFormEditorKPI.setVisible(show);
+        paneFormEditorKPI.setManaged(show);
     }
 
     private void fillFormEditorKPI() {
         EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
         paneFormEditorKPI.setLayoutX(tblEditorKPIs.getLayoutX());
         paneFormEditorKPI.setLayoutY(tblEditorKPIs.getLayoutY());
-        paneFormEditorKPI.setPrefHeight(tblEditorKPIs.getPrefHeight());
-        paneFormEditorKPI.setPrefWidth(tblEditorKPIs.getPrefWidth());
+//        paneFormEditorKPI.setPrefHeight(tblEditorKPIs.getPrefHeight());
+//        paneFormEditorKPI.setPrefWidth(tblEditorKPIs.getPrefWidth());
 
         lblKPIEditorCode.setText(eKPI.getKpi_code());
         lblKPIEditorClass.setText(KPIClassConnector.getKPIClass(eKPI.getKpi_class()).toString());
@@ -1130,14 +1151,10 @@ public class VCMetricController implements Initializable {
 
         lblKPIEditorCompany.setVisible(eKPI.getKpi_class().equals(1));
     }
-
-    private void cancelKPIEditor() {
-        paneFormEditorKPI.setVisible(false);
-    }
     private void saveKPIEditor() throws ParseException {
         EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
         if(eKPI.getKpi_class().equals(1)) {
-            cancelKPIEditor();
+            showFormEditorKPI(false);
             return;
         }
 

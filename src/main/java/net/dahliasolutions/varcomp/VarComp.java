@@ -26,7 +26,8 @@ public class VarComp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        primaryStage.setMinWidth(680);
+//        primaryStage.setMinWidth(680);
+//        primaryStage.setMinHeight(380);
 
         Image appIcon = new Image(Objects.requireNonNull(VarComp.class.getResource("VcompIcon.png")).openStream());
         stage.getIcons().add(appIcon);
