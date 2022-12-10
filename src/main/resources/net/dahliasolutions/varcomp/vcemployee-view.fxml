@@ -34,7 +34,7 @@
       <ScrollPane fitToHeight="true" fitToWidth="true" minViewportHeight="250.0" minViewportWidth="250.0" prefViewportHeight="450.0" prefViewportWidth="550.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
          <VBox VBox.vgrow="ALWAYS">
       
-         <VBox fx:id="paneEmployeeTable" managed="false" minHeight="450.0" minWidth="450" prefWidth="550" spacing="4.0" VBox.vgrow="ALWAYS">
+         <VBox fx:id="paneEmployeeTable" managed="false" minHeight="450.0" minWidth="450" prefWidth="550" spacing="4.0" visible="false" VBox.vgrow="ALWAYS">
                   <HBox alignment="CENTER">
                      <HBox HBox.hgrow="ALWAYS" />
                      <Button fx:id="bntNewEmployee" prefWidth="125" text="New Employee" />
@@ -54,7 +54,7 @@
             </padding>
          </VBox>
 
-         <VBox fx:id="paneFormEmployee" alignment="TOP_CENTER" layoutX="4.0" layoutY="35.0" minHeight="450.0" minWidth="450" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+         <VBox fx:id="paneFormEmployee" alignment="TOP_CENTER" layoutX="4.0" layoutY="35.0" managed="false" minHeight="450.0" minWidth="450" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
             <HBox spacing="16">
                <VBox spacing="8.0">
                   <HBox spacing="4">
@@ -103,7 +103,7 @@
             </padding>
          </VBox>
 
-         <VBox fx:id="paneEmployeeDetail" fillWidth="false" managed="false" minHeight="450.0" minWidth="450" prefWidth="550.0" visible="false" VBox.vgrow="ALWAYS">
+         <VBox fx:id="paneEmployeeDetail" fillWidth="false" minHeight="450.0" minWidth="450" prefWidth="550.0" VBox.vgrow="ALWAYS">
             <HBox prefWidth="540.0" spacing="16">
                <VBox spacing="8.0">
                   <HBox spacing="4">
@@ -152,11 +152,37 @@
                      <Font name="System Bold" size="16.0" />
                   </font>
                </Label>
-               <Line endX="390.0" />
+               <Line endX="258.0" />
+               <Button fx:id="btnShowFilter" visible="false" alignment="CENTER" minHeight="22.0" mnemonicParsing="false" prefWidth="75.0" text="FIlter" textAlignment="CENTER">
+                  <font>
+                     <Font size="12.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets left="50.0" />
+                  </HBox.margin>
+               </Button>
                <VBox.margin>
                   <Insets bottom="5.0" top="20.0" />
                </VBox.margin>
             </HBox>
+            <HBox fx:id="boxFilter" visible="false" alignment="CENTER" maxHeight="40.0" maxWidth="475.0" minHeight="0" minWidth="475.0" prefHeight="40.0" prefWidth="475.0" spacing="5.0" style="-fx-border-color: gray;">
+               <ComboBox fx:id="cmbFilterStart" prefHeight="26.0" prefWidth="136.0" />
+               <Label text=" - " />
+               <ComboBox fx:id="cmbFilterEnd" layoutX="97.0" layoutY="10.0" prefHeight="26.0" prefWidth="136.0" />
+               <Button fx:id="btnFilterApply" mnemonicParsing="false" prefWidth="75.0" text="Update" />
+               <Button fx:id="btnFilterClear" layoutX="368.0" layoutY="17.0" mnemonicParsing="false" prefWidth="75.0" text="Clear" />
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <Label fx:id="lblFilter" visible="false" managed="false" text="Date Range: yesterday - today">
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+               </padding>
+            </Label>
             <TableView fx:id="tblEmployeeMetrics" minHeight="200.0" minWidth="250" prefWidth="500.0" VBox.vgrow="ALWAYS">
               <columns>
                  <TableColumn fx:id="tbcDetailMetric" prefWidth="125" text="Metric" />

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
 import net.dahliasolutions.varcomp.connectors.EmployeeScoreConnector;
@@ -95,6 +96,20 @@ public class VCEmployeeController implements Initializable {
     private TableColumn<EmployeeScore, String> tbcDetailGrade;
     @FXML
     private TableColumn<EmployeeScore, String> tbcDetailBonus;
+    @FXML
+    private HBox boxFilter;
+    @FXML
+    private Button btnShowFilter;
+    @FXML
+    private ComboBox<String> cmbFilterStart;
+    @FXML
+    private ComboBox<String> cmbFilterEnd;
+    @FXML
+    private Button btnFilterClear;
+    @FXML
+    private Button btnFilterApply;
+    @FXML
+    private Label lblFilter;
 
     private final Employee selectedEmployee = new Employee();
     ObservableList<Employee> employeeList;
@@ -180,6 +195,10 @@ public class VCEmployeeController implements Initializable {
             return new SimpleObjectProperty<>(fm.format(param.getValue().getBonus()));
         });
         tbcDetailBonus.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
+
+        btnShowFilter.setOnAction(event -> toggleFilterDisplay());
+        btnFilterApply.setOnAction(event -> applyFilter());
+        btnFilterClear.setOnAction(event -> clearFilter());
 
         navEmployee("home");
     }
@@ -322,4 +341,29 @@ public class VCEmployeeController implements Initializable {
         tblEmployees.getItems().removeAll();
         tblEmployees.setItems(employeeList);
     }
+
+    private void toggleFilterDisplay() {
+        if ( boxFilter.isVisible() ) {
+            boxFilter.setVisible(false);
+            boxFilter.setMinHeight(0);
+        } else {
+            boxFilter.setVisible(true);
+            boxFilter.setMinHeight(40);
+        }
+    }
+
+    private void toggleFilterLabel() {
+        if ( lblFilter.getText().isEmpty() ) {
+            lblFilter.setVisible(false);
+            lblFilter.setManaged(false);
+        } else {
+            lblFilter.setVisible(true);
+            lblFilter.setManaged(true);
+        }
+    }
+
+    private void applyFilter() {}
+
+    private void clearFilter() {}
+
 }
