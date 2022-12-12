@@ -168,7 +168,11 @@ public class VCEmployeeController implements Initializable {
         pkrStartDate.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeFormFocusState(newValue));
         cmbFormEmployeePosition.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> employeeFormFocusState(newValue));
 
-    /* Employee Detail */
+
+        txtFormEmployeeFirstName.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusState(newValue));
+        txtFormEmployeeLastName.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusState(newValue));
+
+        /* Employee Detail */
         btnEditEmployee_save.setOnAction(event -> updateEmployee());
 
         txtEmployeeID.setOnKeyPressed(event -> {
@@ -249,6 +253,24 @@ public class VCEmployeeController implements Initializable {
         }
     }
 
+    private void focusState(Boolean b) {
+        if(!b) {
+            formUpdateEmployeeID();
+        }
+    }
+    private void formUpdateEmployeeID() {
+        String idA = "";
+        String idB = "";
+        if ( !txtFormEmployeeFirstName.getText().isEmpty() ) {
+            idA = txtFormEmployeeFirstName.getText().substring(0,1);
+        }
+        if ( !txtFormEmployeeLastName.getText().isEmpty() ) {
+            idB = txtFormEmployeeLastName.getText().substring(0,4);
+        }
+        txtFormEmployeeID.setText(idA.toUpperCase()+idB.toUpperCase());
+        System.out.println(idA);
+    }
+
     private void clearFormEmployee() {
         txtFormEmployeeID.setText("");
         txtFormEmployeeLastName.setText("");
@@ -277,9 +299,13 @@ public class VCEmployeeController implements Initializable {
     }
 
     private void saveEmployee() {
-        String[] split = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().split(":");
+        int pos = 0;
+        if (cmbEmployeePosition.getSelectionModel().getSelectedItem() != null) {
+            String[] split = cmbFormEmployeePosition.getSelectionModel().getSelectedItem().split(":");
+            pos = Integer.parseInt(split[0]);
+        }
 
-        Employee employee = new Employee(txtFormEmployeeID.getText(), Integer.parseInt(split[0]), txtFormEmployeeFirstName.getText(),
+        Employee employee = new Employee(txtFormEmployeeID.getText(), pos, txtFormEmployeeFirstName.getText(),
                 txtFormEmployeeLastName.getText(), pkrStartDate.getValue(), chkFormEmployeeActive.isSelected(),
                 Integer.parseInt(txtFormEmployeeStartingShares.getText()), Integer.parseInt(txtFormEmployeeShares.getText()));
 

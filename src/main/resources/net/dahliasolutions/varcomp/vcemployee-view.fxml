@@ -59,7 +59,7 @@
                <VBox spacing="8.0">
                   <HBox spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Employee ID:" />
-                     <TextField fx:id="txtFormEmployeeID" prefWidth="75.0" />
+                     <TextField fx:id="txtFormEmployeeID" disable="true" prefWidth="75.0" />
                   </HBox>
                   <HBox spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="First Name:" />

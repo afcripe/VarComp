@@ -2,23 +2,32 @@ package net.dahliasolutions.varcomp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import net.dahliasolutions.varcomp.connectors.AppCompanyConnector;
 import net.dahliasolutions.varcomp.connectors.CompanyConnector;
 import net.dahliasolutions.varcomp.connectors.UserConnector;
 import net.dahliasolutions.varcomp.models.AppCompany;
 import net.dahliasolutions.varcomp.models.Company;
+import net.dahliasolutions.varcomp.models.KPIClass;
 import net.dahliasolutions.varcomp.models.User;
 
-import java.io.File;
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController extends ViewController implements Initializable {
+
+    @FXML
+    private ImageView imgApplicationLogo;
     @FXML
     private TextField txtUsername;
     @FXML
@@ -44,6 +53,7 @@ public class LoginController extends ViewController implements Initializable {
 
     ObservableList<AppCompany> companies;
 
+    final FileChooser fcLogo = new FileChooser();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -91,6 +101,13 @@ public class LoginController extends ViewController implements Initializable {
             }
         });
         btnNewCompany.setOnAction(event -> createCompany());
+
+        imgApplicationLogo.setOnMousePressed(event -> {
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                browseApplicationLogo();
+            }
+        });
+
         fillCompanies();
 
     }
@@ -102,6 +119,54 @@ public class LoginController extends ViewController implements Initializable {
         choiceCompanies.getItems().removeAll();
         companies.forEach(company -> choiceCompanies.getItems().add(company.getCompany_name()));
         choiceCompanies.setValue(choiceCompanies.getItems().get(0));
+        loadApplicationLogo();
+    }
+
+    private void loadApplicationLogo() {
+        String logoPath = DBUtils.getInstallDir()+DBUtils.getFS()+"applicationLogo.png";
+
+        File logoFile = new File(logoPath);
+        if(logoFile.exists()) {
+            try {
+                InputStream stream = new FileInputStream(logoFile);
+                imgApplicationLogo.setImage(new Image(stream));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void browseApplicationLogo() {
+        Image newLogo;
+        String logoPath = DBUtils.getInstallDir()+DBUtils.getFS()+"applicationLogo.png";
+
+        fcLogo.setTitle("Select Logo Image");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
+        fcLogo.getExtensionFilters().add(extFilter);
+        File file = fcLogo.showOpenDialog(null);
+
+        if (file == null) {
+            return;
+        }
+        File logoFile = new File(logoPath);
+        try {
+            InputStream stream = new FileInputStream(file);
+            newLogo = new Image(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            if(!logoFile.exists()) logoFile.createNewFile();
+        }catch (IOException ioE) {
+            System.out.println(ioE);
+        }
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(newLogo, null), "PNG", logoFile);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        imgApplicationLogo.setImage(newLogo);
     }
 
     private void createCompany() {

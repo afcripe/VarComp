@@ -2,10 +2,11 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" minHeight="400.0" minWidth="600.0" spacing="12.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.LoginController">
+<VBox alignment="CENTER" minHeight="400.0" minWidth="600.0" spacing="12.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.LoginController">
 
    <HBox VBox.vgrow="ALWAYS">
       <Label alignment="TOP_LEFT" text="Variable Compensation">
@@ -17,6 +18,10 @@
          </padding>
       </Label>
    </HBox>
+   <ImageView fx:id="imgApplicationLogo" fitHeight="62.0" fitWidth="250.0" layoutX="125.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+      <VBox.margin>
+         <Insets bottom="20.0" />
+      </VBox.margin></ImageView>
    <HBox alignment="CENTER" fillHeight="false">
       <Label text="Username:" textAlignment="RIGHT">
          <font>
