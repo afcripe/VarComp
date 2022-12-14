@@ -117,8 +117,6 @@ public class SettingsController implements Initializable {
     @FXML
     private TableColumn<KPIClass, String> tbcClassDescription;
     @FXML
-    private TableColumn<KPIClass, CheckBox> tbcClassAutoFill;
-    @FXML
     private TableView<KPIMaster> tblMasterKPIs;
     @FXML
     private TableColumn<KPIMaster, Integer> tbcKPIid;
@@ -337,11 +335,6 @@ public class SettingsController implements Initializable {
         tbcClassName.setCellFactory(TextFieldTableCell.forTableColumn());
         tbcClassDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tbcClassDescription.setCellFactory(TextFieldTableCell.forTableColumn());
-        tbcClassAutoFill.setCellValueFactory(param -> {
-            CheckBox checkBox = new CheckBox();
-            checkBox.setSelected(param.getValue().getAuto_fill_employees());
-            return new SimpleObjectProperty<>(checkBox);
-        });
         tblKPIClasses.setItems(kpiClassList);
         tblKPIClasses.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
@@ -855,7 +848,6 @@ public class SettingsController implements Initializable {
         txtFormClassKPI_id.setText(kpiClass.getKpi_class_id().toString());
         txtFormClassKPI_name.setText(kpiClass.getName());
         txtFormClassKPI_description.setText(kpiClass.getDescription());
-        chkFormClassKPI_auto.setSelected(kpiClass.getAuto_fill_employees());
     }
     private void showPaneFormClassKPI() {
         System.out.println(tblKPIClasses.getPrefWidth()+" x "+tblKPIClasses.getPrefHeight());
@@ -878,12 +870,11 @@ public class SettingsController implements Initializable {
         txtFormClassKPI_name.setText("");
         txtFormClassKPI_description.setText("");
         cmbFormMastKPI_class.setValue("");
-        chkFormClassKPI_auto.setSelected(false);
     }
 
     private void saveKPIClass() {
         KPIClass kpiClass = new KPIClass(Integer.parseInt(txtFormClassKPI_id.getText()), txtFormClassKPI_name.getText(),
-                txtFormClassKPI_description.getText(), chkFormClassKPI_auto.isSelected());
+                txtFormClassKPI_description.getText(), false);
 
         if ( kpiClass.getKpi_class_id().equals(0)) {
             kpiClass.insertKPIClass();
@@ -1015,18 +1006,49 @@ public class SettingsController implements Initializable {
         DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
         decimalFormat.setParseBigDecimal(true);
 
-        decScoreExt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_extraordinary.getText());
-        decScoreExt = decScoreExt.setScale(2, RoundingMode.HALF_UP);
-        decScoreGrt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_great.getText());
-        decScoreGrt = decScoreGrt.setScale(2, RoundingMode.HALF_UP);
-        decScoreWell = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_well.getText());
-        decScoreWell = decScoreWell.setScale(2, RoundingMode.HALF_UP);
-        decScoreNI = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_needs_improvement.getText());
-        decScoreNI = decScoreNI.setScale(2, RoundingMode.HALF_UP);
-        decScorePoor = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_not_acceptable.getText());
-        decScorePoor = decScorePoor.setScale(2, RoundingMode.HALF_UP);
-        decScoreNA = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_poor.getText());
-        decScoreNA = decScoreNA.setScale(2, RoundingMode.HALF_UP);
+        try {
+            decScoreExt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_extraordinary.getText());
+            decScoreExt = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decScoreExt = new BigDecimal("0.00");
+            decScoreExt = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        }
+
+        try {
+            decScoreGrt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_great.getText());
+            decScoreGrt = decScoreGrt.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decScoreGrt = new BigDecimal("0.00");
+            decScoreGrt = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decScoreWell = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_well.getText());
+            decScoreWell = decScoreWell.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decScoreWell = new BigDecimal("0.00");
+            decScoreWell = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decScoreNI = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_needs_improvement.getText());
+            decScoreNI = decScoreNI.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decScoreNI = new BigDecimal("0.00");
+            decScoreNI = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decScorePoor = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_not_acceptable.getText());
+            decScorePoor = decScorePoor.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decScorePoor = new BigDecimal("0.00");
+            decScorePoor = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decScoreNA = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_poor.getText());
+            decScoreNA = decScoreNA.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decScoreNA = new BigDecimal("0.00");
+            decScoreNA = decScoreExt.setScale(2, RoundingMode.HALF_UP);
+        }
 
         KPIMaster kpiMaster = new KPIMaster(Integer.parseInt(txtFormMastKPI_id.getText()), txtFormMastKPI_code.getText(),
                 txtFormMastKPI_description.getText(), Integer.parseInt(split[0]), Integer.parseInt(splitCalc[0]), decScoreExt,

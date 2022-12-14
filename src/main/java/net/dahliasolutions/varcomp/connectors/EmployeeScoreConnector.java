@@ -125,7 +125,8 @@ public class EmployeeScoreConnector {
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("SELECT TBLEMPLOYEESCORES.*, TBLMETRICS.METRIC_YEAR " +
-                    "FROM TBLEMPLOYEESCORES, TBLMETRICS WHERE TBLEMPLOYEESCORES.EMPLOYEE_ID=? AND TBLMETRICS.METRIC_YEAR=?");
+                    "FROM TBLEMPLOYEESCORES, TBLMETRICS WHERE TBLEMPLOYEESCORES.METRIC_ID=TBLMETRICS.METRIC_ID AND " +
+                    "TBLEMPLOYEESCORES.EMPLOYEE_ID=? AND TBLMETRICS.METRIC_YEAR=?");
             preparedStatement.setString(1, employeeID);
             preparedStatement.setInt(2, year);
             resultSet = preparedStatement.executeQuery();

@@ -144,8 +144,9 @@ public class EmployeePrintController implements Initializable {
         employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
         tblEmployeeMetrics.setItems(employeeScores);
 
-        if(filterYear.equals("All")){
-            lblFilter.setVisible(false);
+        if(!filterYear.equals("All")){
+            lblFilter.setVisible(true);
+            lblFilter.setText("Filtered by year "+filterYear);
             try {
                 employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
                         .getEmployeeScoreByFiltered(selectedEmployee.getEmployee_id(), Integer.parseInt(filterYear)));
@@ -154,8 +155,7 @@ public class EmployeePrintController implements Initializable {
                         .getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
             }
         } else {
-            lblFilter.setVisible(true);
-            lblFilter.setText("Filtered by year "+filterYear);
+            lblFilter.setVisible(false);
             employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
                     .getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
         }

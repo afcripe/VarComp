@@ -441,7 +441,7 @@ public class VCMetricController implements Initializable {
     /* Employee Scores */
         btnAddEmployee.setOnAction(event -> addMissingEmployees());
         btnRemoveEmployee.setOnAction(event -> removeMissingEmployees());
-        tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
+        tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employee_name"));
         tbcEmployeeName.setPrefWidth((tblDetailEmployeeScores.getPrefWidth()-4)/4);
         tbcEmployeeShares.setCellValueFactory(param -> {
             NumberFormat fm = NumberFormat.getNumberInstance();
@@ -712,27 +712,27 @@ public class VCMetricController implements Initializable {
             metricDetail.setLock_date(LocalDate.now());
         }
         metricDetail.setLocked(chkDetailMetricLocked.isSelected());
-        try{
-            metricDetail.setMetric_earnings((BigDecimal) decimalFormat.parse(txtDetailMetricEarning.getText()));
-        } catch (ParseException e) {
-            System.out.println("Earnings is not a number!");
-        }
-        try{
-            metricDetail.setMetric_funding((BigDecimal) decimalFormat.parse(txtDetailMetricFunding.getText()));
-        } catch (ParseException e) {
-            System.out.println("Funding is not a number!");
-        }
-        try{
-            metricDetail.setMetric_payout((BigDecimal) decimalFormat.parse(txtDetailMetricPayout.getText()));
-        } catch (ParseException e) {
-            System.out.println("Payout is not a number!");
-        }
-        try{
-            metricDetail.setMetric_eps((BigDecimal) decimalFormat.parse(txtDetailMetricEPS.getText()));
-        } catch (ParseException e) {
-            System.out.println("EPS is not a number!");
-        }
-        metricDetail.setMetric_shares(Integer.parseInt(txtDetailMetricShares.getText()));
+//        try{
+//            metricDetail.setMetric_earnings((BigDecimal) decimalFormat.parse(txtDetailMetricEarning.getText()));
+//        } catch (ParseException e) {
+//            System.out.println("Earnings is not a number!");
+//        }
+//        try{
+//            metricDetail.setMetric_funding((BigDecimal) decimalFormat.parse(txtDetailMetricFunding.getText()));
+//        } catch (ParseException e) {
+//            System.out.println("Funding is not a number!");
+//        }
+//        try{
+//            metricDetail.setMetric_payout((BigDecimal) decimalFormat.parse(txtDetailMetricPayout.getText()));
+//        } catch (ParseException e) {
+//            System.out.println("Payout is not a number!");
+//        }
+//        try{
+//            metricDetail.setMetric_eps((BigDecimal) decimalFormat.parse(txtDetailMetricEPS.getText()));
+//        } catch (ParseException e) {
+//            System.out.println("EPS is not a number!");
+//        }
+//        metricDetail.setMetric_shares(Integer.parseInt(txtDetailMetricShares.getText()));
         metricDetail.updateMetric();
         setLockStyle();
 
@@ -1084,7 +1084,7 @@ public class VCMetricController implements Initializable {
         EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
 
         lblKPIEditorCode.setText(eKPI.getKpi_code());
-        lblKPIEditorClass.setText(KPIClassConnector.getKPIClass(eKPI.getKpi_class()).toString());
+        lblKPIEditorClass.setText(KPIClassConnector.getKPIClass(eKPI.getKpi_class()).getName());
         lblKPIEditorWeight.setText(eKPI.getWeight().toString());
 
         lblKPIEditorF1Name.setText(eKPI.getF1_name());

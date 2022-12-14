@@ -149,7 +149,6 @@
                     <TableColumn fx:id="tbcClassID" prefWidth="55" text="ID" />
                     <TableColumn fx:id="tbcClassName" prefWidth="125" text="Name" />
                     <TableColumn fx:id="tbcClassDescription" prefWidth="275" text="Description" />
-                    <TableColumn fx:id="tbcClassAutoFill" prefWidth="92" text="Auto Fill" />
                 </columns>
             </TableView>
 
@@ -185,9 +184,9 @@
             </HBox>
             <HBox spacing="4">
                 <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Description:" />
-                <TextField fx:id="txtFormClassKPI_description" prefHeight="25.0" prefWidth="279.0" />
-                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Auto-fill:" />
-                <CheckBox fx:id="chkFormClassKPI_auto" />
+                <TextField fx:id="txtFormClassKPI_description" prefHeight="25.0" prefWidth="355.0" />
+<!--                <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Auto-fill:" />-->
+<!--                <CheckBox fx:id="chkFormClassKPI_auto" />-->
             </HBox>
             <HBox spacing="4">
                 <HBox HBox.hgrow="ALWAYS" />

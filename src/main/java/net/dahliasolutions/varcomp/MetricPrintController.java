@@ -132,7 +132,7 @@ public class MetricPrintController implements Initializable {
         tbcCompanyKPIScore.setPrefWidth((tblDetailCompanyKPI.getPrefWidth()-4)/3);
 
     /* Employee Scores */
-        tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
+        tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employee_name"));
         tbcEmployeeName.setPrefWidth((tblDetailEmployeeScores.getPrefWidth()-4)/4);
         tbcEmployeeShares.setCellValueFactory(param -> {
             NumberFormat fm = NumberFormat.getNumberInstance();

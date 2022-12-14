@@ -223,7 +223,7 @@ public class KPIMasterConnector {
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("UPDATE tblkpimaster " +
+            preparedStatement = connection.prepareStatement("UPDATE TBLKPIMASTER " +
                     "SET kpi_code=?, description=?, kpi_class=?, calc_instructions=?, " +
                     "SCORE_EXTRAORDINARY=?, SCORE_GREAT=?, SCORE_WELL=?, SCORE_NEEDS_IMPROVEMENT=?, " +
                     "SCORE_NOT_ACCEPTABLE=?, SCORE_POOR=?, F1_NAME=?, F2_NAME=?, " +
@@ -244,6 +244,37 @@ public class KPIMasterConnector {
             preparedStatement.setString(14, kpiMaster.getF4_name());
             preparedStatement.setBoolean(15, kpiMaster.getReverse_scores());
             preparedStatement.setInt(16, kpiMaster.getKpi_master_id());
+            preparedStatement.executeUpdate();
+
+            /* update kpi name fields for linked KPIs */
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("UPDATE TBLCOMPANYKPIS " +
+                    "SET kpi_code=?, kpi_class=?, calc_instructions=?, " +
+                    "F1_NAME=?, F2_NAME=?, F3_NAME=?, F4_NAME=? " +
+                    "WHERE kpi_master_id=?");
+            preparedStatement.setString(1, kpiMaster.getKpi_code());
+            preparedStatement.setInt(2, kpiMaster.getKpi_class());
+            preparedStatement.setInt(3, kpiMaster.getCalc_instructions());
+            preparedStatement.setString(4, kpiMaster.getF1_name());
+            preparedStatement.setString(5, kpiMaster.getF2_name());
+            preparedStatement.setString(6, kpiMaster.getF3_name());
+            preparedStatement.setString(7, kpiMaster.getF4_name());
+            preparedStatement.setInt(8, kpiMaster.getKpi_master_id());
+            preparedStatement.executeUpdate();
+
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("UPDATE TBLEMPLOYEEKPIS " +
+                    "SET kpi_code=?, kpi_class=?, calc_instructions=?, " +
+                    "F1_NAME=?, F2_NAME=?, F3_NAME=?, F4_NAME=? " +
+                    "WHERE kpi_master_id=?");
+            preparedStatement.setString(1, kpiMaster.getKpi_code());
+            preparedStatement.setInt(2, kpiMaster.getKpi_class());
+            preparedStatement.setInt(3, kpiMaster.getCalc_instructions());
+            preparedStatement.setString(4, kpiMaster.getF1_name());
+            preparedStatement.setString(5, kpiMaster.getF2_name());
+            preparedStatement.setString(6, kpiMaster.getF3_name());
+            preparedStatement.setString(7, kpiMaster.getF4_name());
+            preparedStatement.setInt(8, kpiMaster.getKpi_master_id());
             preparedStatement.executeUpdate();
 
             updateSuccess = true;

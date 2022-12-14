@@ -61,7 +61,7 @@
                <HBox alignment="CENTER_LEFT" spacing="4.0">
                   <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Year:" />
                   <Label fx:id="lblYear" prefWidth="100.0" />
-                  <Label alignment="CENTER_RIGHT" prefWidth="135.0" text="Period:" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="135.0" text="Quarter:" />
                   <Label fx:id="lblPeriod" prefWidth="100.0" />
                   <padding>
                      <Insets bottom="12.0" />
@@ -70,7 +70,7 @@
                <HBox spacing="4.0">
                   <TableView fx:id="tblDetailMetricPeriods" prefHeight="155.0" prefWidth="433.0">
                      <columns>
-                        <TableColumn fx:id="tbcDetailPeriod" text="Period" />
+                        <TableColumn fx:id="tbcDetailPeriod" text="Month" />
                         <TableColumn fx:id="tbcDetailBudget" text="Budget" />
                         <TableColumn fx:id="tbcDetailActual" text="Actual" />
                         <TableColumn fx:id="tbcDetailEarnings" text="Earnings" />
@@ -142,7 +142,7 @@
                </HBox>
                <TableView fx:id="tblDetailEmployeeScores" prefHeight="300.0" prefWidth="495.0">
                   <columns>
-                     <TableColumn fx:id="tbcEmployeeName" text="Employee ID" />
+                     <TableColumn fx:id="tbcEmployeeName" text="Employee" />
                      <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
                      <TableColumn fx:id="tbcEmployeeGrade" text="Grade" />
                      <TableColumn fx:id="tbcEmployeeBonus" text="Bonus" />

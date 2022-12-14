@@ -112,8 +112,6 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private ComboBox<String> cmbFilterYear;
     @FXML
-    private Button btnFilterApply;
-    @FXML
     private Label lblEmployeeTotalBonus;
 
     private final Employee selectedEmployee = new Employee();
@@ -208,7 +206,7 @@ public class VCEmployeeController implements Initializable {
         });
         tbcDetailBonus.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
 
-        btnFilterApply.setOnAction(event -> applyFilter());
+        cmbFilterYear.setOnAction(event -> applyFilter());
 
         navEmployee("home");
     }

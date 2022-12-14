@@ -106,7 +106,7 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></Label>
-               <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Period:" />
+               <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Quarter:" />
                <TextField fx:id="txtDetailMetricPeriod" prefWidth="80.0" />
                <Label fx:id="lblDetailMetricPeriodWarn" prefWidth="8" text="*" textFill="RED" visible="false">
                      <font>
@@ -116,7 +116,7 @@
             <HBox fx:id="boxMetricDetailTable" spacing="4.0">
                <TableView fx:id="tblDetailMetricPeriods" minHeight="115.0" prefHeight="215" prefWidth="433.0">
                   <columns>
-                     <TableColumn fx:id="tbcDetailPeriod" text="Period" />
+                     <TableColumn fx:id="tbcDetailPeriod" text="Month" />
                      <TableColumn fx:id="tbcDetailBudget" text="Budget" />
                      <TableColumn fx:id="tbcDetailActual" text="Actual" />
                      <TableColumn fx:id="tbcDetailEarnings" text="Earnings" />
@@ -131,7 +131,7 @@
 
             <VBox fx:id="formDetailMetricPeriod" prefWidth="540" managed="false" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
                <HBox>
-                  <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="95.0" text="Detail Period:">
+                  <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="95.0" text="Month:">
                      <padding>
                         <Insets right="4.0" />
                      </padding></Label>
@@ -333,7 +333,7 @@
             </HBox>
             <TableView fx:id="tblDetailEmployeeScores" prefHeight="200.0" minHeight="200.0" prefWidth="517.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="tbcEmployeeName" text="Employee ID" />
+                  <TableColumn fx:id="tbcEmployeeName" text="Employee" />
                   <TableColumn fx:id="tbcEmployeeShares" text="Shares" />
                   <TableColumn fx:id="tbcEmployeeGrade" text="Grade" />
                   <TableColumn fx:id="tbcEmployeeBonus" text="Bonus" />
