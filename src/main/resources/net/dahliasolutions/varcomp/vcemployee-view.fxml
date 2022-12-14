@@ -26,6 +26,9 @@
             </font>
          </Label>
          <HBox HBox.hgrow="ALWAYS" />
+         <Label fx:id="lblPrintJobStatus" visible="false" />
+         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false" />
+         <Button fx:id="btnEmployeePrint" prefWidth="75" text="Print" visible="false" />
          <Button fx:id="btnEditEmployee_save" prefWidth="75" text="Save" visible="false" HBox.hgrow="NEVER" />
          <Button fx:id="btnEmployeeHome" prefWidth="75" text="Back" visible="false" HBox.hgrow="NEVER" />
       </HBox>
@@ -59,7 +62,7 @@
                <VBox spacing="8.0">
                   <HBox spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Employee ID:" />
-                     <TextField fx:id="txtFormEmployeeID" disable="true" prefWidth="75.0" />
+                     <TextField fx:id="txtFormEmployeeID" prefWidth="75.0" />
                   </HBox>
                   <HBox spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="First Name:" />
@@ -147,42 +150,32 @@
                </VBox>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="540.0" spacing="8.0">
-               <Label prefWidth="100.0" text="Metrics">
+               <Label prefWidth="75.0" text="Metrics">
                   <font>
                      <Font name="System Bold" size="16.0" />
                   </font>
                </Label>
-               <Line endX="258.0" />
-               <Button fx:id="btnShowFilter" visible="false" alignment="CENTER" minHeight="22.0" mnemonicParsing="false" prefWidth="75.0" text="Filter" textAlignment="CENTER">
+               <Line endX="200.0" />
+               <ComboBox fx:id="cmbFilterYear" prefHeight="26.0" prefWidth="125.0" />
+               <Button fx:id="btnFilterApply" alignment="CENTER" mnemonicParsing="false" prefWidth="75.0" text="Update" textAlignment="CENTER">
                   <font>
                      <Font size="12.0" />
                   </font>
                   <HBox.margin>
-                     <Insets left="50.0" />
+                     <Insets />
                   </HBox.margin>
                </Button>
                <VBox.margin>
                   <Insets bottom="5.0" top="20.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="boxFilter" visible="false" alignment="CENTER" maxHeight="40.0" maxWidth="475.0" minHeight="0" minWidth="475.0" prefHeight="0.0" prefWidth="475.0" spacing="5.0" style="-fx-border-color: gray;">
-               <ComboBox fx:id="cmbFilterStart" prefHeight="26.0" prefWidth="136.0" />
-               <Label text=" - " />
-               <ComboBox fx:id="cmbFilterEnd" layoutX="97.0" layoutY="10.0" prefHeight="26.0" prefWidth="136.0" />
-               <Button fx:id="btnFilterApply" mnemonicParsing="false" prefWidth="75.0" text="Update" />
-               <Button fx:id="btnFilterClear" layoutX="368.0" layoutY="17.0" mnemonicParsing="false" prefWidth="75.0" text="Clear" />
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
-               </VBox.margin>
+            <HBox alignment="CENTER_RIGHT" prefWidth="500.0" spacing="8.0">
+               <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Total Bonus:" />
+               <Label fx:id="lblEmployeeTotalBonus" alignment="CENTER_RIGHT" prefWidth="100.0" text="0.00" />
                <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="5.0" right="5.0" />
                </padding>
             </HBox>
-            <Label fx:id="lblFilter" visible="false" managed="false" prefHeight="0.0" minHeight="0" text="Date Range: yesterday - today">
-               <padding>
-                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
             <TableView fx:id="tblEmployeeMetrics" minHeight="200.0" minWidth="250" prefWidth="500.0" VBox.vgrow="ALWAYS">
               <columns>
                  <TableColumn fx:id="tbcDetailMetric" prefWidth="125" text="Metric" />

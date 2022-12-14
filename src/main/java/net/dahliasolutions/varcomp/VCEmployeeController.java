@@ -5,11 +5,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
 import net.dahliasolutions.varcomp.connectors.EmployeeScoreConnector;
 import net.dahliasolutions.varcomp.connectors.MetricConnector;
@@ -19,6 +23,8 @@ import net.dahliasolutions.varcomp.models.EmployeeScore;
 import net.dahliasolutions.varcomp.models.Metric;
 import net.dahliasolutions.varcomp.models.Position;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
@@ -31,6 +37,12 @@ public class VCEmployeeController implements Initializable {
     private Pane paneEmployeeTable;
     @FXML
     private Button bntNewEmployee;
+    @FXML
+    private CheckBox chkPrintPreview;
+    @FXML
+    private Button btnEmployeePrint;
+    @FXML
+    private Label lblPrintJobStatus;
     @FXML
     private TableView<Employee> tblEmployees;
     @FXML
@@ -98,19 +110,11 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private TableColumn<EmployeeScore, String> tbcDetailBonus;
     @FXML
-    private HBox boxFilter;
-    @FXML
-    private Button btnShowFilter;
-    @FXML
-    private ComboBox<Integer> cmbFilterStart;
-    @FXML
-    private ComboBox<Integer> cmbFilterEnd;
-    @FXML
-    private Button btnFilterClear;
+    private ComboBox<String> cmbFilterYear;
     @FXML
     private Button btnFilterApply;
     @FXML
-    private Label lblFilter;
+    private Label lblEmployeeTotalBonus;
 
     private final Employee selectedEmployee = new Employee();
     ObservableList<Employee> employeeList;
@@ -175,8 +179,9 @@ public class VCEmployeeController implements Initializable {
         txtFormEmployeeFirstName.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusState(newValue));
         txtFormEmployeeLastName.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusState(newValue));
 
-        /* Employee Detail */
+    /* Employee Detail */
         btnEditEmployee_save.setOnAction(event -> updateEmployee());
+        btnEmployeePrint.setOnAction(event -> printMetricDetail());
 
         txtEmployeeID.setOnKeyPressed(event -> {
             if(txtEmployeeID.getText().length() > 5) txtEmployeeID.setText(txtEmployeeID.getText().substring(0,5));
@@ -203,9 +208,7 @@ public class VCEmployeeController implements Initializable {
         });
         tbcDetailBonus.setPrefWidth((tblEmployeeMetrics.getPrefWidth()-4)/4);
 
-        btnShowFilter.setOnAction(event -> toggleFilterDisplay());
         btnFilterApply.setOnAction(event -> applyFilter());
-        btnFilterClear.setOnAction(event -> clearFilter());
 
         navEmployee("home");
     }
@@ -219,7 +222,9 @@ public class VCEmployeeController implements Initializable {
         paneEmployeeTable.setManaged(false);
         btnEditEmployee_save.setVisible(false);
         btnEmployeeHome.setVisible(false);
-        hideFilter();
+        btnEmployeePrint.setVisible(false);
+        lblPrintJobStatus.setVisible(false);
+        chkPrintPreview.setVisible(false);
         switch (loc) {
             case "new" -> {
                 paneFormEmployee.setVisible(true);
@@ -230,6 +235,11 @@ public class VCEmployeeController implements Initializable {
                 paneEmployeeDetail.setManaged(true);
                 btnEditEmployee_save.setVisible(true);
                 btnEmployeeHome.setVisible(true);
+                btnEmployeePrint.setVisible(true);
+                lblPrintJobStatus.setVisible(true);
+                lblPrintJobStatus.setText("");
+                chkPrintPreview.setVisible(true);
+                chkPrintPreview.setSelected(false);
             }
             default -> {
                 paneEmployeeTable.setVisible(true);
@@ -345,16 +355,15 @@ public class VCEmployeeController implements Initializable {
         tblEmployeeMetrics.getItems().removeAll();
         employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
         tblEmployeeMetrics.setItems(employeeScores);
+        getTotalBonus();
 
         metricList = FXCollections.observableArrayList(MetricConnector.getMetrics());
-        cmbFilterStart.getItems().clear();
+        cmbFilterYear.getItems().clear();
+        cmbFilterYear.getItems().add("All");
         for (Metric m : metricList) {
-            cmbFilterStart.getItems().add(m.getMetric_year());
+            cmbFilterYear.getItems().add(m.getMetric_year().toString());
         }
-        cmbFilterEnd.getItems().clear();
-        for (Metric m : metricList) {
-            cmbFilterEnd.getItems().add(m.getMetric_year());
-        }
+        cmbFilterYear.setValue("All");
 
         navEmployee("detail");
     }
@@ -383,52 +392,60 @@ public class VCEmployeeController implements Initializable {
         tblEmployees.setItems(employeeList);
     }
 
-    private void hideFilter() {
-        boxFilter.setVisible(false);
-        boxFilter.setMinHeight(0);
-        lblFilter.setVisible(false);
-        lblFilter.setManaged(false);
-    }
-
-    private void toggleFilterDisplay() {
-        if ( boxFilter.isVisible() ) {
-            boxFilter.setVisible(false);
-            boxFilter.setMinHeight(0);
-        } else {
-            boxFilter.setVisible(true);
-            boxFilter.setMinHeight(40);
-        }
-    }
-
-    private void toggleFilterLabel() {
-        if ( lblFilter.getText().isEmpty() ) {
-            lblFilter.setVisible(false);
-            lblFilter.setManaged(false);
-        } else {
-            lblFilter.setVisible(true);
-            lblFilter.setManaged(true);
-        }
-    }
-
     private void applyFilter() {
         tblEmployeeMetrics.getItems().removeAll();
-        employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByFiltered(selectedEmployee.getEmployee_id(),
-                cmbFilterStart.getValue(), cmbFilterEnd.getValue()));
+        if (!cmbFilterYear.getValue().equals("All")) {
+            try {
+                employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
+                        .getEmployeeScoreByFiltered(selectedEmployee.getEmployee_id(), Integer.parseInt(cmbFilterYear.getValue())));
+            } catch (Exception e) {
+                employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
+                        .getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
+            }
+        } else {
+            employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
+                    .getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
+        }
         tblEmployeeMetrics.setItems(employeeScores);
-        lblFilter.setText("Filtered: "+cmbFilterStart.getValue()+" - "+cmbFilterEnd.getValue());
-        toggleFilterDisplay();
-        toggleFilterLabel();
+        getTotalBonus();
+    }
+    private void getTotalBonus() {
+        BigDecimal totalBonus = new BigDecimal("0.00");
+        NumberFormat fm = NumberFormat.getCurrencyInstance();
+
+        /* Total the Bonus */
+        for ( EmployeeScore es : employeeScores ) {
+            totalBonus = totalBonus.add(es.getBonus());
+        }
+        lblEmployeeTotalBonus.setText(fm.format(totalBonus.doubleValue()));
     }
 
-    private void clearFilter() {
-        cmbFilterStart.setValue(null);
-        cmbFilterEnd.setValue(null);
-        tblEmployeeMetrics.getItems().removeAll();
-        employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
-        tblEmployeeMetrics.setItems(employeeScores);
-        lblFilter.setText("");
-        toggleFilterDisplay();
-        toggleFilterLabel();
+    /* Printing */
+    private void printMetricDetail() {
+        printPreview("vcemployee-print.fxml", "Print Employee");
+    }
+
+    public void printPreview(String fxmlFile, String title) {
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+        boolean showPreview = true;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource(fxmlFile));
+            root = loader.load();
+            showPreview = ((EmployeePrintController)loader.getController())
+                    .init(selectedEmployee.getEmployee_id(), cmbFilterYear.getValue(), chkPrintPreview.isSelected());
+            System.out.println(cmbFilterYear.getValue());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if ( showPreview ) {
+            stage.setScene(new Scene(root, 395, 450));
+            stage.setTitle(title);
+            stage.show();
+        }
     }
 
 }

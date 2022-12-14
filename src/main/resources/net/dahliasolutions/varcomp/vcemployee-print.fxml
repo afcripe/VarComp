@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="PrintPane" prefHeight="604.0" prefWidth="512.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.EmployeePrintController">
+
+      <Line endX="295.0" startX="5.0" AnchorPane.topAnchor="43.0" />
+
+   <HBox scaleX="0.6" scaleY="0.6" translateX="-97.0">
+      <ImageView fx:id="imgCompanyLogo" fitHeight="62.0" fitWidth="250.0" layoutX="125.0" layoutY="81.0" managed="false" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <Label fx:id="lblCompany" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" text="Dahlia Solutions">
+         <HBox.margin>
+            <Insets left="12.0" />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="8.0" />
+         </padding>
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Label>
+      <Label fx:id="lblTitle" alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="250.0" text="- Employee Report -">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="8.0" left="12.0" />
+         </padding>
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+   </HBox>
+
+   <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="572.0" prefWidth="512.0" style="-fx-border-color: white; -fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+         <Pane style="-fx-background-color: white; -fx-border-color: white;">
+
+            <VBox fillWidth="false" prefHeight="550.0" scaleX="0.6" scaleY="0.6" spacing="8.0" translateX="-97.0" translateY="-105.0">
+
+               <HBox prefWidth="540.0" spacing="16">
+                  <VBox spacing="8.0">
+                     <HBox spacing="4">
+                        <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Employee ID:" />
+                        <Label fx:id="lblEmployeeID" prefWidth="118.0" text="AFCRI">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font>
+                        </Label>
+                     </HBox>
+                     <HBox spacing="4">
+                        <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="First Name:" />
+                        <Label fx:id="lblEmployeeFirstName" prefWidth="206.0">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                     </HBox>
+                     <HBox spacing="4">
+                        <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Last Name:" />
+                        <Label fx:id="lblEmployeeLastName" prefWidth="206.0">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                     </HBox>
+                     <HBox spacing="4">
+                        <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Position:" />
+                        <Label fx:id="lblEmployeePosition" prefWidth="125.0">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                     </HBox>
+                  </VBox>
+                  <VBox spacing="8.0">
+                     <HBox spacing="4">
+                        <Label fx:id="lblEmployeeActive" alignment="CENTER_RIGHT" prefWidth="72.0" text="Active">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                     </HBox>
+                     <HBox spacing="4">
+                        <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Start Date:" />
+                        <Label fx:id="lblEmployeeStartDate" prefWidth="125.0" text="11/10/2020">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                     </HBox>
+                     <HBox spacing="4">
+                        <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Shares:" />
+                        <Label fx:id="lblEmployeeSharesStarting" prefWidth="125.0">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                     </HBox>
+                     <HBox spacing="4">
+                        <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Shares:" />
+                        <Label fx:id="lblEmployeeSharesAssigned" prefWidth="125.0">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                     </HBox>
+                  </VBox>
+               </HBox>
+
+            <!-- Employee Score and Bonus Info -->
+               <HBox alignment="CENTER_LEFT" prefWidth="495.0" spacing="15.0">
+                  <Label prefWidth="120.0" text="Metric Scores">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblFilter" prefWidth="130.0" text="Filtered by year 2023" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="115.0" text="Total Bonus:" />
+                  <Label fx:id="lblTotalBonus" alignment="CENTER_RIGHT" prefWidth="80.0" text="">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <VBox.margin>
+                     <Insets bottom="5.0" top="20.0" />
+                  </VBox.margin>
+               </HBox>
+
+
+               <TableView fx:id="tblEmployeeMetrics" prefHeight="500.0" prefWidth="495.0">
+                  <columns>
+                     <TableColumn fx:id="tbcDetailMetric" prefWidth="123" text="Metric" />
+                     <TableColumn fx:id="tbcDetailShares" prefWidth="124" text="Shares" />
+                     <TableColumn fx:id="tbcDetailGrade" prefWidth="124" text="Grade" />
+                     <TableColumn fx:id="tbcDetailBonus" prefWidth="124" text="Bonus" />
+                  </columns>
+               </TableView>
+
+            </VBox>
+
+         </Pane>
+   </ScrollPane>
+</AnchorPane>

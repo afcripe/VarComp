@@ -116,36 +116,18 @@ public class EmployeeScoreConnector {
         return employeeScoreList;
     }
 
-    public static ArrayList<EmployeeScore> getEmployeeScoreByFiltered(String employeeID, Integer start, Integer end) {
+    public static ArrayList<EmployeeScore> getEmployeeScoreByFiltered(String employeeID, Integer year) {
         Connection connection;
         PreparedStatement preparedStatement;
-        String ml = "";
-        ResultSet resultMetric;
         ResultSet resultSet;
         ArrayList<EmployeeScore> employeeScoreList = new ArrayList<>();
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT METRIC_ID FROM TBLMETRICS WHERE METRIC_YEAR >= ? ORDER BY METRIC_ID DESC");
-            preparedStatement.setInt(1, start);
-            //preparedStatement.setInt(2, end);
-            resultMetric = preparedStatement.executeQuery();
-
-            if (resultMetric.isBeforeFirst()) {
-                Integer recMetricID = resultMetric.getInt("metric_id");
-                while (resultMetric.next()) {
-                    if (!ml.isEmpty()) {
-                        ml = ml + ", " + recMetricID;
-                    } else {
-                        ml = recMetricID.toString();
-                    }
-                }
-            }
-
-            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE EMPLOYEE_ID=? AND METRIC_ID IN ? ORDER BY METRIC_ID DESC");
+            preparedStatement = connection.prepareStatement("SELECT TBLEMPLOYEESCORES.*, TBLMETRICS.METRIC_YEAR " +
+                    "FROM TBLEMPLOYEESCORES, TBLMETRICS WHERE TBLEMPLOYEESCORES.EMPLOYEE_ID=? AND TBLMETRICS.METRIC_YEAR=?");
             preparedStatement.setString(1, employeeID);
-            preparedStatement.setString(2, ml);
+            preparedStatement.setInt(2, year);
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {
