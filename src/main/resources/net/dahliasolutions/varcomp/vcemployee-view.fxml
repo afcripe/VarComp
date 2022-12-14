@@ -153,7 +153,7 @@
                   </font>
                </Label>
                <Line endX="258.0" />
-               <Button fx:id="btnShowFilter" visible="false" alignment="CENTER" minHeight="22.0" mnemonicParsing="false" prefWidth="75.0" text="FIlter" textAlignment="CENTER">
+               <Button fx:id="btnShowFilter" visible="false" alignment="CENTER" minHeight="22.0" mnemonicParsing="false" prefWidth="75.0" text="Filter" textAlignment="CENTER">
                   <font>
                      <Font size="12.0" />
                   </font>
@@ -165,7 +165,7 @@
                   <Insets bottom="5.0" top="20.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="boxFilter" visible="false" alignment="CENTER" maxHeight="40.0" maxWidth="475.0" minHeight="0" minWidth="475.0" prefHeight="40.0" prefWidth="475.0" spacing="5.0" style="-fx-border-color: gray;">
+            <HBox fx:id="boxFilter" visible="false" alignment="CENTER" maxHeight="40.0" maxWidth="475.0" minHeight="0" minWidth="475.0" prefHeight="0.0" prefWidth="475.0" spacing="5.0" style="-fx-border-color: gray;">
                <ComboBox fx:id="cmbFilterStart" prefHeight="26.0" prefWidth="136.0" />
                <Label text=" - " />
                <ComboBox fx:id="cmbFilterEnd" layoutX="97.0" layoutY="10.0" prefHeight="26.0" prefWidth="136.0" />
@@ -178,7 +178,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </HBox>
-            <Label fx:id="lblFilter" visible="false" managed="false" text="Date Range: yesterday - today">
+            <Label fx:id="lblFilter" visible="false" managed="false" prefHeight="0.0" minHeight="0" text="Date Range: yesterday - today">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
                </padding>

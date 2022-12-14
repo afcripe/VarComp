@@ -16,6 +16,7 @@ import net.dahliasolutions.varcomp.connectors.MetricConnector;
 import net.dahliasolutions.varcomp.connectors.PositionsConnector;
 import net.dahliasolutions.varcomp.models.Employee;
 import net.dahliasolutions.varcomp.models.EmployeeScore;
+import net.dahliasolutions.varcomp.models.Metric;
 import net.dahliasolutions.varcomp.models.Position;
 
 import java.net.URL;
@@ -101,9 +102,9 @@ public class VCEmployeeController implements Initializable {
     @FXML
     private Button btnShowFilter;
     @FXML
-    private ComboBox<String> cmbFilterStart;
+    private ComboBox<Integer> cmbFilterStart;
     @FXML
-    private ComboBox<String> cmbFilterEnd;
+    private ComboBox<Integer> cmbFilterEnd;
     @FXML
     private Button btnFilterClear;
     @FXML
@@ -115,6 +116,8 @@ public class VCEmployeeController implements Initializable {
     ObservableList<Employee> employeeList;
     ObservableList<Position> positionList;
     ObservableList<EmployeeScore> employeeScores;
+
+    ObservableList<Metric> metricList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -216,6 +219,7 @@ public class VCEmployeeController implements Initializable {
         paneEmployeeTable.setManaged(false);
         btnEditEmployee_save.setVisible(false);
         btnEmployeeHome.setVisible(false);
+        hideFilter();
         switch (loc) {
             case "new" -> {
                 paneFormEmployee.setVisible(true);
@@ -341,6 +345,17 @@ public class VCEmployeeController implements Initializable {
         tblEmployeeMetrics.getItems().removeAll();
         employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
         tblEmployeeMetrics.setItems(employeeScores);
+
+        metricList = FXCollections.observableArrayList(MetricConnector.getMetrics());
+        cmbFilterStart.getItems().clear();
+        for (Metric m : metricList) {
+            cmbFilterStart.getItems().add(m.getMetric_year());
+        }
+        cmbFilterEnd.getItems().clear();
+        for (Metric m : metricList) {
+            cmbFilterEnd.getItems().add(m.getMetric_year());
+        }
+
         navEmployee("detail");
     }
 
@@ -368,6 +383,13 @@ public class VCEmployeeController implements Initializable {
         tblEmployees.setItems(employeeList);
     }
 
+    private void hideFilter() {
+        boxFilter.setVisible(false);
+        boxFilter.setMinHeight(0);
+        lblFilter.setVisible(false);
+        lblFilter.setManaged(false);
+    }
+
     private void toggleFilterDisplay() {
         if ( boxFilter.isVisible() ) {
             boxFilter.setVisible(false);
@@ -388,8 +410,25 @@ public class VCEmployeeController implements Initializable {
         }
     }
 
-    private void applyFilter() {}
+    private void applyFilter() {
+        tblEmployeeMetrics.getItems().removeAll();
+        employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByFiltered(selectedEmployee.getEmployee_id(),
+                cmbFilterStart.getValue(), cmbFilterEnd.getValue()));
+        tblEmployeeMetrics.setItems(employeeScores);
+        lblFilter.setText("Filtered: "+cmbFilterStart.getValue()+" - "+cmbFilterEnd.getValue());
+        toggleFilterDisplay();
+        toggleFilterLabel();
+    }
 
-    private void clearFilter() {}
+    private void clearFilter() {
+        cmbFilterStart.setValue(null);
+        cmbFilterEnd.setValue(null);
+        tblEmployeeMetrics.getItems().removeAll();
+        employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector.getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
+        tblEmployeeMetrics.setItems(employeeScores);
+        lblFilter.setText("");
+        toggleFilterDisplay();
+        toggleFilterLabel();
+    }
 
 }

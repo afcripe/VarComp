@@ -116,6 +116,61 @@ public class EmployeeScoreConnector {
         return employeeScoreList;
     }
 
+    public static ArrayList<EmployeeScore> getEmployeeScoreByFiltered(String employeeID, Integer start, Integer end) {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        String ml = "";
+        ResultSet resultMetric;
+        ResultSet resultSet;
+        ArrayList<EmployeeScore> employeeScoreList = new ArrayList<>();
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT METRIC_ID FROM TBLMETRICS WHERE METRIC_YEAR >= ? ORDER BY METRIC_ID DESC");
+            preparedStatement.setInt(1, start);
+            //preparedStatement.setInt(2, end);
+            resultMetric = preparedStatement.executeQuery();
+
+            if (resultMetric.isBeforeFirst()) {
+                Integer recMetricID = resultMetric.getInt("metric_id");
+                while (resultMetric.next()) {
+                    if (!ml.isEmpty()) {
+                        ml = ml + ", " + recMetricID;
+                    } else {
+                        ml = recMetricID.toString();
+                    }
+                }
+            }
+
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLEMPLOYEESCORES WHERE EMPLOYEE_ID=? AND METRIC_ID IN ? ORDER BY METRIC_ID DESC");
+            preparedStatement.setString(1, employeeID);
+            preparedStatement.setString(2, ml);
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("No Metrics found.");
+            } else {
+                while (resultSet.next()) {
+                    Integer recSCoreID = resultSet.getInt("score_id");
+                    String recEmployeeID = resultSet.getString("employee_id");
+                    Integer recMetricID = resultSet.getInt("metric_id");
+                    Integer recShares = resultSet.getInt("shares");
+                    BigDecimal recGrade = resultSet.getBigDecimal("grade");
+                    BigDecimal recBonus = resultSet.getBigDecimal("bonus");
+
+                    employeeScoreList.add(new EmployeeScore(recSCoreID, recEmployeeID,
+                            recMetricID, recShares, recGrade, recBonus));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            employeeScoreList.add(new EmployeeScore());
+        }
+
+        return employeeScoreList;
+    }
+
     public static EmployeeScore insertEmployeeScore(EmployeeScore employeeScore) {
         Connection connection;
         PreparedStatement preparedStatement;

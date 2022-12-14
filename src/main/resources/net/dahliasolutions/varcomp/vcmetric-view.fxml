@@ -11,7 +11,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -354,7 +353,7 @@
    <ScrollPane fx:id="paneEmployeeKPI" fitToHeight="true" fitToWidth="true" managed="false" visible="false" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
       <VBox VBox.vgrow="ALWAYS">
       <!-- Employee Editor -->
-         <VBox fillWidth="false" spacing="8.0" minHeight="350" VBox.vgrow="ALWAYS">
+         <VBox fillWidth="false" spacing="8.0" minHeight="450" VBox.vgrow="ALWAYS">
             <HBox prefWidth="550">
                <Label text="Employee KPI Editor">
                   <font>
@@ -467,13 +466,9 @@
                  <TableColumn fx:id="tbcEditorKPIGrade" text="Grade" />
               </columns>
             </TableView>
-            <padding>
-               <Insets bottom="4.0" left="4.0" right="4.0" top="16.0" />
-            </padding>
-         </VBox>
 
       <!-- Employee KPI Editor -->
-         <VBox fx:id="paneFormEditorKPI" managed="false" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
+            <VBox fx:id="paneFormEditorKPI" managed="false" prefHeight="250.0" prefWidth="550.0" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
             <HBox spacing="4.0">
                <Label alignment="CENTER_RIGHT" prefWidth="105.0" text="KPI:" />
                <Label fx:id="lblKPIEditorCode" prefWidth="105.0" text="AGE">
@@ -565,6 +560,11 @@
             </HBox>
             <padding>
                <Insets bottom="8.0" top="8.0" />
+            </padding>
+         </VBox>
+
+            <padding>
+               <Insets bottom="4.0" left="4.0" right="4.0" top="16.0" />
             </padding>
          </VBox>
       </VBox>

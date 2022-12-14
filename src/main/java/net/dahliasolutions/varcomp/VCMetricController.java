@@ -40,8 +40,6 @@ public class VCMetricController implements Initializable {
     @FXML
     private CheckBox chkPrintPreview;
     @FXML
-    private ScrollPane spMetric;
-    @FXML
     private Pane paneMetricTable;
     @FXML
     private Button bntNewMetric;
@@ -938,8 +936,6 @@ public class VCMetricController implements Initializable {
         CompanyKPI cKPI = tblDetailCompanyKPI.getSelectionModel().getSelectedItem();
         paneDetailEditorCompanyKPI.setLayoutX(tblDetailCompanyKPI.getLayoutX());
         paneDetailEditorCompanyKPI.setLayoutY(tblDetailCompanyKPI.getLayoutY());
-//        paneDetailEditorCompanyKPI.setPrefHeight(tblDetailCompanyKPI.getPrefHeight());
-//        paneDetailEditorCompanyKPI.setPrefWidth(tblDetailCompanyKPI.getPrefWidth());
 
         lblCompKPIEditorCode.setText(cKPI.getKpi_code());
         lblCompKPIEditorClass.setText(KPIClassConnector.getKPIClass(cKPI.getKpi_class()).getName());
@@ -1086,10 +1082,6 @@ public class VCMetricController implements Initializable {
 
     private void fillFormEditorKPI() {
         EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
-        paneFormEditorKPI.setLayoutX(tblEditorKPIs.getLayoutX());
-        paneFormEditorKPI.setLayoutY(tblEditorKPIs.getLayoutY());
-//        paneFormEditorKPI.setPrefHeight(tblEditorKPIs.getPrefHeight());
-//        paneFormEditorKPI.setPrefWidth(tblEditorKPIs.getPrefWidth());
 
         lblKPIEditorCode.setText(eKPI.getKpi_code());
         lblKPIEditorClass.setText(KPIClassConnector.getKPIClass(eKPI.getKpi_class()).toString());
