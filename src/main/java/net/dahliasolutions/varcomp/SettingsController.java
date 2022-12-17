@@ -611,7 +611,7 @@ public class SettingsController implements Initializable {
 
     private void browseLogo() {
         Image newLogo;
-        String logoPath = DBUtils.getCompanyDir()+fs+"companyLogo.png";
+        String logoPath = DBUtils.getCompanyDir()+DBUtils.getFS()+"companyLogo.png";
 
         fcLogo.setTitle("Select Logo Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");

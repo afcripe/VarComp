@@ -109,7 +109,7 @@
          <VBox fx:id="paneEmployeeDetail" fillWidth="false" minHeight="450.0" minWidth="450" prefWidth="550.0" VBox.vgrow="ALWAYS">
             <HBox prefWidth="540.0" spacing="16">
                <VBox spacing="8.0">
-                  <HBox spacing="4">
+                  <HBox alignment="CENTER_LEFT" spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Employee ID:" />
                      <TextField fx:id="txtEmployeeID" disable="true" prefWidth="118.0">
                         <font>
@@ -117,35 +117,35 @@
                         </font>
                      </TextField>
                   </HBox>
-                  <HBox spacing="4">
+                  <HBox alignment="CENTER_LEFT" spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="First Name:" />
                      <TextField fx:id="txtEmployeeFirstName" prefWidth="206.0" />
                   </HBox>
-                  <HBox spacing="4">
+                  <HBox alignment="CENTER_LEFT" spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Last Name:" />
                      <TextField fx:id="txtEmployeeLastName" prefWidth="206.0" />
                   </HBox>
-                  <HBox spacing="4">
+                  <HBox alignment="CENTER_LEFT" spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Position:" />
                      <ComboBox fx:id="cmbEmployeePosition" prefWidth="125.0" />
                   </HBox>
                </VBox>
                <VBox spacing="8.0">
-                  <HBox spacing="4">
+                  <HBox alignment="CENTER_LEFT" spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Active:" />
-                     <CheckBox fx:id="chkEmployeeActive" />
+                     <CheckBox fx:id="chkEmployeeActive" prefHeight="22.0" prefWidth="22.0" />
                   </HBox>
-                  <HBox spacing="4">
+                  <HBox alignment="CENTER_LEFT" spacing="4">
                      <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Start Date:" />
                      <DatePicker fx:id="pkrEmployeeStartDate" prefWidth="125.0" />
                   </HBox>
-                  <HBox spacing="4">
-                     <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Shares:" />
-                     <TextField fx:id="txtEmployeeShares" prefWidth="125.0" />
+                  <HBox alignment="CENTER_LEFT" spacing="4">
+                     <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Bonus Shares:" />
+                     <TextField fx:id="txtEmployeeShares" alignment="CENTER_RIGHT" prefWidth="96.0" />
                   </HBox>
-                  <HBox spacing="4">
-                     <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Shares:" />
-                     <Label fx:id="lblEmployeeShares" prefWidth="125.0" />
+                  <HBox alignment="CENTER_LEFT" spacing="4">
+                     <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Shares:" />
+                     <Label fx:id="lblEmployeeShares" alignment="CENTER_RIGHT" prefWidth="96.0" />
                   </HBox>
                </VBox>
             </HBox>

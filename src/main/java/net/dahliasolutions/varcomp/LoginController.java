@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import net.dahliasolutions.varcomp.connectors.AppCompanyConnector;
 import net.dahliasolutions.varcomp.connectors.CompanyConnector;
@@ -20,12 +21,17 @@ import net.dahliasolutions.varcomp.models.KPIClass;
 import net.dahliasolutions.varcomp.models.User;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.basic.BasicTableUI;
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController extends ViewController implements Initializable {
 
+    @FXML
+    private VBox boxLogin;
+    @FXML
+    private VBox boxCompanySettings;
     @FXML
     private ImageView imgApplicationLogo;
     @FXML
@@ -36,6 +42,8 @@ public class LoginController extends ViewController implements Initializable {
     private Label lblWarning;
     @FXML
     private Button btnLogin;
+    @FXML
+    private Button btnSettings;
     @FXML
     private ComboBox<String> choiceCompanies;
     @FXML
@@ -51,9 +59,25 @@ public class LoginController extends ViewController implements Initializable {
     @FXML
     private Button btnNewCompany;
 
+    @FXML
+    private Button btnSettingsClose;
+    @FXML
+    private Button btnLoadCompanyLogo;
+    @FXML
+    private Button btnClearData;
+    @FXML
+    private Button btnDeleteCompany;
+    @FXML
+    private VBox boxConfirmDelete;
+    @FXML
+    private Button btnDeleteCompanyNo;
+    @FXML
+    private Button btnDeleteCompanyYes;
+
     ObservableList<AppCompany> companies;
 
     final FileChooser fcLogo = new FileChooser();
+    boolean isNewCompany = true;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,24 +85,32 @@ public class LoginController extends ViewController implements Initializable {
         companies = FXCollections.observableArrayList(AppCompanyConnector.getCompanies());
 
         btnLogin.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
+        btnSettings.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
         lblDBL.setText(DBUtils.getAppDBLocation());
         lblVersion.setText("VarComp v: "+DBUtils.getAppVersion());
 
         txtUsername.setOnKeyPressed(keyEvent -> {
+            lblStatus.setText("");
+            lblWarning.setVisible(false);
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                 btnLogin.fire();
             }
         });
         pwdPassword.setOnKeyPressed(keyEvent -> {
+            lblStatus.setText("");
+            lblWarning.setVisible(false);
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                 btnLogin.fire();
             }
         });
         choiceCompanies.setOnKeyPressed(keyEvent -> {
+            lblStatus.setText("");
+            lblWarning.setVisible(false);
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                 btnLogin.fire();
             }
         });
+        choiceCompanies.setOnAction(event -> selectCompany());
 
         btnLogin.setOnAction(event -> {
             if ( txtUsername.getText().isEmpty() && pwdPassword.getText().isEmpty() ) {
@@ -108,6 +140,16 @@ public class LoginController extends ViewController implements Initializable {
             }
         });
 
+        btnSettings.setOnAction(event -> openCompSettings());
+        btnSettingsClose.setOnAction(event -> closeCompSettings());
+        btnLoadCompanyLogo.setOnAction(event -> browseLogo());
+        btnDeleteCompany.setOnAction(event -> showConfirmDelete());
+        btnDeleteCompanyNo.setOnAction(event -> hideConfirmDelete());
+
+        boxLogin.setManaged(true);
+        boxLogin.setVisible(true);
+        boxCompanySettings.setManaged(false);
+        boxCompanySettings.setVisible(false);
         fillCompanies();
 
     }
@@ -119,7 +161,8 @@ public class LoginController extends ViewController implements Initializable {
         choiceCompanies.getItems().removeAll();
         companies.forEach(company -> choiceCompanies.getItems().add(company.getCompany_name()));
         choiceCompanies.setValue(choiceCompanies.getItems().get(0));
-        loadApplicationLogo();
+        selectCompany();
+        loadCompanyLogo();
     }
 
     private void loadApplicationLogo() {
@@ -207,15 +250,95 @@ public class LoginController extends ViewController implements Initializable {
             newUser.setUser_type("admin");
             newUser.insertUser();
         }
+        // update the company Choises and select the new company
         toggleNewCompany(false);
         fillCompanies();
+        choiceCompanies.setValue(newName);
+        selectCompany();
+
+        // Login
         goLogin(newName);
         lblStatus.setText("");
+    }
+
+    private void closeCompSettings() {
+        boxLogin.setVisible(true);
+        boxLogin.setManaged(true);
+        boxCompanySettings.setVisible(false);
+        boxCompanySettings.setManaged(false);
+    }
+
+    private void openCompSettings() {
+        // verify user
+        User u = UserConnector.loginUser(txtUsername.getText(), pwdPassword.getText());
+        if (u.getUser_id().equals(0)) {
+            lblWarning.setText("Incorrect username or password!");
+            lblWarning.setVisible(true);
+            return;
+        } else if (u.getUser_type().equals("admin")) {
+            lblWarning.setText("User must be an admin!");
+            lblWarning.setVisible(true);
+            return;
+        } else {
+            lblWarning.setText("");
+            lblWarning.setVisible(false);
+        }
+        boxLogin.setVisible(false);
+        boxLogin.setManaged(false);
+        boxCompanySettings.setVisible(true);
+        boxCompanySettings.setManaged(true);
+        boxConfirmDelete.setVisible(false);
+    }
+
+    private void browseLogo() {
+        Image newLogo;
+        String logoPath = DBUtils.getCompanyDir()+DBUtils.getFS()+"companyLogo.png";
+
+        fcLogo.setTitle("Select Logo Image");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
+        fcLogo.getExtensionFilters().add(extFilter);
+        File file = fcLogo.showOpenDialog(null);
+
+        File logoFile = new File(logoPath);
+        try {
+            InputStream stream = new FileInputStream(file);
+            newLogo = new Image(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            if(!logoFile.exists()) logoFile.createNewFile();
+        }catch (IOException ioE) {
+            System.out.println(ioE);
+        }
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(newLogo, null), "PNG", logoFile);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        imgApplicationLogo.setImage(newLogo);
+    }
+
+    private void loadCompanyLogo() {
+        String logoPath = DBUtils.getCompanyDir()+DBUtils.getFS()+"companyLogo.png";
+
+        File logoFile = new File(logoPath);
+        if(logoFile.exists()) {
+            try {
+                InputStream stream = new FileInputStream(logoFile);
+                imgApplicationLogo.setImage(new Image(stream));
+            } catch (FileNotFoundException e) {
+                loadApplicationLogo();
+            }
+        }
     }
 
     private void toggleNewCompany(boolean b) {
         btnLogin.setVisible(!b);
         btnLogin.setManaged(!b);
+        btnSettings.setVisible(!b);
+        btnSettings.setManaged(!b);
         boxNewCompany.setVisible(b);
         boxNewCompany.setManaged(b);
         if(b) {
@@ -225,15 +348,29 @@ public class LoginController extends ViewController implements Initializable {
         }
     }
 
+    private void selectCompany() {
+        String selectedCompany = choiceCompanies.getSelectionModel().getSelectedItem();
+
+        if (selectedCompany.equals("New Company")) {
+            isNewCompany = true;
+            btnSettings.setVisible(false);
+            loadApplicationLogo();
+        } else {
+            // get company from AppCompanies
+            lblStatus.setText("Retrieving Company Data");
+            AppCompany appCompany = AppCompanyConnector.getCompanyByName(selectedCompany);
+            VarComp.setAppCompany(appCompany);
+
+            // set DBUtils for current company
+            DBUtils.setDBLocation(appCompany.getDir_Name());
+            lblStatus.setText("");
+            isNewCompany = false;
+            btnSettings.setVisible(true);
+            loadCompanyLogo();
+        }
+    }
+
     private void goLogin(String companyName) {
-        lblStatus.setText("Retrieving Company Data");
-        // get company from AppCompanies
-        AppCompany appCompany = AppCompanyConnector.getCompanyByName(companyName);
-        VarComp.setAppCompany(appCompany);
-
-        // set dDBUtils for current company
-        DBUtils.setDBLocation(appCompany.getDir_Name());
-
         //update company if needed
         lblStatus.setText("Checking for Database Updates");
         DBSetup.initializeDB();
@@ -257,6 +394,13 @@ public class LoginController extends ViewController implements Initializable {
             lblWarning.setVisible(true);
         }
         lblStatus.setText("");
+    }
+
+    private void showConfirmDelete() {
+        boxConfirmDelete.setVisible(true);
+    }
+    private void hideConfirmDelete() {
+        boxConfirmDelete.setVisible(false);
     }
 
 }
