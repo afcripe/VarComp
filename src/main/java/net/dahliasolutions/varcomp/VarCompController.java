@@ -97,7 +97,7 @@ public class VarCompController extends ViewController implements Initializable {
             btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_LEFT, "12px"));
             btnNavMetrics.setText("Metrics");
             btnNavEmployees.setText("Employees");
-            btnNavSettings.setText("Settigns");
+            btnNavSettings.setText("Settings");
         }
         btnNavigation.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
