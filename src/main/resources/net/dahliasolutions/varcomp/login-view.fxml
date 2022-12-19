@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.CheckBox?>
+
 <BorderPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.LoginController">
    <center>
       <VBox alignment="TOP_CENTER">
@@ -83,7 +84,7 @@
                </Label>
             </HBox>
             <HBox alignment="CENTER">
-               <Button fx:id="btnLogin" mnemonicParsing="false" prefWidth="75.0" prefHeight="25" minHeight="25" text="Login">
+               <Button fx:id="btnLogin" minHeight="28" mnemonicParsing="false" prefHeight="28" prefWidth="75.0" text="Login">
                   <font>
                      <Font name="Arial Bold" size="14.0" />
                   </font>
@@ -91,11 +92,7 @@
                      <Insets left="60.0" right="8.0" />
                   </HBox.margin>
                </Button>
-               <Button fx:id="btnSettings" mnemonicParsing="false" prefWidth="75.0" prefHeight="25" minHeight="25" text="Settings">
-                  <font>
-                     <Font name="Arial Bold" size="12.0" />
-                  </font>
-               </Button>
+               <Button fx:id="btnSettings" minHeight="28" mnemonicParsing="false" prefHeight="28" prefWidth="28.0" />
                <HBox fx:id="boxNewCompany" alignment="CENTER" managed="false" spacing="8.0" visible="false">
                   <Label text="Name your company:">
                      <font>
@@ -104,7 +101,7 @@
                   </Label>
                   <TextField fx:id="txtNewCompany" prefWidth="200.0" />
                   <Button fx:id="btnNewCompany" prefWidth="75.0" text="Create" />
-                  <Button fx:id="btnNewCompanyLogin" prefWidth="75.0" text="=> Login" />
+                  <Button fx:id="btnNewCompanyLogin" prefWidth="75.0" text="=&gt; Login" />
                </HBox>
             </HBox>
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
@@ -127,26 +124,34 @@
             </HBox>
             <HBox spacing="4">
                <Label minWidth="150.0" text="Change Company Logo:" />
-               <Button fx:id="btnLoadCompanyLogo" prefWidth="140" maxWidth="140" mnemonicParsing="false" text="Upload" />
+               <Button fx:id="btnLoadCompanyLogo" maxWidth="140" mnemonicParsing="false" prefWidth="140" text="Upload" />
             </HBox>
             <HBox spacing="4">
                <Label minWidth="150.0" text="Company Data:" />
-               <Button fx:id="btnImportData" prefWidth="140" maxWidth="140" mnemonicParsing="false" text="Import Data" />
-               <Button fx:id="btnExportData" prefWidth="140" maxWidth="140" mnemonicParsing="false" text="Export Data" />
+               <Button fx:id="btnImportData" maxWidth="140" mnemonicParsing="false" prefWidth="140" text="Import Data" />
+               <Button fx:id="btnExportData" maxWidth="140" mnemonicParsing="false" prefWidth="140" text="Export Data" />
             </HBox>
             <HBox spacing="4">
                <Label minWidth="150.0" />
-               <Button fx:id="btnClearData" prefWidth="140" maxWidth="140" mnemonicParsing="false" text="Clear Data" />
-               <Button fx:id="btnDeleteCompany" prefWidth="140" maxWidth="140" mnemonicParsing="false" text="Delete Company" />
+               <Button fx:id="btnClearData" maxWidth="140" mnemonicParsing="false" prefWidth="140" text="Clear Data" />
+               <Button fx:id="btnDeleteCompany" maxWidth="140" mnemonicParsing="false" prefWidth="140" text="Delete Company" />
             </HBox>
-            <VBox fx:id="boxConfirmDelete" spacing="4" alignment="CENTER" HBox.hgrow="ALWAYS">
-               <Label fx:id="lblConfirmDelete" alignment="CENTER" text="Confirm Delete Company!" textFill="#ff0000" visible="false" managed="false" />
-               <Label fx:id="lblConfirmClear" alignment="CENTER" text="Confirm Clear Data!" textFill="#ff8200" visible="false" managed="false" />
+            <VBox fx:id="boxConfirmDelete" alignment="CENTER" spacing="4" HBox.hgrow="ALWAYS">
+               <Label fx:id="lblConfirmDelete" alignment="CENTER" text="Confirm Delete Company!" textFill="#ff0000" visible="false" >
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font>
+               </Label>
+               <Label fx:id="lblConfirmClear" alignment="CENTER" text="Confirm Clear Data!" visible="false" managed="false" textFill="#ff8200">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font>
+               </Label>
 
                <HBox alignment="CENTER" spacing="4">
-                  <Button fx:id="btnDeleteCompanyNo" prefWidth="75" mnemonicParsing="false" text="No" />
-                  <CheckBox fx:id="chkDeleteCompany"  visible="false" />
-                  <Button fx:id="btnDeleteCompanyYes" prefWidth="75" mnemonicParsing="false" text="Yes" />
+                  <Button fx:id="btnDeleteCompanyNo" mnemonicParsing="false" prefWidth="75" text="No" />
+                  <CheckBox fx:id="chkDeleteCompany" visible="false" />
+                  <Button fx:id="btnDeleteCompanyYes" mnemonicParsing="false" prefWidth="75" text="Yes" />
                </HBox>
             </VBox>
             <VBox.margin>

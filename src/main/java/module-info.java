@@ -8,6 +8,7 @@ module net.dahliasolutions.varcomp {
     requires com.dlsc.formsfx;
     requires javafx.swing;
     requires javafx.web;
+    requires fontawesomefx;
 
     opens net.dahliasolutions.varcomp to javafx.fxml;
     exports net.dahliasolutions.varcomp;

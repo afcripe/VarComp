@@ -1,5 +1,7 @@
 package net.dahliasolutions.varcomp;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -109,6 +111,8 @@ public class LoginController extends ViewController implements Initializable {
         lblStatus.setText("");
         companies = FXCollections.observableArrayList(AppCompanyConnector.getCompanies());
 
+        btnSettings.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.COG, "24px"));
+
         btnLogin.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
         btnSettings.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
         lblDBL.setText(DBUtils.getAppDBLocation());
@@ -159,12 +163,6 @@ public class LoginController extends ViewController implements Initializable {
         });
         btnNewCompany.setOnAction(event -> createCompany(false));
         btnNewCompanyLogin.setOnAction(event -> createCompany(true));
-
-        imgApplicationLogo.setOnMousePressed(event -> {
-            if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                browseApplicationLogo();
-            }
-        });
 
         btnSettings.setOnAction(event -> openCompSettings());
         btnSettingsClose.setOnAction(event -> closeCompSettings());

@@ -1,5 +1,7 @@
 package net.dahliasolutions.varcomp;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +33,8 @@ public class VarCompController extends ViewController implements Initializable {
     @FXML
     private VBox vboxNavigation;
     @FXML
+    private Button btnNavigation;
+    @FXML
     private Button btnNavMetrics;
     @FXML
     private Button btnNavEmployees;
@@ -44,10 +48,17 @@ public class VarCompController extends ViewController implements Initializable {
         menuHelp.setOnAction(event -> showHelp());
         menuAbout.setOnAction(event -> showAbout());
 
+        btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_RIGHT, "12px"));
+        btnNavMetrics.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.BAR_CHART_ALT, "12px"));
+        btnNavEmployees.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.USERS, "12px"));
+        btnNavSettings.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.COGS, "12px"));
+
+        btnNavigation.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavEmployees.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavSettings.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
 
+        btnNavigation.setOnAction(event -> collapseNav());
         btnNavMetrics.setOnAction(event -> setCenterView("vcmetric-view"));
         btnNavEmployees.setOnAction(event -> setCenterView("vcemployee-view"));
         btnNavSettings.setOnAction(event -> setCenterView("settings-view"));
@@ -59,6 +70,7 @@ public class VarCompController extends ViewController implements Initializable {
     @Override
     public void init() {
         System.out.println("Logged in to: "+VarComp.getCurrentCompany().getCompany_name());
+        collapseNav();
     }
 
     public void setCenterView(String fxmlFile) {
@@ -70,6 +82,27 @@ public class VarCompController extends ViewController implements Initializable {
             throw new RuntimeException(e);
         }
 
+    }
+    private void collapseNav() {
+        if (vboxNavigation.getPrefWidth() == 100) {
+            vboxNavigation.setPrefWidth(30);
+            vboxNavigation.setMinWidth(30);
+            btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_RIGHT, "12px"));
+            btnNavMetrics.setText("");
+            btnNavEmployees.setText("");
+            btnNavSettings.setText("");
+        } else {
+            vboxNavigation.setPrefWidth(100);
+            vboxNavigation.setMinWidth(100);
+            btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_LEFT, "12px"));
+            btnNavMetrics.setText("Metrics");
+            btnNavEmployees.setText("Employees");
+            btnNavSettings.setText("Settigns");
+        }
+        btnNavigation.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
+        btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
+        btnNavEmployees.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
+        btnNavSettings.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
     }
 
     private void showAbout() {

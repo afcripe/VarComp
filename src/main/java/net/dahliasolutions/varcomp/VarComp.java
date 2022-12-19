@@ -20,7 +20,6 @@ public class VarComp extends Application {
     private static final Company currentCompany = new Company();
     private static final AppCompany currentAppCompany = new AppCompany();
 
-
     private static Stage primaryStage;
 
     @Override
