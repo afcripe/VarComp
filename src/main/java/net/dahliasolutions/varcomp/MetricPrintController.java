@@ -15,10 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Optional;
@@ -183,7 +180,8 @@ public class MetricPrintController implements Initializable {
             try {
                 InputStream stream = new FileInputStream(logoFile);
                 imgCompanyLogo.setImage(new Image(stream));
-            } catch (FileNotFoundException e) {
+                stream.close();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }

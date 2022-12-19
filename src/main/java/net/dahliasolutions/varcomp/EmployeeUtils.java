@@ -14,12 +14,12 @@ public class EmployeeUtils {
         // get vars
         Integer today = LocalDate.now().getYear();
         Integer hire = startDate.getYear();
-        Integer additionAssignments = 0;
+        int additionAssignments = 0;
         Integer yearAssign = VarComp.getCurrentCompany().getShares_issued_years();
         Integer sharesAssign = VarComp.getCurrentCompany().getShares_issued_amount();
         double shareMultiplier = PositionsConnector.getPosition(positionID).getPosition_shares();
         //run calc
-        Integer additionalShares = (int) (sharesAssign * shareMultiplier);
+        int additionalShares = (int) (sharesAssign * shareMultiplier);
         try {
             additionAssignments = ((today - hire) / yearAssign);
         } catch (Exception e) {

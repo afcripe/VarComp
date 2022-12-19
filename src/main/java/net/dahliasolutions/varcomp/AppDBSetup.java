@@ -77,7 +77,7 @@ public class AppDBSetup {
         ResultSet resultSet;
 
         try {
-            getDefaultData = appConnection.prepareStatement("SELECT * FROM tblusers WHERE user_name='admin'");
+            getDefaultData = appConnection.prepareStatement("SELECT * FROM tbldbsettings");
             resultSet = getDefaultData.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {

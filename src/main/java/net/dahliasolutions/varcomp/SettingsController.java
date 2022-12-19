@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -71,8 +70,6 @@ public class SettingsController implements Initializable {
     @FXML
     private Button btnLoadCompanyIcon;
     @FXML
-    private Button btnImportData;
-    @FXML
     private ImageView imgCompanyIcon;
     @FXML
     private CheckBox chkShowCompanyLogo;
@@ -90,8 +87,6 @@ public class SettingsController implements Initializable {
     private TextField txtYearsIssued;
     @FXML
     private Button btnSaveCompany;
-    @FXML
-    private Button btnExportData;
     @FXML
     private Button bntNewKPIClass;
     @FXML
@@ -271,11 +266,7 @@ public class SettingsController implements Initializable {
     private TextField txtFormPK_weight;
 
     final FileChooser fcLogo = new FileChooser();
-    final FileChooser fcExport = new FileChooser();
-    final FileChooser fcImport = new FileChooser();
 
-    String fs;
-    String userHomeDir;
     ObservableList<KPIClass> kpiClassList;
     ObservableList<KPIMaster> kpiMasterList;
     ObservableList<Position> positionList;
@@ -288,9 +279,6 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fs = System.getProperty("file.separator");
-        userHomeDir = System.getProperty("user.home");
-
         lblTitle.setText("Settings");
 
         kpiClassList = FXCollections.observableArrayList(KPIClassConnector.getKPIClasses());
@@ -314,14 +302,6 @@ public class SettingsController implements Initializable {
         txtFundingPercentage.setText(VarComp.getCurrentCompany().getFunding_percentage().toString());
         chkShowCompanyLogo.setSelected(VarComp.getCurrentCompany().getCompany_logo_show());
         btnSaveCompany.setOnAction(this::updateCompany);
-        btnExportData.setOnAction(event -> {
-            try {
-                exportDB();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        btnImportData.setOnAction(event -> importDB());
         btnLoadCompanyLogo.setOnAction(event -> browseLogo());
         btnLoadCompanyIcon.setOnAction(event -> browseIcon());
 
@@ -581,28 +561,30 @@ public class SettingsController implements Initializable {
     }
 
     private void loadCompanyLogo() {
-        String logoPath = DBUtils.getCompanyDir()+fs+"companyLogo.png";
+        String logoPath = DBUtils.getCompanyDir()+DBUtils.getFS()+"companyLogo.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
             try {
                 InputStream stream = new FileInputStream(logoFile);
                 imgCompanyLogo.setImage(new Image(stream));
-            } catch (FileNotFoundException e) {
+                stream.close();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
     private void loadCompanyIcon() {
-        String logoPath = DBUtils.getCompanyDir()+fs+"companyIcon.png";
+        String logoPath = DBUtils.getCompanyDir()+DBUtils.getFS()+"companyIcon.png";
 
         File logoFile = new File(logoPath);
         if(logoFile.exists()) {
             try {
                 InputStream stream = new FileInputStream(logoFile);
                 imgCompanyIcon.setImage(new Image(stream));
-            } catch (FileNotFoundException e) {
+                stream.close();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -622,7 +604,8 @@ public class SettingsController implements Initializable {
         try {
             InputStream stream = new FileInputStream(file);
             newLogo = new Image(stream);
-        } catch (FileNotFoundException e) {
+            stream.close();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         try {
@@ -641,7 +624,7 @@ public class SettingsController implements Initializable {
 
     private void browseIcon() {
         Image newIcon;
-        String logoPath = DBUtils.getCompanyDir()+fs+"companyIcon.png";
+        String logoPath = DBUtils.getCompanyDir()+DBUtils.getFS()+"companyIcon.png";
 
         fcLogo.setTitle("Select Icon Image");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
@@ -652,7 +635,8 @@ public class SettingsController implements Initializable {
         try {
             InputStream stream = new FileInputStream(file);
             newIcon = new Image(stream);
-        } catch (FileNotFoundException e) {
+            stream.close();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         try {
@@ -667,79 +651,6 @@ public class SettingsController implements Initializable {
         }
 
         imgCompanyIcon.setImage(newIcon);
-    }
-
-    private void exportDB() throws IOException {
-        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"_dump.sql";
-        String zipFolder = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+".zip";
-
-        File logoFile = new File(DBUtils.getCompanyDir()+fs+"companyLogo.png");
-        File iconFile = new File(DBUtils.getCompanyDir()+fs+"companyIcon.png");
-        File sqlFile = new File(dbPath);
-
-        String dumpFile;
-        fcExport.setTitle("Select Export Location");
-        File file = fcExport.showSaveDialog(null);
-
-        // Dump db to SQL
-        dumpFile = DBUtils.getSQLDump();
-
-        // create folder to zip
-        Path folderToZip = Paths.get(DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"_zip");
-        Files.createDirectory(folderToZip);
-
-        //copy files to new folder
-        if(logoFile.exists()) copyFile(logoFile.getPath(), folderToZip+fs+"companyLogo.png");
-        if(iconFile.exists()) copyFile(iconFile.getPath(), folderToZip+fs+"companyIcon.png");
-        if(sqlFile.exists()) copyFile(sqlFile.getPath(), folderToZip+fs+DBUtils.getSafeName()+"_dump.sql");
-
-        // zip folder
-        zipDirectory(new File(folderToZip.toUri()), zipFolder);
-
-        // Fix the extension
-        String expFile = file.getPath();
-        if(!file.getPath().endsWith(".zip")) expFile = expFile+".zip";
-        // try to copy
-        if (!dumpFile.isEmpty()) {
-            try {
-                copyFile(zipFolder, expFile);
-            } catch (IOException ioException) {
-                System.out.println(ioException);
-            }
-        }
-
-        /* cleanup company directory */
-        if(sqlFile.exists()) sqlFile.delete();
-        if(new File(zipFolder).exists()) new File(zipFolder).delete();
-        if(folderToZip.toFile().exists()) deleteDir(folderToZip.toFile());
-    }
-
-    private void importDB() {
-        String dbPath = DBUtils.getCompanyDir()+fs+DBUtils.getSafeName()+"_dump.sql";
-
-        fcImport.setTitle("Select Export Location");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("VarComp ZIP File", "*.zip");
-        fcImport.getExtensionFilters().add(extFilter);
-        File file = fcImport.showOpenDialog(null);
-
-        // unzip tho the company directory
-        unZipFiles(file.getPath(), DBUtils.getCompanyDir());
-
-        //restore the database
-        DBUtils.insertSQLDump(new File(dbPath));
-
-        //cleanup dump file
-        File dbFile = new File(dbPath);
-        if(dbFile.exists()) dbFile.delete();
-
-        // update the companyID
-        CompanyConnector.updateCompanyID(VarComp.getAppCompany().getCompany_id());
-
-        // update appCompany name
-        AppCompanyConnector.updateCompany(VarComp.getAppCompany().getCompany_id(), CompanyConnector.getCompany().getCompany_name());
-
-        // logout
-        VarComp.changeScene("login-view.fxml", "Login", false);
     }
 
     public static void copyFile(String src, String dest) throws IOException {

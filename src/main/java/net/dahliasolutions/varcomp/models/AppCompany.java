@@ -1,5 +1,7 @@
 package net.dahliasolutions.varcomp.models;
 
+import net.dahliasolutions.varcomp.connectors.AppCompanyConnector;
+
 public class AppCompany {
     private Integer company_id;
     private String company_name;
@@ -56,4 +58,6 @@ public class AppCompany {
     }
 
     public AppCompany getAppCompany() { return this; }
+
+    public void removeAppCompany() { AppCompanyConnector.deleteCompany( this.company_id ); }
 }

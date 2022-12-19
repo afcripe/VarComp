@@ -4,7 +4,7 @@ import java.io.File;
 import java.sql.*;
 
 public class DBUtils {
-    private static final String appVersion = "2.0.8";
+    private static final String appVersion = "2.0.9";
     private static final int appDBVersion = 2;
     private static final int companyDBVersion = 3;
     private static final String fs = System.getProperty("file.separator");
@@ -14,7 +14,7 @@ public class DBUtils {
     private static String AppData = "varcomp";
     private static String varCompDB = "jdbc:h2:~"+fs+"varcomp"+fs+"varcompdb";
     private static String appDB = "jdbc:h2:~"+fs+"varcomp"+fs+"appdb";
-    private static String helpDocs = "http://vcp.presidiumapp.com/desktopDocs/#";
+    private static final String helpDocs = "http://vcp.presidiumapp.com/desktopDocs/#";
 
 
     public static void init() {

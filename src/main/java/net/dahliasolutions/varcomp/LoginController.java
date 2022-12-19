@@ -17,14 +17,20 @@ import net.dahliasolutions.varcomp.connectors.CompanyConnector;
 import net.dahliasolutions.varcomp.connectors.UserConnector;
 import net.dahliasolutions.varcomp.models.AppCompany;
 import net.dahliasolutions.varcomp.models.Company;
-import net.dahliasolutions.varcomp.models.KPIClass;
 import net.dahliasolutions.varcomp.models.User;
 
 import javax.imageio.ImageIO;
-import javax.swing.plaf.basic.BasicTableUI;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 public class LoginController extends ViewController implements Initializable {
 
@@ -58,6 +64,11 @@ public class LoginController extends ViewController implements Initializable {
     private TextField txtNewCompany;
     @FXML
     private Button btnNewCompany;
+    @FXML
+    private Button btnNewCompanyLogin;
+
+    @FXML
+    private Label lblSettingsCompany;
 
     @FXML
     private Button btnSettingsClose;
@@ -73,10 +84,24 @@ public class LoginController extends ViewController implements Initializable {
     private Button btnDeleteCompanyNo;
     @FXML
     private Button btnDeleteCompanyYes;
+    @FXML
+    private Label lblConfirmDelete;
+    @FXML
+    private Label lblConfirmClear;
+    @FXML
+    private CheckBox chkDeleteCompany;
+    @FXML
+    private Button btnExportData;
+    @FXML
+    private Button btnImportData;
 
     ObservableList<AppCompany> companies;
 
+    List<String> filesListInDir = new ArrayList<String>();
+
     final FileChooser fcLogo = new FileChooser();
+    final FileChooser fcExport = new FileChooser();
+    final FileChooser fcImport = new FileChooser();
     boolean isNewCompany = true;
 
     @Override
@@ -123,16 +148,17 @@ public class LoginController extends ViewController implements Initializable {
                 toggleNewCompany(true);
             } else {
                 //DBUtils.setDBLocation(AppCompanyConnector.getCompany());
-                goLogin(choiceCompanies.getSelectionModel().getSelectedItem());
+                goLogin();
             }
         });
 
         txtNewCompany.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                btnNewCompany.fire();
+                btnNewCompanyLogin.fire();
             }
         });
-        btnNewCompany.setOnAction(event -> createCompany());
+        btnNewCompany.setOnAction(event -> createCompany(false));
+        btnNewCompanyLogin.setOnAction(event -> createCompany(true));
 
         imgApplicationLogo.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
@@ -143,8 +169,18 @@ public class LoginController extends ViewController implements Initializable {
         btnSettings.setOnAction(event -> openCompSettings());
         btnSettingsClose.setOnAction(event -> closeCompSettings());
         btnLoadCompanyLogo.setOnAction(event -> browseLogo());
-        btnDeleteCompany.setOnAction(event -> showConfirmDelete());
+        btnClearData.setOnAction(event -> showConfirmDelete("data"));
+        btnDeleteCompany.setOnAction(event -> showConfirmDelete("company"));
         btnDeleteCompanyNo.setOnAction(event -> hideConfirmDelete());
+        btnDeleteCompanyYes.setOnAction(event -> processConfirmDeleteClear());
+        btnExportData.setOnAction(event -> {
+            try {
+                exportDB();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        btnImportData.setOnAction(event -> importDB());
 
         boxLogin.setManaged(true);
         boxLogin.setVisible(true);
@@ -162,7 +198,6 @@ public class LoginController extends ViewController implements Initializable {
         companies.forEach(company -> choiceCompanies.getItems().add(company.getCompany_name()));
         choiceCompanies.setValue(choiceCompanies.getItems().get(0));
         selectCompany();
-        loadCompanyLogo();
     }
 
     private void loadApplicationLogo() {
@@ -173,7 +208,8 @@ public class LoginController extends ViewController implements Initializable {
             try {
                 InputStream stream = new FileInputStream(logoFile);
                 imgApplicationLogo.setImage(new Image(stream));
-            } catch (FileNotFoundException e) {
+                stream.close();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -195,7 +231,8 @@ public class LoginController extends ViewController implements Initializable {
         try {
             InputStream stream = new FileInputStream(file);
             newLogo = new Image(stream);
-        } catch (FileNotFoundException e) {
+            stream.close();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         try {
@@ -212,7 +249,7 @@ public class LoginController extends ViewController implements Initializable {
         imgApplicationLogo.setImage(newLogo);
     }
 
-    private void createCompany() {
+    private void createCompany(boolean login) {
         lblStatus.setText("Creating New Company");
         String newName = txtNewCompany.getText().toString();
         String newSafeName = newName.replaceAll(" ", "_");
@@ -256,9 +293,11 @@ public class LoginController extends ViewController implements Initializable {
         choiceCompanies.setValue(newName);
         selectCompany();
 
-        // Login
-        goLogin(newName);
         lblStatus.setText("");
+        if(login) {
+            // Login
+            goLogin();
+        }
     }
 
     private void closeCompSettings() {
@@ -275,7 +314,7 @@ public class LoginController extends ViewController implements Initializable {
             lblWarning.setText("Incorrect username or password!");
             lblWarning.setVisible(true);
             return;
-        } else if (u.getUser_type().equals("admin")) {
+        } else if (!u.getUser_type().equals("admin")) {
             lblWarning.setText("User must be an admin!");
             lblWarning.setVisible(true);
             return;
@@ -303,7 +342,8 @@ public class LoginController extends ViewController implements Initializable {
         try {
             InputStream stream = new FileInputStream(file);
             newLogo = new Image(stream);
-        } catch (FileNotFoundException e) {
+            stream.close();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         try {
@@ -328,9 +368,14 @@ public class LoginController extends ViewController implements Initializable {
             try {
                 InputStream stream = new FileInputStream(logoFile);
                 imgApplicationLogo.setImage(new Image(stream));
+                stream.close();
             } catch (FileNotFoundException e) {
                 loadApplicationLogo();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+        } else {
+            loadApplicationLogo();
         }
     }
 
@@ -366,11 +411,12 @@ public class LoginController extends ViewController implements Initializable {
             lblStatus.setText("");
             isNewCompany = false;
             btnSettings.setVisible(true);
+            lblSettingsCompany.setText(appCompany.getCompany_name());
             loadCompanyLogo();
         }
     }
 
-    private void goLogin(String companyName) {
+    private void goLogin() {
         //update company if needed
         lblStatus.setText("Checking for Database Updates");
         DBSetup.initializeDB();
@@ -396,11 +442,218 @@ public class LoginController extends ViewController implements Initializable {
         lblStatus.setText("");
     }
 
-    private void showConfirmDelete() {
+    private void showConfirmDelete(String deleteType) {
         boxConfirmDelete.setVisible(true);
+
+        lblConfirmDelete.setVisible(false);
+        lblConfirmDelete.setManaged(false);
+        lblConfirmClear.setVisible(false);
+        lblConfirmClear.setManaged(false);
+
+        if ( deleteType.equals("company") ) {
+            lblConfirmDelete.setVisible(true);
+            lblConfirmDelete.setManaged(true);
+            chkDeleteCompany.setSelected(true);
+        } else {
+            lblConfirmClear.setVisible(true);
+            lblConfirmClear.setManaged(true);
+            chkDeleteCompany.setSelected(false);
+        }
     }
     private void hideConfirmDelete() {
         boxConfirmDelete.setVisible(false);
+    }
+
+    private void processConfirmDeleteClear() {
+        if (chkDeleteCompany.isSelected() ) {
+            deleteCompany();
+        } else {
+            clearData();
+        }
+    }
+
+    private void deleteCompany() {
+        AppCompany appCompany = VarComp.getAppCompany();
+        File compDir = new File(DBUtils.getCompanyDir());
+
+        loadApplicationLogo();
+
+        // remove company from appDatabase
+        appCompany.removeAppCompany();
+        fillCompanies();
+
+        // delete dir and contents
+        deleteDir(compDir);
+
+        // logout
+        VarComp.changeScene("login-view.fxml", "Login", false);
+    }
+    private void clearData() {
+        // drop the table data
+        DBSetup.dropCompanyData(VarComp.getAppCompany().getCompany_id());
+
+        // logout
+        VarComp.changeScene("login-view.fxml", "Login", false);
+    }
+
+    private void exportDB() throws IOException {
+        String dbPath = DBUtils.getCompanyDir()+DBUtils.getFS()+DBUtils.getSafeName()+"_dump.sql";
+        String zipFolder = DBUtils.getCompanyDir()+DBUtils.getFS()+DBUtils.getSafeName()+".zip";
+
+        File logoFile = new File(DBUtils.getCompanyDir()+DBUtils.getFS()+"companyLogo.png");
+        File iconFile = new File(DBUtils.getCompanyDir()+DBUtils.getFS()+"companyIcon.png");
+        File sqlFile = new File(dbPath);
+
+        String dumpFile;
+        fcExport.setTitle("Select Export Location");
+        File file = fcExport.showSaveDialog(null);
+
+        // Dump db to SQL
+        dumpFile = DBUtils.getSQLDump();
+
+        // create folder to zip
+        Path folderToZip = Paths.get(DBUtils.getCompanyDir()+DBUtils.getFS()+DBUtils.getSafeName()+"_zip");
+        Files.createDirectory(folderToZip);
+
+        //copy files to new folder
+        if(logoFile.exists()) copyFile(logoFile.getPath(), folderToZip+DBUtils.getFS()+"companyLogo.png");
+        if(iconFile.exists()) copyFile(iconFile.getPath(), folderToZip+DBUtils.getFS()+"companyIcon.png");
+        if(sqlFile.exists()) copyFile(sqlFile.getPath(), folderToZip+DBUtils.getFS()+DBUtils.getSafeName()+"_dump.sql");
+
+        // zip folder
+        zipDirectory(new File(folderToZip.toUri()), zipFolder);
+
+        // Fix the extension
+        String expFile = file.getPath();
+        if(!file.getPath().endsWith(".zip")) expFile = expFile+".zip";
+        // try to copy
+        if (!dumpFile.isEmpty()) {
+            try {
+                copyFile(zipFolder, expFile);
+            } catch (IOException ioException) {
+                System.out.println(ioException);
+            }
+        }
+
+        /* cleanup company directory */
+        if(sqlFile.exists()) sqlFile.delete();
+        if(new File(zipFolder).exists()) new File(zipFolder).delete();
+        if(folderToZip.toFile().exists()) deleteDir(folderToZip.toFile());
+    }
+
+    private void importDB() {
+        String dbPath = DBUtils.getCompanyDir()+DBUtils.getFS()+DBUtils.getSafeName()+"_dump.sql";
+
+        fcImport.setTitle("Select Export Location");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("VarComp ZIP File", "*.zip");
+        fcImport.getExtensionFilters().add(extFilter);
+        File file = fcImport.showOpenDialog(null);
+
+        // unzip tho the company directory
+        unZipFiles(file.getPath(), DBUtils.getCompanyDir());
+
+        //restore the database
+        DBUtils.insertSQLDump(new File(dbPath));
+
+        //cleanup dump file
+        File dbFile = new File(dbPath);
+        if(dbFile.exists()) dbFile.delete();
+
+        // update the companyID
+        CompanyConnector.updateCompanyID(VarComp.getAppCompany().getCompany_id());
+
+        // update appCompany name
+        AppCompanyConnector.updateCompany(VarComp.getAppCompany().getCompany_id(), CompanyConnector.getCompany().getCompany_name());
+
+        // logout
+        VarComp.changeScene("login-view.fxml", "Login", false);
+    }
+
+    public static void copyFile(String src, String dest) throws IOException {
+        File targetFile = new File(dest);
+        if(targetFile.exists()) targetFile.delete();
+        Files.copy(Paths.get(src), Paths.get(dest));
+    }
+    private void zipDirectory(File dir, String zipDirName) {
+        try {
+            populateFilesList(dir);
+            //now zip files one by one
+            //create ZipOutputStream to write to the zip file
+            FileOutputStream fos = new FileOutputStream(zipDirName);
+            ZipOutputStream zos = new ZipOutputStream(fos);
+            for(String filePath : filesListInDir){
+                System.out.println("Zipping "+filePath);
+                //for ZipEntry we need to keep only relative file path, so we used substring on absolute path
+                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length()+1, filePath.length()));
+                zos.putNextEntry(ze);
+                //read the file and write to ZipOutputStream
+                FileInputStream fis = new FileInputStream(filePath);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                zos.closeEntry();
+                fis.close();
+            }
+            zos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void populateFilesList(File dir) throws IOException {
+        File[] files = dir.listFiles();
+        for(File file : files){
+            if(file.isFile()) filesListInDir.add(file.getAbsolutePath());
+            else populateFilesList(file);
+        }
+    }
+    private void deleteDir(File dir) {
+        try {
+            populateFilesList(dir);
+            // delete each file in directory
+            for(String filePath : filesListInDir){
+                System.out.println("Deleting "+filePath);
+                new File(filePath).delete();
+            }
+            // now delete the folder
+            dir.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void unZipFiles(String zipFilePath, String destDir) {
+        FileInputStream fis;
+        //buffer for read and write data to file
+        byte[] buffer = new byte[1024];
+        try {
+            fis = new FileInputStream(zipFilePath);
+            ZipInputStream zis = new ZipInputStream(fis);
+            ZipEntry ze = zis.getNextEntry();
+            while(ze != null){
+                String fileName = ze.getName();
+                File newFile = new File(destDir + File.separator + fileName);
+                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+                //close this ZipEntry
+                zis.closeEntry();
+                ze = zis.getNextEntry();
+            }
+            //close last ZipEntry
+            zis.closeEntry();
+            zis.close();
+            fis.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
     }
 
 }

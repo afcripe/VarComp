@@ -1,7 +1,6 @@
 package net.dahliasolutions.varcomp;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,28 +8,21 @@ import javafx.fxml.Initializable;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
 import net.dahliasolutions.varcomp.connectors.EmployeeScoreConnector;
 import net.dahliasolutions.varcomp.connectors.MetricConnector;
 import net.dahliasolutions.varcomp.connectors.PositionsConnector;
 import net.dahliasolutions.varcomp.models.Employee;
 import net.dahliasolutions.varcomp.models.EmployeeScore;
-import net.dahliasolutions.varcomp.models.Metric;
 import net.dahliasolutions.varcomp.models.Position;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -179,7 +171,8 @@ public class EmployeePrintController implements Initializable {
             try {
                 InputStream stream = new FileInputStream(logoFile);
                 imgCompanyLogo.setImage(new Image(stream));
-            } catch (FileNotFoundException e) {
+                stream.close();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }

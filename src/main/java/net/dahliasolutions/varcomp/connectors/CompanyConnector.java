@@ -127,7 +127,7 @@ public class CompanyConnector {
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
             preparedStatement = connection.prepareStatement("UPDATE tblcompany SET COMPANY_NAME= ?," +
-                    "SHARES_TOTAL=?, SHARES_OUTSTANDING=?, FUNDING_PERCENTAGE=?," +
+                    "SHARES_TOTAL=?, SHARES_OUTSTANDING=?, FUNDING_PERCENTAGE=?, " +
                     "SHARES_ISSUED_AMOUNT=?, SHARES_ISSUED_YEARS=?, COMPANY_LOGO_SHOW=? WHERE company_id=?");
             preparedStatement.setString(1, company.getCompany_name());
             preparedStatement.setInt(2, company.getShares_total());
