@@ -222,6 +222,14 @@ public class VCEmployeeController implements Initializable {
         btnEmployeePrint.setVisible(false);
         lblPrintJobStatus.setVisible(false);
         chkPrintPreview.setVisible(false);
+        bntNewEmployee.setVisible(false);
+
+        btnEditEmployee_save.setManaged(false);
+        btnEmployeeHome.setManaged(false);
+        btnEmployeePrint.setManaged(false);
+        lblPrintJobStatus.setManaged(false);
+        chkPrintPreview.setManaged(false);
+        bntNewEmployee.setManaged(false);
         switch (loc) {
             case "new" -> {
                 paneFormEmployee.setVisible(true);
@@ -237,10 +245,17 @@ public class VCEmployeeController implements Initializable {
                 lblPrintJobStatus.setText("");
                 chkPrintPreview.setVisible(true);
                 chkPrintPreview.setSelected(false);
+                btnEditEmployee_save.setManaged(true);
+                btnEmployeeHome.setManaged(true);
+                btnEmployeePrint.setManaged(true);
+                lblPrintJobStatus.setManaged(true);
+                chkPrintPreview.setManaged(true);
             }
             default -> {
                 paneEmployeeTable.setVisible(true);
                 paneEmployeeTable.setManaged(true);
+                bntNewEmployee.setVisible(true);
+                bntNewEmployee.setManaged(true);
             }
         }
     }
@@ -391,18 +406,20 @@ public class VCEmployeeController implements Initializable {
 
     private void applyFilter() {
         tblEmployeeMetrics.getItems().removeAll();
-        if (!cmbFilterYear.getValue().equals("All")) {
-            try {
-                employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
-                        .getEmployeeScoreByFiltered(selectedEmployee.getEmployee_id(), Integer.parseInt(cmbFilterYear.getValue())));
-            } catch (Exception e) {
+
+        try {
+            if (cmbFilterYear.getValue().equals("All")) {
                 employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
                         .getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
+            } else {
+                employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
+                        .getEmployeeScoreByFiltered(selectedEmployee.getEmployee_id(), Integer.parseInt(cmbFilterYear.getValue())));
             }
-        } else {
+        } catch (Exception e) {
             employeeScores = FXCollections.observableArrayList(EmployeeScoreConnector
                     .getEmployeeScoreByEmployee(selectedEmployee.getEmployee_id()));
         }
+
         tblEmployeeMetrics.setItems(employeeScores);
         getTotalBonus();
     }

@@ -6,14 +6,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import net.dahliasolutions.varcomp.connectors.AppCompanyConnector;
 import net.dahliasolutions.varcomp.connectors.CompanyConnector;
 import net.dahliasolutions.varcomp.connectors.UserConnector;
@@ -37,9 +42,21 @@ import java.util.zip.ZipOutputStream;
 public class LoginController extends ViewController implements Initializable {
 
     @FXML
+    private BorderPane viewMain;
+    @FXML
     private VBox boxLogin;
     @FXML
     private VBox boxCompanySettings;
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private MenuItem menuLogout;
+    @FXML
+    private MenuItem menuExit;
+    @FXML
+    private MenuItem menuHelp;
+    @FXML
+    private MenuItem menuAbout;
     @FXML
     private ImageView imgApplicationLogo;
     @FXML
@@ -111,8 +128,19 @@ public class LoginController extends ViewController implements Initializable {
         lblStatus.setText("");
         companies = FXCollections.observableArrayList(AppCompanyConnector.getCompanies());
 
-        btnSettings.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.COG, "24px"));
+        menuLogout.setOnAction(actionEvent -> VarComp.changeScene("login-view.fxml", "Login", false));
+        menuExit.setOnAction(actionEvent -> VarComp.closeApp());
+        menuHelp.setOnAction(event -> showHelp());
+        menuAbout.setOnAction(event -> showAbout());
 
+        if(System.getProperty("os.name").startsWith("Mac")) {
+            //Mac OS, move menubar to System Menu
+            menuBar.setUseSystemMenuBar(true);
+            // Remove top border pane
+            viewMain.getTop().setVisible(false);
+        }
+
+        btnSettings.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.COG, "12px"));
         btnLogin.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
         btnSettings.disableProperty().bind(txtUsername.textProperty().isEmpty().or(pwdPassword.textProperty().isEmpty()));
         lblDBL.setText(DBUtils.getAppDBLocation());
@@ -165,6 +193,8 @@ public class LoginController extends ViewController implements Initializable {
         btnNewCompanyLogin.setOnAction(event -> createCompany(true));
 
         btnSettings.setOnAction(event -> openCompSettings());
+        btnSettingsClose.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.CLOSE, "14px"));
+        btnSettingsClose.setText("");
         btnSettingsClose.setOnAction(event -> closeCompSettings());
         btnLoadCompanyLogo.setOnAction(event -> browseLogo());
         btnClearData.setOnAction(event -> showConfirmDelete("data"));
@@ -335,6 +365,10 @@ public class LoginController extends ViewController implements Initializable {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
         fcLogo.getExtensionFilters().add(extFilter);
         File file = fcLogo.showOpenDialog(null);
+
+        if (file == null) {
+            return;
+        }
 
         File logoFile = new File(logoPath);
         try {
@@ -651,7 +685,38 @@ public class LoginController extends ViewController implements Initializable {
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
 
+    private void showAbout() {
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource("aboutView.fxml"));
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(root, 500, 400));
+        stage.setTitle("About VarComp");
+        stage.show();
+    }
+
+    private void showHelp() {
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource("helpView.fxml"));
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(root, 600, 500));
+        stage.setTitle("Help");
+        stage.show();
     }
 
 }

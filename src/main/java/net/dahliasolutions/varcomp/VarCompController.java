@@ -23,6 +23,8 @@ public class VarCompController extends ViewController implements Initializable {
     @FXML
     private BorderPane viewMain;
     @FXML
+    private MenuBar menuBar;
+    @FXML
     private MenuItem menuLogout;
     @FXML
     private MenuItem menuExit;
@@ -43,10 +45,17 @@ public class VarCompController extends ViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        menuLogout.setOnAction(actionEvent -> VarComp.changeScene("login-view.fxml", "Login", false));
-        menuExit.setOnAction(actionEvent -> VarComp.closeApp());
-        menuHelp.setOnAction(event -> showHelp());
-        menuAbout.setOnAction(event -> showAbout());
+        // set the menubar
+        if(System.getProperty("os.name").startsWith("Mac")) {
+            // Mac OS, menubar set at login
+            // disable this one
+            viewMain.setTop(null);
+        } else {
+            menuLogout.setOnAction(actionEvent -> VarComp.changeScene("login-view.fxml", "Login", false));
+            menuExit.setOnAction(actionEvent -> VarComp.closeApp());
+            menuHelp.setOnAction(event -> showHelp());
+            menuAbout.setOnAction(event -> showAbout());
+        }
 
         btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_RIGHT, "12px"));
         btnNavMetrics.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.BAR_CHART_ALT, "12px"));
@@ -71,6 +80,7 @@ public class VarCompController extends ViewController implements Initializable {
     public void init() {
         System.out.println("Logged in to: "+VarComp.getCurrentCompany().getCompany_name());
         collapseNav();
+
     }
 
     public void setCenterView(String fxmlFile) {
@@ -117,7 +127,7 @@ public class VarCompController extends ViewController implements Initializable {
             e.printStackTrace();
         }
         stage.setScene(new Scene(root, 500, 400));
-        stage.setTitle("Help");
+        stage.setTitle("About VarComp");
         stage.show();
     }
 

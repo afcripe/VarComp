@@ -577,6 +577,18 @@ public class VCMetricController implements Initializable {
         paneMetricDetail.setManaged(false);
         paneFormEditorKPI.setVisible(false);
         paneFormEditorKPI.setManaged(false);
+        btnMetricSave.setVisible(false);
+        btnMetricHome.setVisible(false);
+        btnMetricPrint.setVisible(false);
+        chkPrintPreview.setVisible(false);
+        lblPrintJobStatus.setVisible(false);
+        bntNewMetric.setVisible(false);
+        btnMetricSave.setManaged(false);
+        btnMetricHome.setManaged(false);
+        btnMetricPrint.setManaged(false);
+        chkPrintPreview.setManaged(false);
+        lblPrintJobStatus.setManaged(false);
+        bntNewMetric.setManaged(false);
         showCompKIPEditor(false);
         showFormEditorKPI(false);
 
@@ -593,6 +605,11 @@ public class VCMetricController implements Initializable {
                 btnMetricPrint.setVisible(true);
                 chkPrintPreview.setVisible(true);
                 lblPrintJobStatus.setVisible(true);
+                btnMetricSave.setManaged(true);
+                btnMetricHome.setManaged(true);
+                btnMetricPrint.setManaged(true);
+                chkPrintPreview.setManaged(true);
+                lblPrintJobStatus.setManaged(true);
                 lblPrintJobStatus.setText("");
                 lblDetailMetricYearWarn.setVisible(false);
                 lblDetailMetricPeriodWarn.setVisible(false);
@@ -600,6 +617,8 @@ public class VCMetricController implements Initializable {
             default -> {
                 paneMetricTable.setVisible(true);
                 paneMetricTable.setManaged(true);
+                bntNewMetric.setVisible(true);
+                bntNewMetric.setManaged(true);
                 fillPaneMetricDetail(new Metric());
             }
         }

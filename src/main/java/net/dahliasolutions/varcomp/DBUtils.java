@@ -4,7 +4,7 @@ import java.io.File;
 import java.sql.*;
 
 public class DBUtils {
-    private static final String appVersion = "2.10.0";
+    private static final String appVersion = "2.10.1";
     private static final int appDBVersion = 2;
     private static final int companyDBVersion = 3;
     private static final String fs = System.getProperty("file.separator");

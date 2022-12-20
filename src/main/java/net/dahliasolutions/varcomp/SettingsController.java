@@ -600,6 +600,10 @@ public class SettingsController implements Initializable {
         fcLogo.getExtensionFilters().add(extFilter);
         File file = fcLogo.showOpenDialog(null);
 
+        if (file == null) {
+            return;
+        }
+
         File logoFile = new File(logoPath);
         try {
             InputStream stream = new FileInputStream(file);
@@ -630,6 +634,10 @@ public class SettingsController implements Initializable {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
         fcLogo.getExtensionFilters().add(extFilter);
         File file = fcLogo.showOpenDialog(null);
+
+        if (file == null) {
+            return;
+        }
 
         File iconFile = new File(logoPath);
         try {

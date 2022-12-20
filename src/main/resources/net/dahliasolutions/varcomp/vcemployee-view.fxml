@@ -26,11 +26,12 @@
             </font>
          </Label>
          <HBox HBox.hgrow="ALWAYS" />
-         <Label fx:id="lblPrintJobStatus" visible="false" />
-         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false" />
-         <Button fx:id="btnEmployeePrint" prefWidth="75" text="Print" visible="false" />
-         <Button fx:id="btnEditEmployee_save" prefWidth="75" text="Save" visible="false" HBox.hgrow="NEVER" />
-         <Button fx:id="btnEmployeeHome" prefWidth="75" text="Back" visible="false" HBox.hgrow="NEVER" />
+         <Label fx:id="lblPrintJobStatus" visible="false" managed="false" />
+         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false" managed="false" />
+         <Button fx:id="btnEmployeePrint" prefWidth="75" text="Print" visible="false" managed="false" />
+         <Button fx:id="btnEditEmployee_save" prefWidth="75" text="Save" visible="false" managed="false" HBox.hgrow="NEVER" />
+         <Button fx:id="btnEmployeeHome" prefWidth="75" text="Back" visible="false" managed="false" HBox.hgrow="NEVER" />
+         <Button fx:id="bntNewEmployee" prefWidth="125" text="New Employee" managed="false" HBox.hgrow="NEVER" />
       </HBox>
 
 <!--   Panels    -->
@@ -38,11 +39,6 @@
          <VBox VBox.vgrow="ALWAYS">
       
          <VBox fx:id="paneEmployeeTable" managed="false" minHeight="450.0" minWidth="450" prefWidth="550" spacing="4.0" visible="false" VBox.vgrow="ALWAYS">
-                  <HBox alignment="CENTER">
-                     <HBox HBox.hgrow="ALWAYS" />
-                     <Button fx:id="bntNewEmployee" prefWidth="125" text="New Employee" />
-                  </HBox>
-            <!-- <Button fx:id="bntDeleteKPIClass" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" prefWidth="75" text="Delete" /> -->
             <TableView fx:id="tblEmployees" minHeight="150.0" minWidth="250" prefWidth="540.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="tbcEmployeeID" prefWidth="50" text="ID" />

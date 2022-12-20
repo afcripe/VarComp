@@ -26,11 +26,12 @@
       </Label>
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER_RIGHT" spacing="8">
-         <Label fx:id="lblPrintJobStatus" visible="false" />
-         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false" />
-         <Button fx:id="btnMetricPrint" prefWidth="75" text="Print" visible="false" />
-         <Button fx:id="btnMetricSave" prefWidth="75" text="Save" visible="false" />
-         <Button fx:id="btnMetricHome" prefWidth="75" text="Back" visible="false" />
+         <Label fx:id="lblPrintJobStatus" visible="false" managed="false" />
+         <CheckBox fx:id="chkPrintPreview" text="Preview" visible="false" managed="false" />
+         <Button fx:id="btnMetricPrint" prefWidth="75" text="Print" visible="false" managed="false" />
+         <Button fx:id="btnMetricSave" prefWidth="75" text="Save" visible="false" managed="false" />
+         <Button fx:id="btnMetricHome" prefWidth="75" text="Back" visible="false" managed="false" />
+         <Button fx:id="bntNewMetric" prefWidth="125" text="New Metric" visible="false" managed="false" />
       </HBox>
    </HBox>
 
@@ -38,10 +39,6 @@
       <VBox VBox.vgrow="ALWAYS">
 
          <VBox fx:id="paneMetricTable" minHeight="250.0" spacing="8.0" VBox.vgrow="ALWAYS">
-            <HBox>
-               <HBox prefHeight="25.0" prefWidth="350.0" />
-               <Button fx:id="bntNewMetric" prefWidth="125" text="New Metric" />
-            </HBox>
             <TableView fx:id="tblMetrics" minHeight="150.0" minWidth="550" prefHeight="220.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="tbcMetricLabel" editable="false" text="Metric" />
