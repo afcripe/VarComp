@@ -1,5 +1,7 @@
 package net.dahliasolutions.varcomp;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -17,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.*;
 
@@ -30,6 +33,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -83,6 +87,8 @@ public class VCMetricController implements Initializable {
     private TextField txtDetailMetricPeriod;
     @FXML
     private CheckBox chkDetailMetricLocked;
+    @FXML
+    private Button btnNotes;
     @FXML
     private HBox boxMetricDetailTable;
     @FXML
@@ -376,6 +382,9 @@ public class VCMetricController implements Initializable {
             setMetricLock(chk.isSelected());
         });
 
+        btnNotes.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.PENCIL_SQUARE_ALT, "12px"));
+        btnNotes.setOnAction(event -> navNotes());
+
         tbcDetailPeriod.setCellValueFactory(new PropertyValueFactory<>("detail_period"));
         tbcDetailPeriod.setPrefWidth(50);
         tbcDetailBudget.setCellValueFactory(param -> {
@@ -640,6 +649,7 @@ public class VCMetricController implements Initializable {
         txtDetailMetricPayout.setText(fmDollar.format(metric.getMetric_payout()));
         txtDetailMetricShares.setText(metric.getMetric_shares().toString());
         txtDetailMetricEPS.setText(fmDollar.format(metric.getMetric_eps()));
+        btnNotes.setText(NoteConnector.countMetricNotes(metric.getMetric_id()).toString());
         setLockStyle();
 
         if ( !metric.getMetric_id().equals(0) ) {
@@ -1238,6 +1248,36 @@ public class VCMetricController implements Initializable {
         fillCompanyKPIs();
         fillEmployees();
         saveMetricDetail();
+    }
+
+    private void navNotes() {
+        String notesTitle = metricDetail.getMetric_label()+" - Notes";
+
+        System.out.println(Window.getWindows());
+        List<Window> windows = Window.getWindows();
+        for (Window w : windows) {
+            if (((Stage) w).getTitle().equals(notesTitle)) {
+                System.out.println(w.sceneProperty().getName());
+                ((Stage) w).show();
+                ((Stage) w).toFront();
+                return;
+            }
+        }
+
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource("vcnotes-view.fxml"));
+            root = loader.load();
+            ((ViewFilteredController)loader.getController()).init("", metricDetail.getMetric_id(), "ALL", notesTitle);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(root, 600, 500));
+        stage.setTitle(notesTitle);
+        stage.show();
     }
 
 /* Printing */

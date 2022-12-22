@@ -25,20 +25,40 @@
          </Label>
          <HBox HBox.hgrow="ALWAYS" />
          <Button fx:id="btnEditNote_save" managed="false" prefWidth="75" text="Save" visible="false" HBox.hgrow="NEVER" />
+         <Button fx:id="btnEditNote_delete" managed="false" prefWidth="75" text="Delete" visible="false" HBox.hgrow="NEVER" />
          <Button fx:id="btnNoteHome" managed="false" prefWidth="75" text="Back" visible="false" HBox.hgrow="NEVER" />
          <Button fx:id="btnNewNote" managed="false" prefWidth="125" text="New Note" HBox.hgrow="NEVER" />
+         <Button fx:id="btnPopOut" prefWidth="24" HBox.hgrow="NEVER" />
+         <Button fx:id="btnReload" prefWidth="24" HBox.hgrow="NEVER" />
       </HBox>
 
 <!--   Panels    -->
       <ScrollPane fitToHeight="true" fitToWidth="true" minViewportHeight="250.0" minViewportWidth="250.0" prefViewportHeight="450.0" prefViewportWidth="550.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
          <VBox VBox.vgrow="ALWAYS">
-      
+
+
          <VBox fx:id="paneNoteTable" managed="false" minHeight="450.0" minWidth="450" prefWidth="550" spacing="4.0" VBox.vgrow="ALWAYS">
-            <TableView fx:id="tblNotes" minHeight="150.0" minWidth="650.0" VBox.vgrow="ALWAYS">
+            <HBox spacing="4.0">
+               <Label alignment="CENTER_LEFT" prefWidth="75.0" text="Filter">
+                  <font>
+                     <Font name="Arial Bold" size="18.0" />
+                  </font>
+               </Label>
+               <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Title:" />
+               <TextField fx:id="txtTitleFilter" prefWidth="398" />
+            </HBox>
+            <HBox spacing="4.0">
+               <Button fx:id="btnClearFilter" prefWidth="75.0" text="Clear" />
+               <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Metric:" />
+               <ComboBox fx:id="cmbMetricFilter" />
+               <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Employee:" />
+               <ComboBox fx:id="cmbEmployeeFilter" />
+            </HBox>
+            <TableView fx:id="tblNotes" minHeight="150.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="tbcNoteID" prefWidth="48.0" text="ID" />
                   <TableColumn fx:id="tbcNoteTitle" prefWidth="150" text="Title" />
-                  <TableColumn fx:id="tbcNoteText" minWidth="150.0" prefWidth="300" text="Text" />
+                  <TableColumn fx:id="tbcNoteText" minWidth="150.0" prefWidth="350" text="Text" />
                </columns>
             </TableView>
             <padding>

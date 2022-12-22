@@ -2,7 +2,7 @@ package net.dahliasolutions.varcomp;
 
 import net.dahliasolutions.varcomp.models.User;
 
-public class ViewController {
+public abstract class ViewController {
 
     protected User user = new User();
 
@@ -11,5 +11,4 @@ public class ViewController {
     public void setUser(User user) {
         this.user = user;
     }
-
 }

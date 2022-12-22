@@ -76,17 +76,30 @@ public class NoteConnector {
         return noteList;
     }
 
-    public static ArrayList<Note> getNotes(String noteTitle) {
+    public static ArrayList<Note> getNotes(String noteTitle, int metricID, String employeeID) {
         Connection connection;
         PreparedStatement preparedStatement;
+        String preparedString;
         ResultSet resultSet;
         ArrayList<Note> noteList = new ArrayList<>();
 
+        // Set WHERE Clause
+        String wc = "0=0";
+        if (metricID != 0) {
+            wc = wc+" AND METRIC_ID="+metricID;
+        }
+        if (!employeeID.isEmpty() && !employeeID.equalsIgnoreCase("ALL")) {
+            wc = wc+" AND EMPLOYEE_ID = '"+employeeID+"'";
+        }
+        if (!noteTitle.isEmpty()) {
+            wc = wc+" AND NOTE_TITLE ILIKE '%"+noteTitle+"%'";
+        }
+
+        preparedString = "SELECT * FROM TBLNOTES WHERE "+wc;
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLNOTES WHERE NOTE_TITLE LIKE ?");
-            preparedStatement.setString(1, "%"+noteTitle+"%");
+            preparedStatement = connection.prepareStatement(preparedString);
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {
@@ -108,6 +121,58 @@ public class NoteConnector {
         }
 
         return noteList;
+    }
+
+    public static Integer countMetricNotes(Integer metricID) {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        int counter = 0;
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLNOTES WHERE metric_id=?");
+            preparedStatement.setInt(1, metricID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("Note not found.");
+            } else {
+                while (resultSet.next()) {
+                    counter =+1;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return counter;
+    }
+
+    public static Integer countEmployeeNotes(String employeeID) {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        int counter = 0;
+
+        try {
+            connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLNOTES WHERE EMPLOYEE_ID=?");
+            preparedStatement.setString(1, employeeID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("Note not found.");
+            } else {
+                while (resultSet.next()) {
+                    counter =+1;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return counter;
     }
 
     public static Boolean insertNote(Note note) {

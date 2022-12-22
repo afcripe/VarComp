@@ -102,13 +102,17 @@
                <Label fx:id="lblDetailMetricYearWarn" accessibleText="Warning" prefWidth="8" text="*" textFill="RED" visible="false">
                      <font>
                         <Font name="System Bold" size="18.0" />
-                     </font></Label>
+                     </font>
+               </Label>
                <Label alignment="CENTER_RIGHT" prefWidth="75.0" text="Quarter:" />
                <TextField fx:id="txtDetailMetricPeriod" prefWidth="80.0" />
                <Label fx:id="lblDetailMetricPeriodWarn" prefWidth="8" text="*" textFill="RED" visible="false">
                      <font>
                         <Font name="System Bold" size="18.0" />
-                     </font></Label>
+                     </font>
+               </Label>
+               <Label alignment="CENTER_RIGHT" prefWidth="67.0"/>
+               <Button fx:id="btnNotes" prefWidth="24" HBox.hgrow="NEVER" />
             </HBox>
             <HBox fx:id="boxMetricDetailTable" spacing="4.0">
                <TableView fx:id="tblDetailMetricPeriods" minHeight="115.0" prefHeight="215" prefWidth="433.0">

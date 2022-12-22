@@ -1,5 +1,7 @@
 package net.dahliasolutions.varcomp;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,10 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import net.dahliasolutions.varcomp.connectors.EmployeeConnector;
-import net.dahliasolutions.varcomp.connectors.EmployeeScoreConnector;
-import net.dahliasolutions.varcomp.connectors.MetricConnector;
-import net.dahliasolutions.varcomp.connectors.PositionsConnector;
+import javafx.stage.Window;
+import net.dahliasolutions.varcomp.connectors.*;
 import net.dahliasolutions.varcomp.models.Employee;
 import net.dahliasolutions.varcomp.models.EmployeeScore;
 import net.dahliasolutions.varcomp.models.Metric;
@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class VCEmployeeController implements Initializable {
@@ -56,6 +57,8 @@ public class VCEmployeeController implements Initializable {
     private TableColumn<Employee, String> tbcEmployeeActive;
     @FXML
     private Pane paneFormEmployee;
+    @FXML
+    private Button btnNotes;
     @FXML
     private TextField txtFormEmployeeID;
     @FXML
@@ -179,6 +182,8 @@ public class VCEmployeeController implements Initializable {
     /* Employee Detail */
         btnEditEmployee_save.setOnAction(event -> updateEmployee());
         btnEmployeePrint.setOnAction(event -> printMetricDetail());
+        btnNotes.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.PENCIL_SQUARE_ALT, "12px"));
+        btnNotes.setOnAction(event -> navNotes());
 
         txtEmployeeID.setOnKeyPressed(event -> {
             if(txtEmployeeID.getText().length() > 5) txtEmployeeID.setText(txtEmployeeID.getText().substring(0,5));
@@ -352,6 +357,7 @@ public class VCEmployeeController implements Initializable {
         lblEmployeeShares.setText(selectedEmployee.getShares_assigned().toString());
         chkEmployeeActive.setSelected(selectedEmployee.getIs_active());
         pkrEmployeeStartDate.setValue(selectedEmployee.getStart_date());
+        btnNotes.setText(NoteConnector.countEmployeeNotes(employee.getEmployee_id()).toString());
 
         // create combobox items
         cmbEmployeePosition.getItems().clear();
@@ -423,6 +429,7 @@ public class VCEmployeeController implements Initializable {
         tblEmployeeMetrics.setItems(employeeScores);
         getTotalBonus();
     }
+
     private void getTotalBonus() {
         BigDecimal totalBonus = new BigDecimal("0.00");
         NumberFormat fm = NumberFormat.getCurrencyInstance();
@@ -432,6 +439,35 @@ public class VCEmployeeController implements Initializable {
             totalBonus = totalBonus.add(es.getBonus());
         }
         lblEmployeeTotalBonus.setText(fm.format(totalBonus.doubleValue()));
+    }
+
+    private void navNotes() {
+        String notesTitle = selectedEmployee.getEmployee_id()+" - Notes";
+
+        System.out.println(Window.getWindows());
+        List<Window> windows = Window.getWindows();
+        for (Window w : windows) {
+            if (((Stage) w).getTitle().equals(notesTitle)) {
+                System.out.println(w.sceneProperty().getName());
+                ((Stage) w).show();
+                ((Stage) w).toFront();
+                return;
+            }
+        }
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+
+        try {
+            loader = new FXMLLoader(VarComp.class.getResource("vcnotes-view.fxml"));
+            root = loader.load();
+            ((ViewFilteredController)loader.getController()).init("", 0, selectedEmployee.getEmployee_id(), notesTitle);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(root, 600, 500));
+        stage.setTitle(notesTitle);
+        stage.show();
     }
 
     /* Printing */

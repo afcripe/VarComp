@@ -1,11 +1,13 @@
 package net.dahliasolutions.varcomp;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import net.dahliasolutions.varcomp.models.AppCompany;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;
@@ -71,8 +73,10 @@ public class VarComp extends Application {
         Boolean tblUpdateComplete = DBUtils.updateDBTable(primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
         if (tblUpdateComplete) {
             primaryStage.close();
+            Platform.exit();
         } else {
             primaryStage.close();
+            Platform.exit();
         }
     }
 
