@@ -89,6 +89,10 @@ public class Employee {
         this.last_name = last_name;
     }
 
+    public String getFull_name() {
+        return this.getFirst_name()+" "+this.getLast_name();
+    }
+
     public LocalDate getStart_date() {
         return start_date;
     }

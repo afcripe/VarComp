@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VCNotesController">
+
+<!--   Navigation    -->
+      <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <Label text="Notes">
+            <font>
+               <Font name="Arial Bold" size="18.0" />
+            </font>
+         </Label>
+         <HBox HBox.hgrow="ALWAYS" />
+         <Button fx:id="btnEditNote_save" managed="false" prefWidth="75" text="Save" visible="false" HBox.hgrow="NEVER" />
+         <Button fx:id="btnNoteHome" managed="false" prefWidth="75" text="Back" visible="false" HBox.hgrow="NEVER" />
+         <Button fx:id="btnNewNote" managed="false" prefWidth="125" text="New Note" HBox.hgrow="NEVER" />
+      </HBox>
+
+<!--   Panels    -->
+      <ScrollPane fitToHeight="true" fitToWidth="true" minViewportHeight="250.0" minViewportWidth="250.0" prefViewportHeight="450.0" prefViewportWidth="550.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+         <VBox VBox.vgrow="ALWAYS">
+      
+         <VBox fx:id="paneNoteTable" managed="false" minHeight="450.0" minWidth="450" prefWidth="550" spacing="4.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tblNotes" minHeight="150.0" minWidth="650.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="tbcNoteID" prefWidth="48.0" text="ID" />
+                  <TableColumn fx:id="tbcNoteTitle" prefWidth="150" text="Title" />
+                  <TableColumn fx:id="tbcNoteText" minWidth="150.0" prefWidth="300" text="Text" />
+               </columns>
+            </TableView>
+            <padding>
+               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </padding>
+         </VBox>
+
+         <VBox fx:id="paneNoteDetail" minHeight="450.0" minWidth="450" prefWidth="550.0" visible="false" VBox.vgrow="ALWAYS">
+            <HBox prefWidth="540.0" spacing="8" VBox.vgrow="ALWAYS">
+               <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT" spacing="4">
+                     <TextField fx:id="txtNoteID" disable="true" prefWidth="35.0">
+                        <font>
+                           <Font size="10.0" />
+                        </font>
+                     </TextField>
+                     <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="48.0" text="Title:" />
+                     <TextField fx:id="txtNoteTitle" prefHeight="26.0" prefWidth="398.0" HBox.hgrow="ALWAYS" />
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefWidth="557.0" spacing="4">
+                     <Label alignment="CENTER_RIGHT" prefWidth="87.0" text="Metric:" />
+                     <ComboBox fx:id="cmbNoteMetric" />
+                     <Label alignment="CENTER_RIGHT" prefWidth="87.0" text="Employee:" />
+                     <ComboBox fx:id="cmbNoteEmployee" />
+                  </HBox>
+                  <Label prefWidth="100.0" text="Note:" />
+                  <TextArea fx:id="txaNoteText" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
+               </VBox>
+            </HBox>
+
+            <padding>
+               <Insets bottom="4.0" left="4.0" right="4.0" top="16.0" />
+            </padding>
+         </VBox>
+
+         </VBox>
+      </ScrollPane>
+
+</AnchorPane>

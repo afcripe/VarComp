@@ -78,6 +78,9 @@ public class DBSetup {
                             case 3:
                                 uv = updateTOV3();
                                 break;
+                            case 4:
+                                uv = updateTOV4();
+                                break;
                         }
                         recDBVersion = uv;
                     }
@@ -609,6 +612,31 @@ public class DBSetup {
         }
     }
 
+    private static void dropNotes() {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = connection.prepareStatement("DROP TABLE TBLCALCULATIONOPTIONS");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void initializeNotes() {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS TBLNOTES " +
+                    "(note_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                    "note_title VARCHAR(150), metric_id BIGINT, employee_id VARCHAR(5), " +
+                    "note_text CHARACTER LARGE OBJECT)");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static int updateTOV3() {
         PreparedStatement preparedStatement;
 
@@ -623,6 +651,21 @@ public class DBSetup {
             e.printStackTrace();
         }
         return 3;
+    }
+
+    private static int updateTOV4() {
+        PreparedStatement preparedStatement;
+
+        initializeNotes();
+
+        try {
+            preparedStatement = connection.prepareStatement("UPDATE TBLDBSETTINGS " +
+                    "SET DB_VERSION=4 WHERE DB_ID=1");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 4;
     }
 
     private static void cleanupConnection() {

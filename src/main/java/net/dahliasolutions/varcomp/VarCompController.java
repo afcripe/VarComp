@@ -41,6 +41,8 @@ public class VarCompController extends ViewController implements Initializable {
     @FXML
     private Button btnNavEmployees;
     @FXML
+    private Button btnNavNotes;
+    @FXML
     private Button btnNavSettings;
 
     @Override
@@ -60,16 +62,19 @@ public class VarCompController extends ViewController implements Initializable {
         btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_RIGHT, "12px"));
         btnNavMetrics.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.BAR_CHART_ALT, "12px"));
         btnNavEmployees.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.USERS, "12px"));
+        btnNavNotes.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.PENCIL_SQUARE_ALT, "12px"));
         btnNavSettings.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.COGS, "12px"));
 
         btnNavigation.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavEmployees.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
+        btnNavNotes.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavSettings.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
 
         btnNavigation.setOnAction(event -> collapseNav());
         btnNavMetrics.setOnAction(event -> setCenterView("vcmetric-view"));
         btnNavEmployees.setOnAction(event -> setCenterView("vcemployee-view"));
+        btnNavNotes.setOnAction(event -> setCenterView("vcnotes-view"));
         btnNavSettings.setOnAction(event -> setCenterView("settings-view"));
         btnNavSettings.setVisible(VarComp.getUser().getUser_type().equals("admin"));
 
@@ -100,6 +105,7 @@ public class VarCompController extends ViewController implements Initializable {
             btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_RIGHT, "12px"));
             btnNavMetrics.setText("");
             btnNavEmployees.setText("");
+            btnNavNotes.setText("");
             btnNavSettings.setText("");
         } else {
             vboxNavigation.setPrefWidth(100);
@@ -107,11 +113,13 @@ public class VarCompController extends ViewController implements Initializable {
             btnNavigation.setGraphic(GlyphsDude.createIcon(FontAwesomeIcon.ARROW_LEFT, "12px"));
             btnNavMetrics.setText("Metrics");
             btnNavEmployees.setText("Employees");
+            btnNavNotes.setText("Notes");
             btnNavSettings.setText("Settings");
         }
         btnNavigation.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavMetrics.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavEmployees.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
+        btnNavNotes.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
         btnNavSettings.prefWidthProperty().bind(Bindings.subtract(vboxNavigation.widthProperty(), 4));
     }
 
