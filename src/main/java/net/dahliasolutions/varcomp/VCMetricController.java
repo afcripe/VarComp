@@ -446,8 +446,12 @@ public class VCMetricController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+        txtCompKPIEditorF1Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPICompany(newValue));
+        txtCompKPIEditorF2Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPICompany(newValue));
+        txtCompKPIEditorF3Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPICompany(newValue));
+        txtCompKPIEditorF4Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPICompany(newValue));
 
-    /* Employee Scores */
+        /* Employee Scores */
         btnAddEmployee.setOnAction(event -> addMissingEmployees());
         btnRemoveEmployee.setOnAction(event -> removeMissingEmployees());
         tbcEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employee_name"));
@@ -508,6 +512,12 @@ public class VCMetricController implements Initializable {
             }
         });
 
+        txtKPIEditorF1Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPI(newValue));
+        txtKPIEditorF2Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPI(newValue));
+        txtKPIEditorF3Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPI(newValue));
+        txtKPIEditorF4Data.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> focusStateKPI(newValue));
+
+
         navMetric("");
     }
 
@@ -519,6 +529,16 @@ public class VCMetricController implements Initializable {
     private void dpFocusState(Boolean b) {
         if(!b) {
             dpFormCalcEarnings();
+        }
+    }
+    private void focusStateKPI(Boolean b) {
+        if(!b) {
+            gradeKPI();
+        }
+    }
+    private void focusStateKPICompany(Boolean b) {
+        if(!b) {
+            gradeKPICompany();
         }
     }
 
@@ -1041,6 +1061,28 @@ public class VCMetricController implements Initializable {
         showCompKIPEditor(false);
         updateEmployeeScores();
     }
+    private void gradeKPICompany() {
+        CompanyKPI cKPI = tblDetailCompanyKPI.getSelectionModel().getSelectedItem();
+
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        String pattern = "#0.0#";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+        try {
+            cKPI.setF1_data((BigDecimal) decimalFormat.parse(txtCompKPIEditorF1Data.getText()));
+            cKPI.setF2_data((BigDecimal) decimalFormat.parse(txtCompKPIEditorF2Data.getText()));
+            cKPI.setF3_data((BigDecimal) decimalFormat.parse(txtCompKPIEditorF3Data.getText()));
+            cKPI.setF4_data((BigDecimal) decimalFormat.parse(txtCompKPIEditorF4Data.getText()));
+            cKPI.calcScore();
+            cKPI.calcGrade();
+        } catch (ParseException e) {
+            System.out.println(e);
+        }
+
+        txtCompKPIEditorScore.setText(cKPI.getKpi_score().toString());
+        txtCompKPIEditorGrade.setText(cKPI.getKpi_grade().toString());
+    }
 
     private void removeMissingEmployees() {
         Employee employee = EmployeeConnector.getEmployee(tblDetailEmployeeScores.getSelectionModel().getSelectedItem().getEmployee_id());
@@ -1198,6 +1240,28 @@ public class VCMetricController implements Initializable {
         updateEmployeeScores();
         openEmployeeKPIEditor(EmployeeScoreConnector.getEmployeeScore(eKPI.getScore_id()));
         updateEmployeeScores();
+    }
+    private void gradeKPI() {
+        EmployeeKPI eKPI = tblEditorKPIs.getSelectionModel().getSelectedItem();
+
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        String pattern = "#0.0#";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+        try {
+            eKPI.setF1_data((BigDecimal) decimalFormat.parse(txtKPIEditorF1Data.getText()));
+            eKPI.setF2_data((BigDecimal) decimalFormat.parse(txtKPIEditorF2Data.getText()));
+            eKPI.setF3_data((BigDecimal) decimalFormat.parse(txtKPIEditorF3Data.getText()));
+            eKPI.setF4_data((BigDecimal) decimalFormat.parse(txtKPIEditorF4Data.getText()));
+            eKPI.calcScore();
+            eKPI.calcGrade();
+        } catch (ParseException e) {
+            System.out.println(e);
+        }
+
+        txtKPIEditorScore.setText(eKPI.getKpi_score().toString());
+        txtKPIEditorGrade.setText(eKPI.getKpi_grade().toString());
     }
 
 /* Update Employee Scores and Metric Payout */

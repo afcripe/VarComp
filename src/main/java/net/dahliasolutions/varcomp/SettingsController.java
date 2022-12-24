@@ -191,6 +191,18 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtFormMasterKPI_poor;
     @FXML
+    private Label lblGrade5;
+    @FXML
+    private Label lblGrade4;
+    @FXML
+    private Label lblGrade3;
+    @FXML
+    private Label lblGrade2;
+    @FXML
+    private Label lblGrade1;
+    @FXML
+    private Label lblGrade0;
+    @FXML
     private TextField txtFormMasterKPI_f1;
     @FXML
     private TextField txtFormMasterKPI_f2;
@@ -847,7 +859,7 @@ public class SettingsController implements Initializable {
                 cmbFormMastKPI_calc.setTooltip(new Tooltip(cOption.getCalculation_description()));
             }
         }
-
+        updateEvalCheckbox();
     }
     private void updateEvalCheckbox() {
         lblEvalNatural.setVisible(!chkEvalReverseOrder.isSelected());
