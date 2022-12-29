@@ -23,8 +23,6 @@ public class VarCompController extends ViewController implements Initializable {
     @FXML
     private BorderPane viewMain;
     @FXML
-    private MenuBar menuBar;
-    @FXML
     private MenuItem menuLogout;
     @FXML
     private MenuItem menuExit;

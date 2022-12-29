@@ -35,7 +35,7 @@
       </HBox>
    </HBox>
 
-   <ScrollPane fx:id="spMetric" fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+   <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
       <VBox VBox.vgrow="ALWAYS">
 
          <VBox fx:id="paneMetricTable" minHeight="250.0" spacing="8.0" VBox.vgrow="ALWAYS">

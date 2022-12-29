@@ -98,8 +98,6 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtFormClassKPI_description;
     @FXML
-    private CheckBox chkFormClassKPI_auto;
-    @FXML
     private Button btnFormClassKPI_cancel;
     @FXML
     private Button btnFormClassKPI_save;
@@ -190,18 +188,6 @@ public class SettingsController implements Initializable {
     private TextField txtFormMasterKPI_not_acceptable;
     @FXML
     private TextField txtFormMasterKPI_poor;
-    @FXML
-    private Label lblGrade5;
-    @FXML
-    private Label lblGrade4;
-    @FXML
-    private Label lblGrade3;
-    @FXML
-    private Label lblGrade2;
-    @FXML
-    private Label lblGrade1;
-    @FXML
-    private Label lblGrade0;
     @FXML
     private TextField txtFormMasterKPI_f1;
     @FXML

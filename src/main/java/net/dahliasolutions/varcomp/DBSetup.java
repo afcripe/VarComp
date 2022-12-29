@@ -74,13 +74,9 @@ public class DBSetup {
                     while (recDBVersion < DBUtils.getCompanyDBVersion()) {
                         int uv = recDBVersion;
                         int nv = recDBVersion+1;
-                        switch (nv){
-                            case 3:
-                                uv = updateTOV3();
-                                break;
-                            case 4:
-                                uv = updateTOV4();
-                                break;
+                        switch (nv) {
+                            case 3 -> uv = updateTOV3();
+                            case 4 -> uv = updateTOV4();
                         }
                         recDBVersion = uv;
                     }

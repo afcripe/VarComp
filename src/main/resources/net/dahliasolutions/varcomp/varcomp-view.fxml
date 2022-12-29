@@ -7,7 +7,7 @@
 <BorderPane fx:id="viewMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.dahliasolutions.varcomp.VarCompController">
 
      <top>
-        <MenuBar fx:id="menuBar" minHeight="26.0" prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <MenuBar minHeight="26.0" prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="File">
                 <MenuItem fx:id="menuLogout" mnemonicParsing="false" text="Logout" />
                 <MenuItem fx:id="menuExit" mnemonicParsing="false" text="Exit" />
@@ -22,10 +22,10 @@
     <left>
       <VBox fx:id="vboxNavigation" minWidth="100" prefHeight="200.0" prefWidth="100.0" spacing="2.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
           <Button fx:id="btnNavigation" style="-fx-cursor: hand;" alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS" />
-          <Button fx:id="btnNavMetrics" style="-fx-cursor: hand;" text="Metrics" alignment="CENTER_LEFT" />
-          <Button fx:id="btnNavEmployees" style="-fx-cursor: hand;" text="Employees" alignment="CENTER_LEFT" />
-          <Button fx:id="btnNavNotes" style="-fx-cursor: hand;" text="Employees" alignment="CENTER_LEFT" />
-          <Button fx:id="btnNavSettings" style="-fx-cursor: hand;" text="Settings" alignment="CENTER_LEFT" />
+          <Button fx:id="btnNavMetrics" style="-fx-cursor: hand;" text="Metrics" />
+          <Button fx:id="btnNavEmployees" style="-fx-cursor: hand;" text="Employees" />
+          <Button fx:id="btnNavNotes" style="-fx-cursor: hand;" text="Employees" />
+          <Button fx:id="btnNavSettings" style="-fx-cursor: hand;" text="Settings" />
          <BorderPane.margin>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </BorderPane.margin>

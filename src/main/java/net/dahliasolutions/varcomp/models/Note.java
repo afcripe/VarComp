@@ -1,9 +1,6 @@
 package net.dahliasolutions.varcomp.models;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import net.dahliasolutions.varcomp.connectors.NoteConnector;
-import net.dahliasolutions.varcomp.connectors.UserConnector;
 
 public class Note {
     private Integer note_id;

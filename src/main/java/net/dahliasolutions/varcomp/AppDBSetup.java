@@ -42,6 +42,11 @@ public class AppDBSetup {
                         switch (nv){
                             case 3:
                                 // ToDo - update function for version 3
+                                // uv = CallUpdate(toV3)
+                                break;
+                            case 4:
+                                // ToDo - update function for version 4
+                                // uv = CallUpdate(toV4)
                                 break;
                         }
                         recDBVersion = uv;

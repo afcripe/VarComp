@@ -118,7 +118,7 @@
                   </Label>
                   <Label fx:id="lblFilter" prefWidth="130.0" text="Filtered by year 2023" />
                   <Label alignment="CENTER_RIGHT" prefWidth="115.0" text="Total Bonus:" />
-                  <Label fx:id="lblTotalBonus" alignment="CENTER_RIGHT" prefWidth="80.0" text="">
+                  <Label fx:id="lblTotalBonus" alignment="CENTER_RIGHT" prefWidth="80.0">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

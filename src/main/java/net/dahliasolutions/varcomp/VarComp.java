@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import net.dahliasolutions.varcomp.models.AppCompany;
 import net.dahliasolutions.varcomp.models.Company;
 import net.dahliasolutions.varcomp.models.User;

@@ -64,8 +64,7 @@ public class CompanyKPIConnector {
 
         try {
             connection = DriverManager.getConnection(DBUtils.getDBLocation(), "sa", "password");
-            preparedStatement = connection.prepareStatement("SELECT * FROM TBLCOMPANYKPIS " +
-                    "WHERE METRIC_ID=? AND KPI_MASTER_ID=?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM TBLCOMPANYKPIS WHERE METRIC_ID=? AND KPI_MASTER_ID=?");
             preparedStatement.setInt(1, metricID);
             preparedStatement.setInt(2, mastKPIid);
             resultSet = preparedStatement.executeQuery();

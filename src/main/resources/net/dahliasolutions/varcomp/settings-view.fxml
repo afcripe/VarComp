@@ -229,29 +229,29 @@
                 </HBox>
                 <HBox spacing="4" VBox.vgrow="ALWAYS">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label fx:id="lblGrade5" text="Grade: 100%" />
+                        <Label text="Grade: 100%" />
                         <TextField fx:id="txtFormMasterKPI_extraordinary" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label fx:id="lblGrade4" text="Grade: 80%" />
+                        <Label text="Grade: 80%" />
                         <TextField fx:id="txtFormMasterKPI_great" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label fx:id="lblGrade3" text="Grade: 60%" />
+                        <Label text="Grade: 60%" />
                         <TextField fx:id="txtFormMasterKPI_well" VBox.vgrow="ALWAYS" />
                     </VBox>
                 </HBox>
                 <HBox spacing="4" VBox.vgrow="ALWAYS">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label fx:id="lblGrade2" text="Grade: 40%" />
+                        <Label text="Grade: 40%" />
                         <TextField fx:id="txtFormMasterKPI_needs_improvement" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label fx:id="lblGrade1" text="Grade: 20%" />
+                        <Label text="Grade: 20%" />
                         <TextField fx:id="txtFormMasterKPI_poor" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label fx:id="lblGrade0" text="Grade: 0%" />
+                        <Label text="Grade: 0%" />
                         <TextField fx:id="txtFormMasterKPI_not_acceptable" VBox.vgrow="ALWAYS" />
                     </VBox>
                 </HBox>

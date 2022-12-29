@@ -39,7 +39,7 @@
 
          <VBox fx:id="paneNoteTable" managed="false" minHeight="450.0" minWidth="450" prefWidth="550" spacing="4.0" VBox.vgrow="ALWAYS">
             <HBox spacing="4.0">
-               <Label alignment="CENTER_LEFT" prefWidth="75.0" text="Filter">
+               <Label prefWidth="75.0" text="Filter">
                   <font>
                      <Font name="Arial Bold" size="18.0" />
                   </font>

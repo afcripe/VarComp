@@ -218,7 +218,7 @@ public class EmployeeKPI {
                     thisScore = thisScore.add(getF4_data());
                     divisor++;
                 };
-                thisScore = thisScore.divide(BigDecimal.valueOf(divisor));
+                thisScore = thisScore.divide(BigDecimal.valueOf(divisor), RoundingMode.HALF_UP);
             }
             case 3 ->
                     thisScore = getF1_data().multiply(new BigDecimal("0.1")).add(getF2_data().multiply(new BigDecimal("0.3")))
