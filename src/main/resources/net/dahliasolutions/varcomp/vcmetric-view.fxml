@@ -118,8 +118,8 @@
                <TableView fx:id="tblDetailMetricPeriods" minHeight="115.0" prefHeight="215" prefWidth="433.0">
                   <columns>
                      <TableColumn fx:id="tbcDetailPeriod" text="Month" />
-                     <TableColumn fx:id="tbcDetailBudget" text="Budget" />
-                     <TableColumn fx:id="tbcDetailActual" text="Actual" />
+                     <TableColumn fx:id="tbcDetailBudget" text="Expenses" />
+                     <TableColumn fx:id="tbcDetailActual" text="Income" />
                      <TableColumn fx:id="tbcDetailEarnings" text="Earnings" />
                   </columns>
                </TableView>
@@ -139,12 +139,12 @@
                   <TextField fx:id="txtFormDPPeriod" prefWidth="75.0" />
                </HBox>
                <HBox>
-                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Budget:">
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Expenses:">
                      <padding>
                         <Insets right="4.0" />
                      </padding></Label>
                   <TextField fx:id="txtFormDPBudget" prefWidth="115.0" />
-                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Actual:">
+                  <Label alignment="CENTER_RIGHT" prefWidth="95.0" text="Income:">
                      <padding>
                         <Insets right="4.0" />
                      </padding></Label>

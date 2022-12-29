@@ -71,8 +71,8 @@
                   <TableView fx:id="tblDetailMetricPeriods" prefHeight="155.0" prefWidth="433.0">
                      <columns>
                         <TableColumn fx:id="tbcDetailPeriod" text="Month" />
-                        <TableColumn fx:id="tbcDetailBudget" text="Budget" />
-                        <TableColumn fx:id="tbcDetailActual" text="Actual" />
+                        <TableColumn fx:id="tbcDetailBudget" text="Expenses" />
+                        <TableColumn fx:id="tbcDetailActual" text="Income" />
                         <TableColumn fx:id="tbcDetailEarnings" text="Earnings" />
                      </columns>
                   </TableView>
