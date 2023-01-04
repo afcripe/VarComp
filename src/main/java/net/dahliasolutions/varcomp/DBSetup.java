@@ -77,6 +77,7 @@ public class DBSetup {
                         switch (nv) {
                             case 3 -> uv = updateTOV3();
                             case 4 -> uv = updateTOV4();
+                            case 5 -> uv = updateTOV5();
                         }
                         recDBVersion = uv;
                     }
@@ -332,7 +333,10 @@ public class DBSetup {
                     "kpi_code VARCHAR(25), description VARCHAR(255), kpi_class BIGINT, calc_instructions BIGINT, " +
                     "score_extraordinary NUMERIC(10,2), score_great NUMERIC(10,2), score_well NUMERIC(10,2), " +
                     "score_needs_improvement NUMERIC(10,2), score_poor NUMERIC(10,2), " +
-                    "score_not_acceptable NUMERIC(10,2), f1_name VARCHAR(45), f2_name VARCHAR(45), " +
+                    "score_not_acceptable NUMERIC(10,2), grade_extraordinary NUMERIC(10,2), " +
+                    "grade_great NUMERIC(10,2), grade_well NUMERIC(10,2), " +
+                    "grade_needs_improvement NUMERIC(10,2), grade_poor NUMERIC(10,2), " +
+                    "grade_not_acceptable NUMERIC(10,2), f1_name VARCHAR(45), f2_name VARCHAR(45), " +
                     "f3_name VARCHAR(45), f4_name VARCHAR(45), reverse_scores BOOLEAN)");
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -662,6 +666,35 @@ public class DBSetup {
             e.printStackTrace();
         }
         return 4;
+    }
+
+    private static int updateTOV5() {
+        PreparedStatement preparedStatement;
+
+        initializeNotes();
+
+        try {
+            preparedStatement = connection.prepareStatement("ALTER TABLE TBLKPIMASTER ADD grade_extraordinary NUMERIC(10,2) DEFAULT '1.00'");
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement("ALTER TABLE TBLKPIMASTER ADD grade_great NUMERIC(10,2) DEFAULT '0.80'");
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement("ALTER TABLE TBLKPIMASTER ADD grade_well NUMERIC(10,2) DEFAULT '0.60'");
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement("ALTER TABLE TBLKPIMASTER ADD grade_needs_improvement NUMERIC(10,2) DEFAULT '0.40'");
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement("ALTER TABLE TBLKPIMASTER ADD grade_poor NUMERIC(10,2) DEFAULT '0.20'");
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement("ALTER TABLE TBLKPIMASTER ADD grade_not_acceptable NUMERIC(10,2) DEFAULT '0.00'");
+            preparedStatement.execute();
+
+            // update db version
+            preparedStatement = connection.prepareStatement("UPDATE TBLDBSETTINGS " +
+                    "SET DB_VERSION=5 WHERE DB_ID=1");
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 5;
     }
 
     private static void cleanupConnection() {

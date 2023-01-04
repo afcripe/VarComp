@@ -189,6 +189,18 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField txtFormMasterKPI_poor;
     @FXML
+    private TextField txtFormMasterKPI_extraordinary_grade;
+    @FXML
+    private TextField txtFormMasterKPI_great_grade;
+    @FXML
+    private TextField txtFormMasterKPI_well_grade;
+    @FXML
+    private TextField txtFormMasterKPI_needs_improvement_grade;
+    @FXML
+    private TextField txtFormMasterKPI_not_acceptable_grade;
+    @FXML
+    private TextField txtFormMasterKPI_poor_grade;
+    @FXML
     private TextField txtFormMasterKPI_f1;
     @FXML
     private TextField txtFormMasterKPI_f2;
@@ -824,6 +836,12 @@ public class SettingsController implements Initializable {
         txtFormMasterKPI_needs_improvement.setText(kpiMaster.getScore_needs_improvement().toString());
         txtFormMasterKPI_not_acceptable.setText(kpiMaster.getScore_not_acceptable().toString());
         txtFormMasterKPI_poor.setText(kpiMaster.getScore_poor().toString());
+        txtFormMasterKPI_extraordinary_grade.setText(kpiMaster.getGrade_extraordinary().toString());
+        txtFormMasterKPI_great_grade.setText(kpiMaster.getGrade_great().toString());
+        txtFormMasterKPI_well_grade.setText(kpiMaster.getGrade_well().toString());
+        txtFormMasterKPI_needs_improvement_grade.setText(kpiMaster.getGrade_needs_improvement().toString());
+        txtFormMasterKPI_poor_grade.setText(kpiMaster.getGrade_poor().toString());
+        txtFormMasterKPI_not_acceptable_grade.setText(kpiMaster.getGrade_not_acceptable().toString());
         txtFormMasterKPI_f1.setText(kpiMaster.getF1_name());
         txtFormMasterKPI_f2.setText(kpiMaster.getF2_name());
         txtFormMasterKPI_f3.setText(kpiMaster.getF3_name());
@@ -901,6 +919,12 @@ public class SettingsController implements Initializable {
         txtFormMasterKPI_needs_improvement.setText("");
         txtFormMasterKPI_not_acceptable.setText("");
         txtFormMasterKPI_poor.setText("");
+        txtFormMasterKPI_extraordinary_grade.setText("");
+        txtFormMasterKPI_great_grade.setText("");
+        txtFormMasterKPI_well_grade.setText("");
+        txtFormMasterKPI_needs_improvement_grade.setText("");
+        txtFormMasterKPI_not_acceptable_grade.setText("");
+        txtFormMasterKPI_poor_grade.setText("");
         txtFormMasterKPI_f1.setText("");
         txtFormMasterKPI_f2.setText("");
         txtFormMasterKPI_f3.setText("");
@@ -916,6 +940,12 @@ public class SettingsController implements Initializable {
         BigDecimal decScoreNI;
         BigDecimal decScorePoor;
         BigDecimal decScoreNA;
+        BigDecimal decGradeExt;
+        BigDecimal decGradeGrt;
+        BigDecimal decGradeWell;
+        BigDecimal decGradeNI;
+        BigDecimal decGradePoor;
+        BigDecimal decGradeNA;
 
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator('.');
@@ -930,7 +960,6 @@ public class SettingsController implements Initializable {
             decScoreExt = new BigDecimal("0.00");
             decScoreExt = decScoreExt.setScale(2, RoundingMode.HALF_UP);
         }
-
         try {
             decScoreGrt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_great.getText());
             decScoreGrt = decScoreGrt.setScale(2, RoundingMode.HALF_UP);
@@ -967,10 +996,54 @@ public class SettingsController implements Initializable {
             decScoreNA = decScoreExt.setScale(2, RoundingMode.HALF_UP);
         }
 
+        try {
+            decGradeExt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_extraordinary_grade.getText());
+            decGradeExt = decGradeExt.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decGradeExt = new BigDecimal("0.00");
+            decGradeExt = decGradeExt.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decGradeGrt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_great_grade.getText());
+            decScoreGrt = decGradeGrt.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decGradeGrt = new BigDecimal("0.00");
+            decGradeGrt = decGradeGrt.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decGradeWell = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_well_grade.getText());
+            decGradeWell = decGradeWell.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decGradeWell = new BigDecimal("0.00");
+            decGradeWell = decGradeWell.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decGradeNI = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_needs_improvement_grade.getText());
+            decGradeNI = decGradeNI.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decGradeNI = new BigDecimal("0.00");
+            decGradeNI = decGradeNI.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decGradePoor = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_poor_grade.getText());
+            decGradePoor = decGradePoor.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decGradePoor = new BigDecimal("0.00");
+            decGradePoor = decGradePoor.setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            decGradeNA = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_not_acceptable_grade.getText());
+            decGradeNA = decGradeNA.setScale(2, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            decGradeNA = new BigDecimal("0.00");
+            decGradeNA = decGradeNA.setScale(2, RoundingMode.HALF_UP);
+        }
+
         KPIMaster kpiMaster = new KPIMaster(Integer.parseInt(txtFormMastKPI_id.getText()), txtFormMastKPI_code.getText(),
                 txtFormMastKPI_description.getText(), Integer.parseInt(split[0]), Integer.parseInt(splitCalc[0]), decScoreExt,
                 decScoreGrt, decScoreWell, decScoreNI, decScorePoor, decScoreNA, txtFormMasterKPI_f1.getText(),
-                txtFormMasterKPI_f2.getText(), txtFormMasterKPI_f3.getText(), txtFormMasterKPI_f4.getText(), chkEvalReverseOrder.isSelected());
+                txtFormMasterKPI_f2.getText(), txtFormMasterKPI_f3.getText(), txtFormMasterKPI_f4.getText(), chkEvalReverseOrder.isSelected(),
+                decGradeExt, decGradeGrt, decGradeWell, decGradeNI, decGradePoor, decGradeNA);
 
         if ( kpiMaster.getKpi_master_id().equals(0)) {
             kpiMaster.insertKPIMaster();

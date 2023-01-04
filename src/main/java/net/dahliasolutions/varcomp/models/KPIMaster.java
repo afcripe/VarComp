@@ -18,6 +18,12 @@ public class KPIMaster {
     private BigDecimal score_needs_improvement;
     private BigDecimal score_poor;
     private BigDecimal score_not_acceptable;
+    private BigDecimal grade_extraordinary;
+    private BigDecimal grade_great;
+    private BigDecimal grade_well;
+    private BigDecimal grade_needs_improvement;
+    private BigDecimal grade_poor;
+    private BigDecimal grade_not_acceptable;
     private String f1_name;
     private String f2_name;
     private String f3_name;
@@ -37,6 +43,12 @@ public class KPIMaster {
         setScore_needs_improvement(BigDecimal.valueOf(0.00));
         setScore_poor(BigDecimal.valueOf(0.00));
         setScore_not_acceptable(BigDecimal.valueOf(0.00));
+        setGrade_extraordinary(BigDecimal.valueOf(100.00));
+        setGrade_great(BigDecimal.valueOf(0.00));
+        setGrade_well(BigDecimal.valueOf(0.00));
+        setGrade_needs_improvement(BigDecimal.valueOf(0.00));
+        setGrade_poor(BigDecimal.valueOf(0.00));
+        setGrade_not_acceptable(BigDecimal.valueOf(0.00));
         setF1_name("Employee Score");
         setF2_name("");
         setF3_name("");
@@ -47,7 +59,9 @@ public class KPIMaster {
     public KPIMaster(Integer id, String code, String description, Integer kpiClass, Integer calcInstructions,
                           BigDecimal scoreExtraordinary, BigDecimal scoreGreat, BigDecimal scoreWell,
                           BigDecimal scoreNeedsImprovement, BigDecimal scorePoor, BigDecimal scoreNotAcceptable,
-                          String f1Name, String f2Name, String f3Name, String f4Name, Boolean reverseScores) {
+                          String f1Name, String f2Name, String f3Name, String f4Name, Boolean reverseScores,
+                          BigDecimal gradeExtraordinary, BigDecimal gradeGreat, BigDecimal gradeWell,
+                          BigDecimal gradeNeedsImprovement, BigDecimal gradePoor, BigDecimal gradeNotAcceptable) {
         setKpi_master_id(id);
         setKpi_code(code);
         setDescription(description);
@@ -59,6 +73,12 @@ public class KPIMaster {
         setScore_needs_improvement(scoreNeedsImprovement);
         setScore_poor(scorePoor);
         setScore_not_acceptable(scoreNotAcceptable);
+        setGrade_extraordinary(gradeExtraordinary);
+        setGrade_great(gradeGreat);
+        setGrade_well(gradeWell);
+        setGrade_needs_improvement(gradeNeedsImprovement);
+        setGrade_poor(gradePoor);
+        setGrade_not_acceptable(gradeNotAcceptable);
         setF1_name(f1Name);
         setF2_name(f2Name);
         setF3_name(f3Name);
@@ -78,6 +98,12 @@ public class KPIMaster {
         this.score_needs_improvement = kpiMaster.score_needs_improvement;
         this.score_poor = kpiMaster.score_poor;
         this.score_not_acceptable = kpiMaster.score_not_acceptable;
+        this.grade_extraordinary = kpiMaster.grade_extraordinary;
+        this.grade_great = kpiMaster.grade_great;
+        this.grade_well = kpiMaster.grade_well;
+        this.grade_needs_improvement = kpiMaster.grade_needs_improvement;
+        this.grade_poor = kpiMaster.grade_poor;
+        this.grade_not_acceptable = kpiMaster.grade_not_acceptable;
         this.f1_name = kpiMaster.f1_name;
         this.f2_name = kpiMaster.f2_name;
         this.f3_name = kpiMaster.f3_name;
@@ -181,6 +207,60 @@ public class KPIMaster {
     public void setScore_not_acceptable(BigDecimal score_not_acceptable) {
         this.score_not_acceptable = score_not_acceptable;
         this.score_not_acceptable = this.score_not_acceptable.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGrade_extraordinary() {
+        return grade_extraordinary;
+    }
+
+    public void setGrade_extraordinary(BigDecimal grade_extraordinary) {
+        this.grade_extraordinary = grade_extraordinary;
+        this.grade_extraordinary = this.grade_extraordinary.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGrade_great() {
+        return grade_great;
+    }
+
+    public void setGrade_great(BigDecimal grade_great) {
+        this.grade_great = grade_great;
+        this.grade_great = this.grade_great.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGrade_well() {
+        return grade_well;
+    }
+
+    public void setGrade_well(BigDecimal grade_well) {
+        this.grade_well = grade_well;
+        this.grade_well = this.grade_well.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGrade_needs_improvement() {
+        return grade_needs_improvement;
+    }
+
+    public void setGrade_needs_improvement(BigDecimal grade_needs_improvement) {
+        this.grade_needs_improvement = grade_needs_improvement;
+        this.grade_needs_improvement = this.grade_needs_improvement.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGrade_poor() {
+        return grade_poor;
+    }
+
+    public void setGrade_poor(BigDecimal grade_poor) {
+        this.grade_poor = grade_poor;
+        this.grade_poor = this.grade_poor.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGrade_not_acceptable() {
+        return grade_not_acceptable;
+    }
+
+    public void setGrade_not_acceptable(BigDecimal grade_not_acceptable) {
+        this.grade_not_acceptable = grade_not_acceptable;
+        this.grade_not_acceptable = this.grade_not_acceptable.setScale(2, RoundingMode.HALF_UP);
     }
 
     public String getF1_name() {

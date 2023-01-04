@@ -255,31 +255,31 @@ public class CompanyKPI {
         KPIMaster kpiMaster = KPIMasterConnector.getKPIMaster(getKpi_master_id());
         if (kpiMaster.getReverse_scores()) {
             if(getKpi_score().doubleValue() <= kpiMaster.getScore_great().doubleValue()) {
-                thisGrade = new BigDecimal("1.00");
+                thisGrade = kpiMaster.getGrade_extraordinary();
             } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_well().doubleValue()) {
-                thisGrade = new BigDecimal("0.80");
+                thisGrade = kpiMaster.getGrade_great();
             } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_needs_improvement().doubleValue()) {
-                thisGrade = new BigDecimal("0.60");
+                thisGrade = kpiMaster.getGrade_well();
             } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_poor().doubleValue()) {
-                thisGrade = new BigDecimal("0.40");
+                thisGrade = kpiMaster.getGrade_needs_improvement();
             } else if (getKpi_score().doubleValue() <= kpiMaster.getScore_not_acceptable().doubleValue()) {
-                thisGrade = new BigDecimal("0.20");
+                thisGrade = kpiMaster.getGrade_poor();
             } else {
-                thisGrade = new BigDecimal("0.00");
+                thisGrade = kpiMaster.getGrade_not_acceptable();
             }
         } else {
             if(getKpi_score().doubleValue() >= kpiMaster.getScore_extraordinary().doubleValue()) {
-                thisGrade = new BigDecimal("1.00");
+                thisGrade = kpiMaster.getGrade_extraordinary();
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_great().doubleValue()) {
-                thisGrade = new BigDecimal("0.80");
+                thisGrade = kpiMaster.getGrade_great();
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_well().doubleValue()) {
-                thisGrade = new BigDecimal("0.60");
+                thisGrade = kpiMaster.getGrade_well();
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_needs_improvement().doubleValue()) {
-                thisGrade = new BigDecimal("0.40");
+                thisGrade = kpiMaster.getGrade_needs_improvement();
             } else if (getKpi_score().doubleValue() >= kpiMaster.getScore_poor().doubleValue()) {
-                thisGrade = new BigDecimal("0.20");
+                thisGrade = kpiMaster.getGrade_poor();
             } else {
-                thisGrade = new BigDecimal("0.00");
+                thisGrade = kpiMaster.getGrade_not_acceptable();
             }
 
         }

@@ -36,6 +36,12 @@ public class KPIMasterConnector {
                     BigDecimal recScoreNeedsImprovement = resultSet.getBigDecimal("score_needs_improvement");
                     BigDecimal recScoreNotAcceptable = resultSet.getBigDecimal("score_not_acceptable");
                     BigDecimal recScorePoor = resultSet.getBigDecimal("score_poor");
+                    BigDecimal recGradeExtraordinary = resultSet.getBigDecimal("grade_extraordinary");
+                    BigDecimal recGradeGreat = resultSet.getBigDecimal("grade_great");
+                    BigDecimal recGradeWell = resultSet.getBigDecimal("grade_well");
+                    BigDecimal recGradeNeedsImprovement = resultSet.getBigDecimal("grade_needs_improvement");
+                    BigDecimal recGradePoor = resultSet.getBigDecimal("grade_poor");
+                    BigDecimal recGradeNotAcceptable = resultSet.getBigDecimal("grade_not_acceptable");
                     String recF1Name = resultSet.getString("f1_name");
                     String recF2Name = resultSet.getString("f2_name");
                     String recF3Name = resultSet.getString("f3_name");
@@ -44,7 +50,9 @@ public class KPIMasterConnector {
 
                     kpiMaster = new KPIMaster(recKPIId, recKPICode, recDescription, recKPIClass, recCalcInstructions,
                             recScoreExtraordinary, recScoreGreat, recScoreWell, recScoreNeedsImprovement,
-                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores);
+                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores,
+                            recGradeExtraordinary, recGradeGreat, recGradeWell,
+                            recGradeNeedsImprovement, recGradePoor, recGradeNotAcceptable);
                 }
             }
         } catch (SQLException e) {
@@ -82,6 +90,12 @@ public class KPIMasterConnector {
                     BigDecimal recScoreNeedsImprovement = resultSet.getBigDecimal("score_needs_improvement");
                     BigDecimal recScoreNotAcceptable = resultSet.getBigDecimal("score_not_acceptable");
                     BigDecimal recScorePoor = resultSet.getBigDecimal("score_poor");
+                    BigDecimal recGradeExtraordinary = resultSet.getBigDecimal("grade_extraordinary");
+                    BigDecimal recGradeGreat = resultSet.getBigDecimal("grade_great");
+                    BigDecimal recGradeWell = resultSet.getBigDecimal("grade_well");
+                    BigDecimal recGradeNeedsImprovement = resultSet.getBigDecimal("grade_needs_improvement");
+                    BigDecimal recGradePoor = resultSet.getBigDecimal("grade_poor");
+                    BigDecimal recGradeNotAcceptable = resultSet.getBigDecimal("grade_not_acceptable");
                     String recF1Name = resultSet.getString("f1_name");
                     String recF2Name = resultSet.getString("f2_name");
                     String recF3Name = resultSet.getString("f3_name");
@@ -90,7 +104,9 @@ public class KPIMasterConnector {
 
                     kpiMasterList.add(new KPIMaster(recKPIId, recKPICode, recDescription, recKPIClass, recCalcInstructions,
                             recScoreExtraordinary, recScoreGreat, recScoreWell, recScoreNeedsImprovement,
-                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores));
+                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores,
+                            recGradeExtraordinary, recGradeGreat, recGradeWell,
+                            recGradeNeedsImprovement, recGradePoor, recGradeNotAcceptable));
                 }
             }
         } catch (SQLException e) {
@@ -129,6 +145,12 @@ public class KPIMasterConnector {
                     BigDecimal recScoreNeedsImprovement = resultSet.getBigDecimal("score_needs_improvement");
                     BigDecimal recScoreNotAcceptable = resultSet.getBigDecimal("score_not_acceptable");
                     BigDecimal recScorePoor = resultSet.getBigDecimal("score_poor");
+                    BigDecimal recGradeExtraordinary = resultSet.getBigDecimal("grade_extraordinary");
+                    BigDecimal recGradeGreat = resultSet.getBigDecimal("grade_great");
+                    BigDecimal recGradeWell = resultSet.getBigDecimal("grade_well");
+                    BigDecimal recGradeNeedsImprovement = resultSet.getBigDecimal("grade_needs_improvement");
+                    BigDecimal recGradePoor = resultSet.getBigDecimal("grade_poor");
+                    BigDecimal recGradeNotAcceptable = resultSet.getBigDecimal("grade_not_acceptable");
                     String recF1Name = resultSet.getString("f1_name");
                     String recF2Name = resultSet.getString("f2_name");
                     String recF3Name = resultSet.getString("f3_name");
@@ -137,7 +159,9 @@ public class KPIMasterConnector {
 
                     kpiMasterList.add(new KPIMaster(recKPIId, recKPICode, recDescription, recKPIClass, recCalcInstructions,
                             recScoreExtraordinary, recScoreGreat, recScoreWell, recScoreNeedsImprovement,
-                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores));
+                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores,
+                            recGradeExtraordinary, recGradeGreat, recGradeWell,
+                            recGradeNeedsImprovement, recGradePoor, recGradeNotAcceptable));
                 }
             }
         } catch (SQLException e) {
@@ -160,7 +184,9 @@ public class KPIMasterConnector {
             preparedStatement = connection.prepareStatement("INSERT INTO tblkpimaster " +
                     "SET kpi_code=?, description=?, kpi_class=?, calc_instructions=?, " +
                     "SCORE_EXTRAORDINARY=?, SCORE_GREAT=?, SCORE_WELL=?, SCORE_NEEDS_IMPROVEMENT=?, " +
-                    "SCORE_NOT_ACCEPTABLE=?, SCORE_POOR=?, F1_NAME=?, F2_NAME=?, F3_NAME=?, F4_NAME=?, REVERSE_SCORES=?");
+                    "SCORE_NOT_ACCEPTABLE=?, SCORE_POOR=?, F1_NAME=?, F2_NAME=?, F3_NAME=?, F4_NAME=?, REVERSE_SCORES=?, " +
+                    "GRADE_EXTRAORDINARY=?, GRADE_GREAT=?, GRADE_WELL=?, GRADE_NEEDS_IMPROVEMENT=?, GRADE_POOR=?, " +
+                    "GRADE_NOT_ACCEPTABLE=?" );
             preparedStatement.setString(1, kpiMaster.getKpi_code());
             preparedStatement.setString(2, kpiMaster.getDescription());
             preparedStatement.setInt(3, kpiMaster.getKpi_class());
@@ -176,6 +202,12 @@ public class KPIMasterConnector {
             preparedStatement.setString(13, kpiMaster.getF3_name());
             preparedStatement.setString(14, kpiMaster.getF4_name());
             preparedStatement.setBoolean(15, kpiMaster.getReverse_scores());
+            preparedStatement.setBigDecimal(16, kpiMaster.getGrade_extraordinary());
+            preparedStatement.setBigDecimal(17, kpiMaster.getGrade_great());
+            preparedStatement.setBigDecimal(18, kpiMaster.getGrade_well());
+            preparedStatement.setBigDecimal(19, kpiMaster.getGrade_needs_improvement());
+            preparedStatement.setBigDecimal(20, kpiMaster.getGrade_poor());
+            preparedStatement.setBigDecimal(21, kpiMaster.getGrade_not_acceptable());
 
             preparedStatement.executeUpdate();
 
@@ -197,6 +229,12 @@ public class KPIMasterConnector {
                     BigDecimal recScoreNeedsImprovement = resultSet.getBigDecimal("score_needs_improvement");
                     BigDecimal recScoreNotAcceptable = resultSet.getBigDecimal("score_not_acceptable");
                     BigDecimal recScorePoor = resultSet.getBigDecimal("score_poor");
+                    BigDecimal recGradeExtraordinary = resultSet.getBigDecimal("grade_extraordinary");
+                    BigDecimal recGradeGreat = resultSet.getBigDecimal("grade_great");
+                    BigDecimal recGradeWell = resultSet.getBigDecimal("grade_well");
+                    BigDecimal recGradeNeedsImprovement = resultSet.getBigDecimal("grade_needs_improvement");
+                    BigDecimal recGradePoor = resultSet.getBigDecimal("grade_poor");
+                    BigDecimal recGradeNotAcceptable = resultSet.getBigDecimal("grade_not_acceptable");
                     String recF1Name = resultSet.getString("f1_name");
                     String recF2Name = resultSet.getString("f2_name");
                     String recF3Name = resultSet.getString("f3_name");
@@ -205,7 +243,9 @@ public class KPIMasterConnector {
 
                     newKPIMaster = new KPIMaster(recKPIId, recKPICode, recDescription, recKPIClass, recCalcInstructions,
                             recScoreExtraordinary, recScoreGreat, recScoreWell, recScoreNeedsImprovement,
-                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores);
+                            recScoreNotAcceptable, recScorePoor, recF1Name, recF2Name, recF3Name, recF4Name, recRevScores,
+                            recGradeExtraordinary, recGradeGreat, recGradeWell,
+                            recGradeNeedsImprovement, recGradePoor, recGradeNotAcceptable);
                 }
             }
         } catch (SQLException e) {
@@ -227,7 +267,9 @@ public class KPIMasterConnector {
                     "SET kpi_code=?, description=?, kpi_class=?, calc_instructions=?, " +
                     "SCORE_EXTRAORDINARY=?, SCORE_GREAT=?, SCORE_WELL=?, SCORE_NEEDS_IMPROVEMENT=?, " +
                     "SCORE_NOT_ACCEPTABLE=?, SCORE_POOR=?, F1_NAME=?, F2_NAME=?, " +
-                    "F3_NAME=?, F4_NAME=?, REVERSE_SCORES=? WHERE kpi_master_id=?");
+                    "F3_NAME=?, F4_NAME=?, REVERSE_SCORES=?, GRADE_EXTRAORDINARY=?, GRADE_GREAT=?, " +
+                    "GRADE_WELL=?, GRADE_NEEDS_IMPROVEMENT=?, GRADE_POOR=?, " +
+                    "GRADE_NOT_ACCEPTABLE=? WHERE kpi_master_id=?");
             preparedStatement.setString(1, kpiMaster.getKpi_code());
             preparedStatement.setString(2, kpiMaster.getDescription());
             preparedStatement.setInt(3, kpiMaster.getKpi_class());
@@ -243,7 +285,13 @@ public class KPIMasterConnector {
             preparedStatement.setString(13, kpiMaster.getF3_name());
             preparedStatement.setString(14, kpiMaster.getF4_name());
             preparedStatement.setBoolean(15, kpiMaster.getReverse_scores());
-            preparedStatement.setInt(16, kpiMaster.getKpi_master_id());
+            preparedStatement.setBigDecimal(16, kpiMaster.getGrade_extraordinary());
+            preparedStatement.setBigDecimal(17, kpiMaster.getGrade_great());
+            preparedStatement.setBigDecimal(18, kpiMaster.getGrade_well());
+            preparedStatement.setBigDecimal(19, kpiMaster.getGrade_needs_improvement());
+            preparedStatement.setBigDecimal(20, kpiMaster.getGrade_poor());
+            preparedStatement.setBigDecimal(21, kpiMaster.getGrade_not_acceptable());
+            preparedStatement.setInt(22, kpiMaster.getKpi_master_id());
             preparedStatement.executeUpdate();
 
             /* update kpi name fields for linked KPIs */

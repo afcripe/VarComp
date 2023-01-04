@@ -199,22 +199,22 @@
           </padding>
         </VBox>
 
-        <VBox fx:id="paneMasterKPI" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;" visible="false">
-            <HBox spacing="4" alignment="CENTER_LEFT">
+        <VBox fx:id="paneMasterKPI" spacing="8.0" style="-fx-background-color: lightblue; -fx-border-color: grey;">
+            <HBox alignment="CENTER_LEFT" spacing="4">
                 <Label alignment="CENTER_RIGHT" prefWidth="53.0" text="ID:" />
                 <TextField fx:id="txtFormMastKPI_id" editable="false" prefWidth="40.0" />
             </HBox>
-            <HBox spacing="4" alignment="CENTER_LEFT">
+            <HBox alignment="CENTER_LEFT" spacing="4">
                 <Label alignment="CENTER_RIGHT" prefWidth="62.0" text="KPI Code:" />
                 <TextField fx:id="txtFormMastKPI_code" prefWidth="142.0" />
                 <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Description:" />
                 <TextField fx:id="txtFormMastKPI_description" prefWidth="237.0" />
             </HBox>
-            <HBox spacing="4" alignment="CENTER_LEFT">
+            <HBox alignment="CENTER_LEFT" spacing="4">
                 <Label alignment="CENTER_RIGHT" prefWidth="62.0" text="KPI Class:" />
                 <ComboBox fx:id="cmbFormMastKPI_class" prefWidth="142.0" />
                 <Label alignment="CENTER_RIGHT" prefWidth="72.0" text="Calculation:" />
-                <ComboBox fx:id="cmbFormMastKPI_calc" prefWidth="142.0"/>
+                <ComboBox fx:id="cmbFormMastKPI_calc" prefWidth="142.0" />
             </HBox>
             <VBox spacing="4">
                 <HBox spacing="4">
@@ -224,35 +224,77 @@
                         </font>
                     </Label>
                     <CheckBox fx:id="chkEvalReverseOrder" />
-                    <Label fx:id="lblEvalNatural" text="When score is GREATER than or equal to provided Value." />
-                    <Label fx:id="lblEvalReverse" text="When score is LESS than or equal to provided Value." />
+                    <Label fx:id="lblEvalNatural" text="Grade when score is GREATER than or equal to provided Value." />
+                    <Label fx:id="lblEvalReverse" text="Grade when score is LESS than or equal to provided Value." />
                 </HBox>
                 <HBox spacing="4" VBox.vgrow="ALWAYS">
-                    <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Grade: 100%" />
+                    <VBox spacing="4" style="-fx-background-color: lightgrey; -fx-border-color: grey;" HBox.hgrow="ALWAYS">
+                        <Label text="Extraordinary" />
+                        <HBox spacing="2">
                         <TextField fx:id="txtFormMasterKPI_extraordinary" VBox.vgrow="ALWAYS" />
+                            <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" text="=" />
+                        <TextField fx:id="txtFormMasterKPI_extraordinary_grade" VBox.vgrow="ALWAYS" />
+                            <padding>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </padding>
+                        </HBox>
                     </VBox>
-                    <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Grade: 80%" />
+                    <VBox spacing="4" style="-fx-background-color: lightgrey; -fx-border-color: grey;" HBox.hgrow="ALWAYS">
+                        <Label text="Great" />
+                        <HBox spacing="2">
                         <TextField fx:id="txtFormMasterKPI_great" VBox.vgrow="ALWAYS" />
+                            <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" text="=" />
+                        <TextField fx:id="txtFormMasterKPI_great_grade" VBox.vgrow="ALWAYS" />
+                            <padding>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </padding>
+                        </HBox>
                     </VBox>
-                    <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Grade: 60%" />
+                    <VBox spacing="4" style="-fx-background-color: lightgrey; -fx-border-color: grey;" HBox.hgrow="ALWAYS">
+                        <Label text="Well" />
+                        <HBox spacing="2">
                         <TextField fx:id="txtFormMasterKPI_well" VBox.vgrow="ALWAYS" />
+                            <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" text="=" />
+                        <TextField fx:id="txtFormMasterKPI_well_grade" VBox.vgrow="ALWAYS" />
+                            <padding>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </padding>
+                        </HBox>
                     </VBox>
                 </HBox>
                 <HBox spacing="4" VBox.vgrow="ALWAYS">
-                    <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Grade: 40%" />
+                    <VBox spacing="4" style="-fx-background-color: lightgrey; -fx-border-color: grey;" HBox.hgrow="ALWAYS">
+                        <Label text="Needs Improvement" />
+                        <HBox spacing="2">
                         <TextField fx:id="txtFormMasterKPI_needs_improvement" VBox.vgrow="ALWAYS" />
+                            <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" text="=" />
+                        <TextField fx:id="txtFormMasterKPI_needs_improvement_grade" VBox.vgrow="ALWAYS" />
+                            <padding>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </padding>
+                        </HBox>
                     </VBox>
-                    <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Grade: 20%" />
+                    <VBox spacing="4" style="-fx-background-color: lightgrey; -fx-border-color: grey;" HBox.hgrow="ALWAYS">
+                        <Label text="Poor" />
+                        <HBox spacing="2">
                         <TextField fx:id="txtFormMasterKPI_poor" VBox.vgrow="ALWAYS" />
+                            <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" text="=" />
+                        <TextField fx:id="txtFormMasterKPI_poor_grade" VBox.vgrow="ALWAYS" />
+                            <padding>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </padding>
+                        </HBox>
                     </VBox>
-                    <VBox spacing="4" HBox.hgrow="ALWAYS">
-                        <Label text="Grade: 0%" />
+                    <VBox spacing="4" style="-fx-background-color: lightgrey; -fx-border-color: grey;" HBox.hgrow="ALWAYS">
+                        <Label text="Not Acceptable" />
+                        <HBox spacing="2">
                         <TextField fx:id="txtFormMasterKPI_not_acceptable" VBox.vgrow="ALWAYS" />
+                            <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" text="=" />
+                        <TextField fx:id="txtFormMasterKPI_not_acceptable_grade" VBox.vgrow="ALWAYS" />
+                            <padding>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </padding>
+                        </HBox>
                     </VBox>
                 </HBox>
             </VBox>
@@ -263,7 +305,7 @@
                             <Font name="Arial Bold" />
                         </font>
                     </Label>
-                    <Label text="* Field names are required. Blank fields are hidden." />
+                    <Label text="* Field names are required. Blank fields are hidden in metrics." />
                 </HBox>
                 <HBox spacing="4">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
