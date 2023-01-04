@@ -1005,7 +1005,7 @@ public class SettingsController implements Initializable {
         }
         try {
             decGradeGrt = (BigDecimal) decimalFormat.parse(txtFormMasterKPI_great_grade.getText());
-            decScoreGrt = decGradeGrt.setScale(2, RoundingMode.HALF_UP);
+            decGradeGrt = decGradeGrt.setScale(2, RoundingMode.HALF_UP);
         } catch (Exception e) {
             decGradeGrt = new BigDecimal("0.00");
             decGradeGrt = decGradeGrt.setScale(2, RoundingMode.HALF_UP);
